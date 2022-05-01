@@ -75,17 +75,16 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
 
     func updateLineStores_Main() {
         if let lclCursor_Grid_Store = cursor_Grid_Store, let lclCursor_Grid_Data = cursor_Grid_Data {
-            // print("updateLineStores_Main: ",currentLowVal.description)
-            // lclCursor_Grid_Data.update_Data_Cursor_Y(new_Cursor_Y_Int: currentLowVal)
-            lclCursor_Grid_Data.update_Data_Cursor_Y(new_Cursor_Y_Int: currentLowVal+dimensions.cursorOnlyAdjustment)//+2)
+            lclCursor_Grid_Data.update_Data_Cursor_Y(new_Cursor_Y_Int: currentLowVal+dimensions.cursorOnlyAdjustment)
             lclCursor_Grid_Store.updateLineArrayPositions(currLowValParam: currentLowVal)
         }
     }
 
     func updateLineStores_Cursor_Only(){
-        //print("updateLineStores_Cursor_Only: ",currentLowVal.description)
         if let lclCursor_Grid_Data = cursor_Grid_Data {
-            lclCursor_Grid_Data.update_Data_Cursor_Y(new_Cursor_Y_Int: currentLowVal+dimensions.cursorOnlyAdjustment)//
+            if currentLowVal+dimensions.cursorOnlyAdjustment < lclCursor_Grid_Data.cell_Line_Array.count {
+                lclCursor_Grid_Data.update_Data_Cursor_Y(new_Cursor_Y_Int: currentLowVal+dimensions.cursorOnlyAdjustment)
+            }
         }
     }
 

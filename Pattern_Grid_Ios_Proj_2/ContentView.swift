@@ -46,8 +46,6 @@ struct Thing_With_All_The_Things_On_It : View {
     @ObservedObject var v_Slider_Responder_Store = V_Slider_Responder_Store()
     @ObservedObject var h_Slider_Responder_Store = H_Slider_Responder_Store()
     
-    //@ObservedObject var HSlide_Responder = H_Slider_Responder_Store()
-    
     let dimensions = ComponentDimensions.StaticComponentDimensions
     @ObservedObject var cursor_Grid_Store = Cursor_Grid_Store()
     
@@ -76,12 +74,12 @@ struct Thing_With_All_The_Things_On_It : View {
 
 class H_Slider_Responder_Store : ObservableObject, P_HSlider_Responder {
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
-    var cursor_Grid_Data : Cursor_Grid_Data?     //= cursor_Grid_Store.cursor_Grid_Data
+    var cursor_Grid_Data : Cursor_Grid_Data?
     
     var current_X_Bracket : Int?{
         didSet{
             if let lclCurrent_X_Bracket = current_X_Bracket{
-                //print("lclCurrent_X_Bracket: ",lclCurrent_X_Bracket.description)
+
                 if let lclGrid_Data = cursor_Grid_Data{
                     lclGrid_Data.update_Data_Cursor_X(new_Cursor_X_Int: lclCurrent_X_Bracket)
                 }
