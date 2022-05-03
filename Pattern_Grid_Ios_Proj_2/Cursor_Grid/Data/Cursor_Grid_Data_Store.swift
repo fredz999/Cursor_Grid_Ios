@@ -37,9 +37,10 @@ class Cursor_Grid_Data_Store : ObservableObject {
                 if let lclcurrentCursorData = currentCursorData{ lclcurrentCursorData.isCurrentCursor = false }
                 current_Cursor_Y_Int = new_Cursor_Y_Int
                 currentCursorData = cell_Line_Array[new_Cursor_Y_Int].select_Cell(cellIndex: current_Cursor_X_Int)
-                
-//                currentCursorData = cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array[current_Cursor_X_Int]
-//                cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array[current_Cursor_X_Int].isCurrentCursor = true
+
+                if noteWritingActivated == true {
+                    note_UpDate_Handler()
+                }
                 
             }
         }
@@ -53,13 +54,19 @@ class Cursor_Grid_Data_Store : ObservableObject {
                 
                 current_Cursor_X_Int = new_Cursor_X_Int
                 currentCursorData = cell_Line_Array[current_Cursor_Y_Int].select_Cell(cellIndex: new_Cursor_X_Int)
-                
-                //currentCursorData = cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array[current_Cursor_X_Int]
-                //cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array[current_Cursor_X_Int].isCurrentCursor = true
-                
+
+                if noteWritingActivated == true {
+                    note_UpDate_Handler()
+                }
                 
             }
         }
+    }
+    
+    var noteWritingActivated : Bool = false
+    
+    func note_UpDate_Handler(){
+    print("note_UpDate_Handler() was activated")
     }
     
 }

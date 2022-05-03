@@ -33,7 +33,7 @@ class ComponentDimensions {
     var h_SliderCellHeight : CGFloat = 0
     //var HSliderFrameWidth : CGFloat = 100
     var h_SliderFrameLastUnit : Int = 4
-    var h_Slider_X_Offset : CGFloat = 80
+    var h_Slider_X_Offset : CGFloat = 120
     var h_Slider_Y_Offset : CGFloat = 180
     
     //====================================================================
@@ -52,7 +52,7 @@ class ComponentDimensions {
     //====================================================================
     
     //======================== note_Drawing_Button_ ======================
-    var note_Drawing_Button_WidthUnits : Int = 2
+    var note_Drawing_Button_WidthUnits : Int = 5
     var note_Drawing_Button_HeightUnits : Int = 2
     
     var note_Drawing_Button_X_Unit_Pos : Int = 1

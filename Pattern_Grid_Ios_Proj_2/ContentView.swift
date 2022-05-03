@@ -45,7 +45,7 @@ struct Thing_With_All_The_Things_On_It : View {
     
     @ObservedObject var v_Slider_Responder_Store = V_Slider_Responder_Store()
     @ObservedObject var h_Slider_Responder_Store = Horizontal_Slider_Responder_Store()
-    
+    var noteDrawingButtonStore = Note_Drawing_Button_Store()
     let dimensions = ComponentDimensions.StaticComponentDimensions
     @ObservedObject var cursor_Grid_Store = Cursor_Grid_Store()
     
@@ -53,6 +53,7 @@ struct Thing_With_All_The_Things_On_It : View {
         v_Slider_Responder_Store.cursor_Grid_Store = cursor_Grid_Store
         v_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
         h_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
+        noteDrawingButtonStore.cursor_Grid_Data_Store_Ref = cursor_Grid_Store.cursor_Grid_Data
     }
 
     var body: some View {
@@ -69,7 +70,7 @@ struct Thing_With_All_The_Things_On_It : View {
         Cursor_Grid_View(cursor_Grid_Store: cursor_Grid_Store)
         .offset(x: 10, y: 10)
             
-        Note_Drawing_Button_View()
+        Note_Drawing_Button_View(note_Drawing_Button_Store: noteDrawingButtonStore)
         .offset(x: dimensions.return_Note_Drawing_Button_X_Pos(), y:dimensions.return_Note_Drawing_Button_Y_Pos())
             
         }
