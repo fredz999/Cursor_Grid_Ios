@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class Cursor_Grid_Cell_Data_Line_Store : ObservableObject, Identifiable {
+class Cursor_Grid_Line_Data_Store : ObservableObject, Identifiable {
     
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     var id = UUID()
@@ -19,9 +19,15 @@ class Cursor_Grid_Cell_Data_Line_Store : ObservableObject, Identifiable {
     init(lineNumberParam:Int){
         place_In_Parent_Line_Array = lineNumberParam
         for x in 0..<lclDimensions.numberCellsGridHorizontal {
-            let data = Cursor_Grid_Cell_Data_Store(xParam: x, yParam: lineNumberParam)
-            cell_Data_Array.append(data)
+        let data = Cursor_Grid_Cell_Data_Store(xParam: x, yParam: lineNumberParam)
+        cell_Data_Array.append(data)
         }
+    }
+    
+    func select_Cell(cellIndex:Int)->Cursor_Grid_Cell_Data_Store {
+        let invertedIndex = lclDimensions.numberCellsGridHorizontal - (cellIndex+1)
+        cell_Data_Array[invertedIndex].isCurrentCursor = true
+        return cell_Data_Array[invertedIndex]
     }
     
 }

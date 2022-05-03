@@ -18,9 +18,10 @@
 		FC8BC570281ED0EF0016526D /* V_Slider_Responder_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8BC56F281ED0EF0016526D /* V_Slider_Responder_Store.swift */; };
 		FC8BC573281ED1B10016526D /* Horizontal_Slider_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8BC572281ED1B10016526D /* Horizontal_Slider_View.swift */; };
 		FCA1220F281C13A000E99BD4 /* Cursor_Grid_Cell_Data_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA1220E281C139F00E99BD4 /* Cursor_Grid_Cell_Data_Store.swift */; };
-		FCA12211281C13C500E99BD4 /* Cursor_Grid_Cell_Data_Line_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA12210281C13C500E99BD4 /* Cursor_Grid_Cell_Data_Line_Store.swift */; };
+		FCA12211281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA12210281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift */; };
 		FCC805F52816CA0900EC28EE /* Vertical_Slider_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC805F42816CA0900EC28EE /* Vertical_Slider_View.swift */; };
 		FCC805F92816D2B500EC28EE /* Slider_Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC805F82816D2B500EC28EE /* Slider_Cell.swift */; };
+		FCDB7409282140B400BED596 /* NoteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDB7408282140B400BED596 /* NoteCollection.swift */; };
 		FCF4848428116D3200CB1FDE /* Pattern_Grid_Ios_Proj_2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF4848328116D3200CB1FDE /* Pattern_Grid_Ios_Proj_2App.swift */; };
 		FCF4848628116D3200CB1FDE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF4848528116D3200CB1FDE /* ContentView.swift */; };
 		FCF4848828116D3600CB1FDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCF4848728116D3600CB1FDE /* Assets.xcassets */; };
@@ -41,9 +42,10 @@
 		FC8BC56F281ED0EF0016526D /* V_Slider_Responder_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V_Slider_Responder_Store.swift; sourceTree = "<group>"; };
 		FC8BC572281ED1B10016526D /* Horizontal_Slider_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Horizontal_Slider_View.swift; sourceTree = "<group>"; };
 		FCA1220E281C139F00E99BD4 /* Cursor_Grid_Cell_Data_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cursor_Grid_Cell_Data_Store.swift; sourceTree = "<group>"; };
-		FCA12210281C13C500E99BD4 /* Cursor_Grid_Cell_Data_Line_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cursor_Grid_Cell_Data_Line_Store.swift; sourceTree = "<group>"; };
+		FCA12210281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cursor_Grid_Line_Data_Store.swift; sourceTree = "<group>"; };
 		FCC805F42816CA0900EC28EE /* Vertical_Slider_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertical_Slider_View.swift; sourceTree = "<group>"; };
 		FCC805F82816D2B500EC28EE /* Slider_Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider_Cell.swift; sourceTree = "<group>"; };
+		FCDB7408282140B400BED596 /* NoteCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCollection.swift; sourceTree = "<group>"; };
 		FCF4848028116D3200CB1FDE /* Pattern_Grid_Ios_Proj_2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pattern_Grid_Ios_Proj_2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCF4848328116D3200CB1FDE /* Pattern_Grid_Ios_Proj_2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pattern_Grid_Ios_Proj_2App.swift; sourceTree = "<group>"; };
 		FCF4848528116D3200CB1FDE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,7 +71,7 @@
 			children = (
 				FC0020E32819B14700287D6B /* Cursor_Grid_Data_Store.swift */,
 				FCA1220E281C139F00E99BD4 /* Cursor_Grid_Cell_Data_Store.swift */,
-				FCA12210281C13C500E99BD4 /* Cursor_Grid_Cell_Data_Line_Store.swift */,
+				FCA12210281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -111,6 +113,24 @@
 				FC8BC56F281ED0EF0016526D /* V_Slider_Responder_Store.swift */,
 			);
 			path = Vertical_Slider;
+			sourceTree = "<group>";
+		};
+		FCDB74062821402400BED596 /* Notes */ = {
+			isa = PBXGroup;
+			children = (
+				FCDB7408282140B400BED596 /* NoteCollection.swift */,
+			);
+			path = Notes;
+			sourceTree = "<group>";
+		};
+		FCDB74072821406D00BED596 /* Cursor_Grid */ = {
+			isa = PBXGroup;
+			children = (
+				FCF4849228116D6500CB1FDE /* Cursor_Grid.swift */,
+				FC0020DF28196D1900287D6B /* Cursor_Grid_Line.swift */,
+				FC0020E128196D4C00287D6B /* Cursor_Grid_Cell_.swift */,
+			);
+			path = Cursor_Grid;
 			sourceTree = "<group>";
 		};
 		FCF4847728116D3200CB1FDE = {
@@ -155,10 +175,9 @@
 		FCF4849128116D4D00CB1FDE /* Cursor_Grid */ = {
 			isa = PBXGroup;
 			children = (
+				FCDB74072821406D00BED596 /* Cursor_Grid */,
+				FCDB74062821402400BED596 /* Notes */,
 				FC0020E5281A8EEF00287D6B /* Data */,
-				FCF4849228116D6500CB1FDE /* Cursor_Grid.swift */,
-				FC0020DF28196D1900287D6B /* Cursor_Grid_Line.swift */,
-				FC0020E128196D4C00287D6B /* Cursor_Grid_Cell_.swift */,
 			);
 			path = Cursor_Grid;
 			sourceTree = "<group>";
@@ -249,7 +268,7 @@
 				FC0EC30B28201A920066200B /* Horizontal_Slider_Coordinator_Store.swift in Sources */,
 				FCC805F92816D2B500EC28EE /* Slider_Cell.swift in Sources */,
 				FCF4849628116D9900CB1FDE /* Component_Dimensions.swift in Sources */,
-				FCA12211281C13C500E99BD4 /* Cursor_Grid_Cell_Data_Line_Store.swift in Sources */,
+				FCA12211281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift in Sources */,
 				FC0EC30D28201AC00066200B /* P_HSlider_Responder.swift in Sources */,
 				FCF4849328116D6500CB1FDE /* Cursor_Grid.swift in Sources */,
 				FC0020E228196D4C00287D6B /* Cursor_Grid_Cell_.swift in Sources */,
@@ -258,6 +277,7 @@
 				FCF4848628116D3200CB1FDE /* ContentView.swift in Sources */,
 				FCF4848428116D3200CB1FDE /* Pattern_Grid_Ios_Proj_2App.swift in Sources */,
 				FC8BC570281ED0EF0016526D /* V_Slider_Responder_Store.swift in Sources */,
+				FCDB7409282140B400BED596 /* NoteCollection.swift in Sources */,
 				FC0020E42819B14700287D6B /* Cursor_Grid_Data_Store.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

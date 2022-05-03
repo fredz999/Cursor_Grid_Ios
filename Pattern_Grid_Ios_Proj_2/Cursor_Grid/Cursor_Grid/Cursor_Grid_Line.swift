@@ -24,7 +24,7 @@ struct Cursor_Grid_Cell_Line_View : View {
 class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     var id = UUID()
     var parentGridRef : Cursor_Grid_Store
-    var dataLine : Cursor_Grid_Cell_Data_Line_Store
+    var dataLine : Cursor_Grid_Line_Data_Store
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     var cell_Store_Array : [Cursor_Grid_Cell_Store] = []
     var initial_Y_Place : Int
@@ -55,8 +55,10 @@ class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     }
     
     // the deactiavtion of the previous cursor can be done at top level
-    func activate_Cursor_By_X(xParam:Int){
-        cell_Store_Array[xParam].hostingCursor = true
+    
+    func activate_Cursor_By_X(xParam:Int) {
+        //cell_Store_Array[xParam].hostingCursor = true
+        print("setting aff the cursor assignment")
     }
     
     //func update_yPosition_Int(lowValParam:Int,highValParam:Int,previousLowValParam:Int?,previousHighValParam:Int?){

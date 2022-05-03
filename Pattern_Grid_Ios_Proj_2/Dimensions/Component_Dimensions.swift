@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 class ComponentDimensions {
-    var colors : Colors = Colors()
+    var colors : ComponentColors = ComponentColors.StaticComponentColors
     var gridUnitSize : CGFloat = 20
     var cellPerimeterSize : CGFloat = 2
     var bgRecWidth : CGFloat = 0
@@ -33,7 +33,7 @@ class ComponentDimensions {
     var h_SliderCellHeight : CGFloat = 0
     //var HSliderFrameWidth : CGFloat = 100
     var h_SliderFrameLastUnit : Int = 4
-    var h_Slider_X_Offset : CGFloat = 20
+    var h_Slider_X_Offset : CGFloat = 80
     var h_Slider_Y_Offset : CGFloat = 180
     
     //====================================================================
@@ -47,18 +47,21 @@ class ComponentDimensions {
     var cursor_GridVerticalUnitCount : Int = 7
     var cursor_GridVerticalFinalIndex : Int = 6
     
-    
     var cursor_Grid_Movement_Lower_Limit : Int = 0
     var cursor_Grid_Movement_Upper_Limit : Int = 27
     //====================================================================
     
-    //======================== note_Drawing_Button_ ========================
+    //======================== note_Drawing_Button_ ======================
     var note_Drawing_Button_WidthUnits : Int = 2
     var note_Drawing_Button_HeightUnits : Int = 2
     
-    var note_Drawing_Button_X_Unit_Pos : Int = 6
+    var note_Drawing_Button_X_Unit_Pos : Int = 1
     var note_Drawing_Button_Y_Unit_Pos : Int = 8
-    
+    //========================= cellData drawing measurements ============
+    var cellDataPerimeterThickness : CGFloat = 1
+    var cellDataPerimeterWidth : CGFloat = 18
+    var cellDataPerimeterDepth : CGFloat = 18
+    //====================================================================
     func return_Note_Drawing_Button_Width() -> CGFloat {
         let retVal = CGFloat(note_Drawing_Button_WidthUnits) * gridUnitSize
         return retVal
@@ -121,12 +124,45 @@ class ComponentDimensions {
     static let StaticComponentDimensions = ComponentDimensions()
 }
 
-class Colors {
-    var cellCentre_Unselected : Color = .yellow
-    var cellPerim_Unselected : Color = .black
+class ComponentColors {
     
-    var cellCentre_Selected : Color = Color(red: 0.5, green: 1, blue: 0)
-    var cellPerim_Selected : Color = Color(red: 0.3, green: 0.6, blue: 0)
+    var cellBackGroundColor_Normal : Color = Color(red: 0.6, green: 0, blue: 0)
+    var cellBackGroundColor_IsCursor : Color = Color(red: 0, green: 0.6, blue: 0.6)
+    
+    var cellFontColor_Normal : Color = .white//Color(red: 0.8, green: 0, blue: 0)
+    var cellFontColor_IsCursor : Color = Color(red: 0, green: 1, blue: 1)
+    
+    var cellPerimeterColor_Normal : Color = Color(red: 0.2, green: 0, blue: 0)
+    var cellPerimeterColor_IsCursor : Color = Color(red: 0, green: 1, blue: 1)
+    
+    func return_CellData_Perimeter_Color(isCursorParam:Bool, stateParam:Grid_Cell_Data_Note_Status, returnedColor : inout Color){
+        if isCursorParam == true {
+            returnedColor = cellPerimeterColor_IsCursor
+        }
+        else if isCursorParam == false {
+            returnedColor = cellPerimeterColor_Normal
+        }
+    }
+    
+    func return_CellData_Font_Color(isCursorParam:Bool, stateParam:Grid_Cell_Data_Note_Status, returnedColor : inout Color){
+        if isCursorParam == true {
+            returnedColor = cellFontColor_IsCursor
+        }
+        else if isCursorParam == false {
+            returnedColor = cellFontColor_Normal
+        }
+    }
+    
+    func return_CellData_BackGround_Color(isCursorParam:Bool, stateParam:Grid_Cell_Data_Note_Status, returnedColor : inout Color){
+        if isCursorParam == true {
+            returnedColor = cellBackGroundColor_IsCursor
+        }
+        else if isCursorParam == false {
+            returnedColor = cellBackGroundColor_Normal
+        }
+    }
     
     var appBackGround : Color = Color(red: 0, green: 0, blue: 0.3)
+    
+    static let StaticComponentColors = ComponentColors()
 }

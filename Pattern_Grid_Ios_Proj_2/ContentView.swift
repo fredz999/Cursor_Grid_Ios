@@ -77,7 +77,6 @@ struct Thing_With_All_The_Things_On_It : View {
     
 }
 
-//Horizontal_Slider_Responder_Store
 struct Horizontal_Slider_Container_View : View {
     let dimensions = ComponentDimensions.StaticComponentDimensions
     @ObservedObject var h_Slider_Responder_Store : Horizontal_Slider_Responder_Store
