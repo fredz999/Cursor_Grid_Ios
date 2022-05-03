@@ -22,7 +22,7 @@ class Cursor_Grid_Data_Store : ObservableObject {
     var cell_Line_Array : [Cursor_Grid_Cell_Data_Line_Store] = []
     
     init(){
-        for y in 0..<lclDimensions.returnGridVerticalEnd(){ //  .finalDataElement{
+        for y in 0..<lclDimensions.returnGridVerticalEnd(){
             let data = Cursor_Grid_Cell_Data_Line_Store(lineNumberParam: y)
             cell_Line_Array.append(data)
         }
