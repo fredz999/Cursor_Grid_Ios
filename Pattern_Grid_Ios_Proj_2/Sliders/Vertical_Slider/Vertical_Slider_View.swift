@@ -53,7 +53,6 @@ struct Vertical_Slider_View: UIViewRepresentable {
 
 class Vertical_Slider_Coordinator: NSObject, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
         private var parent: Vertical_Slider_View
-        //let kerSnoller: DragAndDropViewControoler = DragAndDropViewControoler()
         
         init(_ gridView: Vertical_Slider_View) {
             self.parent = gridView
@@ -86,8 +85,8 @@ class Vertical_Slider_Coordinator: NSObject, UICollectionViewDataSource, UIColle
         // MARK: UICollectionViewDelegateFlowLayout
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = dimz.VSliderCellWidth  //collectionView.frame.width / 3
-            let height = dimz.VSliderCellHeight
+            let width = dimz.v_SliderCellWidth  //collectionView.frame.width / 3
+            let height = dimz.v_SliderCellHeight
             return CGSize(width: width, height: height)
         }
         

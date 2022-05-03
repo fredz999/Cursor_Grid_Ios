@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class Cursor_Grid_Data : ObservableObject {
+class Cursor_Grid_Data_Store : ObservableObject {
     
     var currentCursorData : Cursor_Grid_Cell_Data_Store?
     
@@ -19,11 +19,11 @@ class Cursor_Grid_Data : ObservableObject {
     
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
-    var cell_Line_Array : [Cursor_Grid_Cell_Data_Line] = []
+    var cell_Line_Array : [Cursor_Grid_Cell_Data_Line_Store] = []
     
     init(){
         for y in 0..<lclDimensions.returnGridVerticalEnd(){ //  .finalDataElement{
-            let data = Cursor_Grid_Cell_Data_Line(lineNumberParam: y)
+            let data = Cursor_Grid_Cell_Data_Line_Store(lineNumberParam: y)
             cell_Line_Array.append(data)
         }
         
@@ -46,10 +46,15 @@ class Cursor_Grid_Data : ObservableObject {
     func update_Data_Cursor_X(new_Cursor_X_Int:Int){
         if new_Cursor_X_Int >= 0, new_Cursor_X_Int <  lclDimensions.numberCellsGridHorizontal{
             if new_Cursor_X_Int != current_Cursor_X_Int {
+                
                 if let lclcurrentCursorData = currentCursorData{lclcurrentCursorData.isCurrentCursor = false}
+                
                 current_Cursor_X_Int = new_Cursor_X_Int
                 currentCursorData = cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array[current_Cursor_X_Int]
                 cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array[current_Cursor_X_Int].isCurrentCursor = true
+                
+                
+                
             }
         }
     }

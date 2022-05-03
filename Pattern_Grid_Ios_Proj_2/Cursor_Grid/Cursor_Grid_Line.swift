@@ -24,7 +24,7 @@ struct Cursor_Grid_Cell_Line_View : View {
 class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     var id = UUID()
     var parentGridRef : Cursor_Grid_Store
-    var dataLine : Cursor_Grid_Cell_Data_Line
+    var dataLine : Cursor_Grid_Cell_Data_Line_Store
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     var cell_Store_Array : [Cursor_Grid_Cell_Store] = []
     var initial_Y_Place : Int
@@ -36,7 +36,7 @@ class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     init(placeInArray : Int, parentGridParam:Cursor_Grid_Store){
         parentGridRef = parentGridParam
         
-        nextDownWardDataSwapThreshold = placeInArray + lclDimensions.gridVerticalUnitCount
+        nextDownWardDataSwapThreshold = placeInArray + lclDimensions.cursor_GridVerticalUnitCount
         
         dataLine = parentGridParam.cursor_Grid_Data.cell_Line_Array[placeInArray] //dataLineParam
         

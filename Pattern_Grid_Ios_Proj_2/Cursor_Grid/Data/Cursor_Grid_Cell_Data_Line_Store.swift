@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class Cursor_Grid_Cell_Data_Line : ObservableObject, Identifiable {
+class Cursor_Grid_Cell_Data_Line_Store : ObservableObject, Identifiable {
     
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     var id = UUID()

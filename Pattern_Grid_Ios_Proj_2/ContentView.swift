@@ -44,7 +44,7 @@ struct ContentView: View {
 struct Thing_With_All_The_Things_On_It : View {
     
     @ObservedObject var v_Slider_Responder_Store = V_Slider_Responder_Store()
-    @ObservedObject var h_Slider_Responder_Store = H_Slider_Responder_Store()
+    @ObservedObject var h_Slider_Responder_Store = Horizontal_Slider_Responder_Store()
     
     let dimensions = ComponentDimensions.StaticComponentDimensions
     @ObservedObject var cursor_Grid_Store = Cursor_Grid_Store()
@@ -56,68 +56,42 @@ struct Thing_With_All_The_Things_On_It : View {
     }
 
     var body: some View {
+        
         return ZStack(alignment: .topLeading){
             
         Vertical_Slider_View(vSliderResponderArrayParam: [v_Slider_Responder_Store])
-                .frame(width: dimensions.VSliderCellWidth, height: dimensions.returnVSLiderFrameHeight()).offset(x: 300, y: 10)
+        .frame(width: dimensions.v_SliderCellWidth, height: dimensions.returnVSLiderFrameHeight())
+        .offset(x: 300, y: 10)
             
-        Horizontal_Slider_View(hSliderResponderArrayParam: [h_Slider_Responder_Store])
-                .frame(width: dimensions.returnHSLiderFrameWidth(), height: dimensions.VSliderCellHeight).offset(x: 10, y: 175)
+        Horizontal_Slider_Container_View(h_Slider_Responder_Store: h_Slider_Responder_Store)
+        .offset(x: dimensions.h_Slider_X_Offset, y: dimensions.h_Slider_Y_Offset)
             
-        Cursor_Grid_View(cursor_Grid_Store: cursor_Grid_Store).offset(x: 10, y: 10)
+        Cursor_Grid_View(cursor_Grid_Store: cursor_Grid_Store)
+        .offset(x: 10, y: 10)
+            
+        Note_Drawing_Button_View()
+        .offset(x: dimensions.return_Note_Drawing_Button_X_Pos(), y:dimensions.return_Note_Drawing_Button_Y_Pos())
             
         }
     }
     
 }
 
-
-class H_Slider_Responder_Store : ObservableObject, P_HSlider_Responder {
-    let lclDimensions = ComponentDimensions.StaticComponentDimensions
-    var cursor_Grid_Data : Cursor_Grid_Data?
-    
-    var current_X_Bracket : Int?{
-        didSet{
-            if let lclCurrent_X_Bracket = current_X_Bracket{
-
-                if let lclGrid_Data = cursor_Grid_Data{
-                    lclGrid_Data.update_Data_Cursor_X(new_Cursor_X_Int: lclCurrent_X_Bracket)
-                }
+//Horizontal_Slider_Responder_Store
+struct Horizontal_Slider_Container_View : View {
+    let dimensions = ComponentDimensions.StaticComponentDimensions
+    @ObservedObject var h_Slider_Responder_Store : Horizontal_Slider_Responder_Store
+    @ObservedObject var horizontal_Slider_Coordinator_Store = Horizontal_Slider_Coordinator_Store()
+    var body: some View {
+        return ZStack(alignment: .topLeading) {
+        VStack {
+        Horizontal_Slider_View(hSliderResponderArrayParam: [h_Slider_Responder_Store], horizontal_Slider_Coordinator_Store_Param: horizontal_Slider_Coordinator_Store)
+        .frame(width: dimensions.returnHSLiderFrameWidth(), height: dimensions.v_SliderCellHeight)
+        }
+        }.onAppear{
+            DispatchQueue.main.async {
+                horizontal_Slider_Coordinator_Store.goToEnd()
             }
         }
     }
-    
-    func react_To_Swiper_X(x_OffsetParam: CGFloat) {
-        //print("x_OffsetParam: ",x_OffsetParam.description,", dimz cell width: ",lclDimensions.gridUnitSize)
-        let floatDivision = x_OffsetParam/lclDimensions.gridUnitSize
-        let intDivision = Int(floatDivision)
-        if current_X_Bracket != intDivision{
-            current_X_Bracket = intDivision
-        }
-    }
-    
-    
 }
-
-//struct Respondeuse_View : View {
-//    @ObservedObject var vslider_Responder_Store : V_Slider_Responder_Store
-//    var body: some View {
-//        return ZStack(alignment: .topLeading) {
-//            VStack(alignment: .leading) {
-//                Text(vslider_Responder_Store.currentLowVal.description).foregroundColor(.white)
-//                Text(vslider_Responder_Store.currentHighVal.description).foregroundColor(.white)
-//            }
-//        }
-//    }
-//}
-
-// im thinking that the way to do this is to only get the central grid to move up or down if the number is
-// above 2 and below 29(lower midpoint and higher midpoint)
-// so in a roll from 0 - 2 the cursor would simply descend from 0 to 2 without the grid moving
-// then when it goes from 2(lower midpoint) to 3, the cursor stays in the same pos and the whole grid moves
-
-
-
-
-//            lclCursor_Grid_Store.updateLineArrayPositions(currLowValParam: currentLowVal, currHighValParam: currentHighVal
-//            , previousLowValParam: previousLowVal, previousHighValParam: previousHighVal)

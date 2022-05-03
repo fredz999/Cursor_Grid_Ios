@@ -22,12 +22,12 @@ struct Cursor_Grid_View : View {
 
 class Cursor_Grid_Store : ObservableObject {
     let dimensions = ComponentDimensions.StaticComponentDimensions
-    var cursor_Grid_Data : Cursor_Grid_Data
+    var cursor_Grid_Data : Cursor_Grid_Data_Store
     @Published var cursor_Grid_Cell_Line_Array : [Cursor_Grid_Cell_Line_Store] = []
     
     init(){
-        cursor_Grid_Data = Cursor_Grid_Data()
-        for d in 0..<dimensions.gridVerticalUnitCount {
+        cursor_Grid_Data = Cursor_Grid_Data_Store()
+        for d in 0..<dimensions.cursor_GridVerticalUnitCount {
         let lineStore = Cursor_Grid_Cell_Line_Store(placeInArray: d, parentGridParam: self)
         cursor_Grid_Cell_Line_Array.append(lineStore)
         }

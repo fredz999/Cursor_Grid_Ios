@@ -11,7 +11,7 @@ import Combine
 
 class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
 
-    var cursor_Grid_Data : Cursor_Grid_Data?
+    var cursor_Grid_Data : Cursor_Grid_Data_Store?
 
     var cursor_Grid_Store : Cursor_Grid_Store?
 
@@ -26,13 +26,13 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
     init(){
         trackedInt = dimensions.returnGridVerticalStart()//.gridVertical_Start
         currentLowVal = dimensions.returnGridVerticalStart()//.gridVertical_Start
-        currentHighVal = dimensions.returnGridVerticalStart()+dimensions.gridVerticalFinalIndex//.gridVertical_Start+dimensions.gridVerticalFinalIndex
+        currentHighVal = dimensions.returnGridVerticalStart()+dimensions.cursor_GridVerticalFinalIndex//.gridVertical_Start+dimensions.gridVerticalFinalIndex
     }
 
     var trackedInt : Int {
         didSet {
-            if trackedInt >= dimensions.central_Grid_Movement_Lower_Limit
-                ,trackedInt <= dimensions.central_Grid_Movement_Upper_Limit {
+            if trackedInt >= dimensions.cursor_Grid_Movement_Lower_Limit
+                ,trackedInt <= dimensions.cursor_Grid_Movement_Upper_Limit {
 
 //                print("central: tracked int: ",trackedInt, ", lower limit: "
 //                , dimensions.central_Grid_Movement_Lower_Limit,", upper limit: "
@@ -42,12 +42,12 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
                 previousHighVal = currentHighVal
 
                 currentLowVal = trackedInt
-                currentHighVal = trackedInt + dimensions.gridVerticalFinalIndex
+                currentHighVal = trackedInt + dimensions.cursor_GridVerticalFinalIndex
 
                 updateLineStores_Main()
             }
             else if trackedInt >= dimensions.returnGridVerticalStart()  //.gridVertical_Start
-            ,trackedInt < dimensions.central_Grid_Movement_Lower_Limit || trackedInt > dimensions.central_Grid_Movement_Upper_Limit {
+            ,trackedInt < dimensions.cursor_Grid_Movement_Lower_Limit || trackedInt > dimensions.cursor_Grid_Movement_Upper_Limit {
                 //else if trackedInt < dimensions.central_Grid_Movement_Lower_Limit || trackedInt > dimensions.central_Grid_Movement_Upper_Limit {
 
 //                print("cursor only: tracked int: ",trackedInt, ", lower limit: "
@@ -58,7 +58,7 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
                 previousHighVal = currentHighVal
 
                 currentLowVal = trackedInt
-                currentHighVal = trackedInt + dimensions.gridVerticalFinalIndex
+                currentHighVal = trackedInt + dimensions.cursor_GridVerticalFinalIndex
 
                 updateLineStores_Cursor_Only()
             }
@@ -66,7 +66,7 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
     }
 
     func react_To_Swiper_Y(y_OffsetParam: CGFloat) {
-        let yoffFloat = y_OffsetParam/dimensions.VSliderCellHeight
+        let yoffFloat = y_OffsetParam/dimensions.v_SliderCellHeight
         let yoffInt = Int(yoffFloat) + dimensions.returnGridVerticalStart()//.gridVertical_Start
         if yoffInt != trackedInt {
             trackedInt = yoffInt
