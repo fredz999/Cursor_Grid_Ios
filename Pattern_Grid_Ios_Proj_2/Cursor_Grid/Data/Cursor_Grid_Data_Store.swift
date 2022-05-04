@@ -66,8 +66,21 @@ class Cursor_Grid_Data_Store : ObservableObject {
     var noteWritingActivated : Bool = false
     
     func note_UpDate_Handler(){
-    print("note_UpDate_Handler() was activated")
+    print("note_UpDate_Handler() was activated, currX:",current_Cursor_X_Int,", currY: ",current_Cursor_Y_Int)
+        
+        let currCellData = cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array
+     
+        
     }
+    // 0: lock the line
+    // 1 : establish the set of selectable cells (if any)
+    // 2: from within the set of selectable cells make two sets - set1: (from left to right) set2:(outside left to right) : set2 is selectable
+    // perhaps unselectable = dark red color scheme
+    // selectable : bright red color scheme
+    // set1(l-r) : orange color scheme (potential notes)
+    
+    // 1: add cell to note () - for line of notes - paint them orange and give them the appropriate statuses/perimeters
+    
     
 }
 
