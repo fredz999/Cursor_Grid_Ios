@@ -10,15 +10,30 @@ struct Vertical_Slider_View: UIViewRepresentable {
     
     var v_Slider_Data : [Int] = []
     
-    init(vSliderResponderArrayParam : [P_VSlider_Responder]){
-        vSliderResponderArray = vSliderResponderArrayParam
+    var vSliderResponderArray : [P_VSlider_Responder] = []
+    
+    init(vSliderResponderArrayParam : [P_VSlider_Responder],vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
         
+        //print("Vertical_Slider_View init in innit mate")
+        
+        vertical_Slider_Coordinator_Store = vertical_Slider_Coordinator_Param
+        
+        vSliderResponderArray = vSliderResponderArrayParam
+
         let vSliderStart : Int = dimensions.returnGridVerticalStart()
         let vSliderEnd : Int = dimensions.returnGridVerticalEnd()
-        
+
         for i in vSliderStart..<vSliderEnd {
             v_Slider_Data.append(i)
         }
+        
+        for vResponder in vSliderResponderArrayParam {
+            vertical_Slider_Coordinator_Param.vertical_Slider_Responders.append(vResponder)
+        }
+        
+//        for hResponder in hSliderResponderArrayParam {
+//        horizontal_Slider_Coordinator_Store_Param.h_responders.append(hResponder)
+//        }
 
     }
     
@@ -39,69 +54,24 @@ struct Vertical_Slider_View: UIViewRepresentable {
         //
     }
     
-    func makeCoordinator() -> Vertical_Slider_Coordinator {
+    var vertical_Slider_Coordinator_Store : Vertical_Slider_Coordinator_Store
+    
+    func makeCoordinator() -> Vertical_Slider_Coordinator_Store {
         //Coordinator(self)
-        let cd = Coordinator(self)
-        for vSliderResponder in vSliderResponderArray{
-            cd.responders.append(vSliderResponder)
-        }
-        return cd
+//        let cd = Coordinator(self)
+//        for vSliderResponder in vSliderResponderArray{
+//            cd.responders.append(vSliderResponder)
+//        }
+//        return cd
+        
+        print("makeCoordinator() called in V_Slider")
+        return vertical_Slider_Coordinator_Store
     }
     
-    var vSliderResponderArray : [P_VSlider_Responder]=[]
+    
 }
 
-class Vertical_Slider_Coordinator: NSObject, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-        private var parent: Vertical_Slider_View
-        
-        init(_ gridView: Vertical_Slider_View) {
-            self.parent = gridView
-        }
 
-        // MARK: UICollectionViewDataSource
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            self.parent.v_Slider_Data.count
-        }
-
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let vertical_Slider_Cell = Slider_Cell.getReusedCellFrom(collectionView: collectionView, cellForItemAt: indexPath)
-            vertical_Slider_Cell.backgroundColor = .lightGray
-            vertical_Slider_Cell.counter = self.parent.v_Slider_Data[indexPath.item]
-            vertical_Slider_Cell.update()
-            return vertical_Slider_Cell
-        }
-        
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if responders.count > 0 {
-            for res in responders {
-                res.react_To_Swiper_Y(y_OffsetParam: scrollView.contentOffset.y)
-            }
-        }
-    }
-    
-    var responders : [P_VSlider_Responder] = []
-
-        let dimz = ComponentDimensions.StaticComponentDimensions
-        // MARK: UICollectionViewDelegateFlowLayout
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = dimz.v_SliderCellWidth  //collectionView.frame.width / 3
-            let height = dimz.v_SliderCellHeight
-            return CGSize(width: width, height: height)
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 0
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            return 0
-        }
-
-        func addCellData(_ counter: Int) {
-            self.parent.v_Slider_Data.append(counter)
-        }
-    }
 
 extension String {
 
@@ -119,7 +89,5 @@ extension String {
 
 }
 
-protocol P_VSlider_Responder{
-    func react_To_Swiper_Y(y_OffsetParam: CGFloat)
-}
+
 

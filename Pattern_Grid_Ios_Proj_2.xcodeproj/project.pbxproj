@@ -17,6 +17,8 @@
 		FC0EC30D28201AC00066200B /* P_HSlider_Responder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0EC30C28201AC00066200B /* P_HSlider_Responder.swift */; };
 		FC8BC570281ED0EF0016526D /* V_Slider_Responder_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8BC56F281ED0EF0016526D /* V_Slider_Responder_Store.swift */; };
 		FC8BC573281ED1B10016526D /* Horizontal_Slider_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8BC572281ED1B10016526D /* Horizontal_Slider_View.swift */; };
+		FC9506F52822765F00CA84EA /* Vertical_Slider_Coordinator_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9506F42822765F00CA84EA /* Vertical_Slider_Coordinator_Store.swift */; };
+		FC9506F82822BB1800CA84EA /* P_VSlider_Responder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9506F72822BB1800CA84EA /* P_VSlider_Responder.swift */; };
 		FCA1220F281C13A000E99BD4 /* Cursor_Grid_Cell_Data_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA1220E281C139F00E99BD4 /* Cursor_Grid_Cell_Data_Store.swift */; };
 		FCA12211281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA12210281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift */; };
 		FCC805F52816CA0900EC28EE /* Vertical_Slider_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC805F42816CA0900EC28EE /* Vertical_Slider_View.swift */; };
@@ -41,6 +43,8 @@
 		FC0EC30C28201AC00066200B /* P_HSlider_Responder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P_HSlider_Responder.swift; sourceTree = "<group>"; };
 		FC8BC56F281ED0EF0016526D /* V_Slider_Responder_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V_Slider_Responder_Store.swift; sourceTree = "<group>"; };
 		FC8BC572281ED1B10016526D /* Horizontal_Slider_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Horizontal_Slider_View.swift; sourceTree = "<group>"; };
+		FC9506F42822765F00CA84EA /* Vertical_Slider_Coordinator_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertical_Slider_Coordinator_Store.swift; sourceTree = "<group>"; };
+		FC9506F72822BB1800CA84EA /* P_VSlider_Responder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P_VSlider_Responder.swift; sourceTree = "<group>"; };
 		FCA1220E281C139F00E99BD4 /* Cursor_Grid_Cell_Data_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cursor_Grid_Cell_Data_Store.swift; sourceTree = "<group>"; };
 		FCA12210281C13C500E99BD4 /* Cursor_Grid_Line_Data_Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cursor_Grid_Line_Data_Store.swift; sourceTree = "<group>"; };
 		FCC805F42816CA0900EC28EE /* Vertical_Slider_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertical_Slider_View.swift; sourceTree = "<group>"; };
@@ -88,6 +92,7 @@
 		FC59E23C281ECDFE00DF8EE9 /* Sliders */ = {
 			isa = PBXGroup;
 			children = (
+				FC9506F62822BAFE00CA84EA /* Slider_Cell */,
 				FC8BC571281ED11E0016526D /* Horz_Slider */,
 				FCC805F32816C9F800EC28EE /* Vertical_Slider */,
 			);
@@ -105,12 +110,21 @@
 			path = Horz_Slider;
 			sourceTree = "<group>";
 		};
+		FC9506F62822BAFE00CA84EA /* Slider_Cell */ = {
+			isa = PBXGroup;
+			children = (
+				FCC805F82816D2B500EC28EE /* Slider_Cell.swift */,
+			);
+			path = Slider_Cell;
+			sourceTree = "<group>";
+		};
 		FCC805F32816C9F800EC28EE /* Vertical_Slider */ = {
 			isa = PBXGroup;
 			children = (
 				FCC805F42816CA0900EC28EE /* Vertical_Slider_View.swift */,
-				FCC805F82816D2B500EC28EE /* Slider_Cell.swift */,
 				FC8BC56F281ED0EF0016526D /* V_Slider_Responder_Store.swift */,
+				FC9506F42822765F00CA84EA /* Vertical_Slider_Coordinator_Store.swift */,
+				FC9506F72822BB1800CA84EA /* P_VSlider_Responder.swift */,
 			);
 			path = Vertical_Slider;
 			sourceTree = "<group>";
@@ -265,6 +279,7 @@
 				FC0020E028196D1900287D6B /* Cursor_Grid_Line.swift in Sources */,
 				FCA1220F281C13A000E99BD4 /* Cursor_Grid_Cell_Data_Store.swift in Sources */,
 				FC0EC305281FD6490066200B /* Note_Drawing_Button_View.swift in Sources */,
+				FC9506F52822765F00CA84EA /* Vertical_Slider_Coordinator_Store.swift in Sources */,
 				FC0EC30B28201A920066200B /* Horizontal_Slider_Coordinator_Store.swift in Sources */,
 				FCC805F92816D2B500EC28EE /* Slider_Cell.swift in Sources */,
 				FCF4849628116D9900CB1FDE /* Component_Dimensions.swift in Sources */,
@@ -273,6 +288,7 @@
 				FCF4849328116D6500CB1FDE /* Cursor_Grid.swift in Sources */,
 				FC0020E228196D4C00287D6B /* Cursor_Grid_Cell_.swift in Sources */,
 				FCC805F52816CA0900EC28EE /* Vertical_Slider_View.swift in Sources */,
+				FC9506F82822BB1800CA84EA /* P_VSlider_Responder.swift in Sources */,
 				FC8BC573281ED1B10016526D /* Horizontal_Slider_View.swift in Sources */,
 				FCF4848628116D3200CB1FDE /* ContentView.swift in Sources */,
 				FCF4848428116D3200CB1FDE /* Pattern_Grid_Ios_Proj_2App.swift in Sources */,

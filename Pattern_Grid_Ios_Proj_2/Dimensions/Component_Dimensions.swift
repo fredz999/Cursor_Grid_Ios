@@ -38,7 +38,7 @@ class ComponentDimensions {
     
     //====================================================================
     var useable_Data_Range_Lower_Limit : Int = 0
-    var useable_Data_Range_Upper_Limit : Int = 31
+    var useable_Data_Range_Upper_Limit : Int = 34
     
     var cursorOnlyAdjustment : Int = 3
     var numberCellsGridHorizontal : Int = 14
@@ -62,7 +62,7 @@ class ComponentDimensions {
     var cellDataPerimeterWidth : CGFloat = 18
     var cellDataPerimeterDepth : CGFloat = 18
     //====================================================================
-    func return_Note_Drawing_Button_Width() -> CGFloat {
+    func return_Note_Drawing_Button_Width() -> CGFloat { 
         let retVal = CGFloat(note_Drawing_Button_WidthUnits) * gridUnitSize
         return retVal
     }

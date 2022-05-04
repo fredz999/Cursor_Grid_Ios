@@ -39,6 +39,7 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
 //    @Published var cellDataFontColor : Color = Color.orange
     
     init(xParam:Int,yParam:Int){
+        print("Cursor_Grid_Cell_Data_Store.....................")
         xNumber = xParam
         yNumber = yParam
         current_Perimeter_Color = lclColors.cellPerimeterColor_Normal

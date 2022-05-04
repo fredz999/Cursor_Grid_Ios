@@ -13,7 +13,7 @@ class Slider_Cell: UICollectionViewCell {
     
     private static let reuseId = "SliderCell"
     
-    public var counter = 0
+    public var labelText = 0
 
     static func registerWithCollectionView(collectionView: UICollectionView) {
         collectionView.register(Slider_Cell.self, forCellWithReuseIdentifier: reuseId)
@@ -32,7 +32,7 @@ class Slider_Cell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(self.Cell_Info_View)
 
-        Cell_Info_View.text = "\(self.counter)"
+        Cell_Info_View.text = "\(self.labelText)"
         Cell_Info_View.textAlignment = .center
         Cell_Info_View.font = UIFont(name: "Helvetica Bold", size: 16.0)
         Cell_Info_View.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +45,7 @@ class Slider_Cell: UICollectionViewCell {
     }
     
     func update() {
-        Cell_Info_View.text = "\(self.counter)"
+        Cell_Info_View.text = "\(self.labelText)"
     }
     
     required init?(coder: NSCoder) {

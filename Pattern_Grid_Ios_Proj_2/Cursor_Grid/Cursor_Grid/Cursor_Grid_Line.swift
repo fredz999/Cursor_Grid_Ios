@@ -63,77 +63,8 @@ class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     
     //func update_yPosition_Int(lowValParam:Int,highValParam:Int,previousLowValParam:Int?,previousHighValParam:Int?){
     func update_yPosition_Int(lowValParam:Int){
-        
-//        if let lclpreviousLowValParam = previousLowValParam,let lclpreviousHighValParam = previousHighValParam {
-//            print("lowValParam: ",lowValParam,",highValParam: ",highValParam,",previousLowValParam: ",lclpreviousLowValParam,", previousHighValParam",lclpreviousHighValParam,", initial_Y_Place: ",initial_Y_Place)
-//        }
         let newLineVal = lowValParam+initial_Y_Place
         dataSwap(newLineParam:newLineVal)
-        //parentGridRef.cursor_Grid_Data.update_Data_Cursor_Y(new_Cursor_Y_Int: newLineVal)
-        
-//        if initial_Y_Place == 0 { dataSwap(newLineParam:lowValParam) }
-//        else {dataSwap(newLineParam:lowValParam+initial_Y_Place)}
-        
-//        if yPosition_Int == 0 { dataSwap(newLineParam:lowValParam) }
-//        else if yPosition_Int == 1 {dataSwap(newLineParam:lowValParam+1) }
-//        else if yPosition_Int == 2 {dataSwap(newLineParam:lowValParam+2)}
-//        else if yPosition_Int == 3 {dataSwap(newLineParam:lowValParam+3)}
-//        else if yPosition_Int == 4 {dataSwap(newLineParam:lowValParam+4)}
-        
-        //print("lowValParam: ",lowValParam,",highValParam: ",highValParam,",previousLowValParam: ",previousHighValParam,", previousHighValParam",previousHighValParam)
-        
-        
-//        if yPosition_Int == 0 {yPosition_Int = 4}
-//        else if yPosition_Int == 1 {yPosition_Int = 0}
-//        else if yPosition_Int == 2 {yPosition_Int = 1}
-//        else if yPosition_Int == 3 {yPosition_Int = 2}
-//        else if yPosition_Int == 4 {yPosition_Int = 3}
-        
-        
-          //print("lowValParam: ",lowValParam.description,", highValParam: ",highValParam,", initial_Y: ",initial_Y_Place,", curr y place: ",yPosition_Int)
-        
-        
-        
-
-        
-        
-        
-//        if yPosition_Int == 0 { yPosition_Int += 4 }
-//        else{yPosition_Int -= 1}
-        
-//        if yPosition_Int == 0 {yPosition_Int = 4}
-//        else if yPosition_Int == 1 {yPosition_Int = 0}
-//        else if yPosition_Int == 2 {yPosition_Int = 1}
-//        else if yPosition_Int == 3 {yPosition_Int = 2}
-//        else if yPosition_Int == 4 {yPosition_Int = 3}
-        
-//        if initial_Y_Place == 0 {yPosition_Int = 4}
-//        else if initial_Y_Place == 1 {yPosition_Int = 0}
-//        else if initial_Y_Place == 2 {yPosition_Int = 1}
-//        else if initial_Y_Place == 3 {yPosition_Int = 2}
-//        else if initial_Y_Place == 4 {yPosition_Int = 3}
-        
-        
-//        let initial_Plus_Addition = lowValParam + initial_Y_Place
-//        let currbracket : Int = Int(initial_Plus_Addition/lclDimensions.gridVerticalUnitCount)
-//        let subtracty = currbracket*lclDimensions.gridVerticalUnitCount
-//        let adjustedResult = initial_Plus_Addition - subtracty
-//        yPosition_Int = adjustedResult
-//        if initial_Y_Place == 0{print("adjustedResult: ",adjustedResult.description,", initial_Y_Place: ",initial_Y_Place)}
-        
-        //if initial_Y_Place == 0{print("yPosition_Int: ",yPosition_Int,", initial_Y_Place: ",initial_Y_Place)}
-        
-        //dataSwap(newLineParam:nextDownWardDataSwapThreshold)
-        //if nextDownWardDataSwapThreshold != highValParam{nextDownWardDataSwapThreshold = highValParam}
-//        if nextDownWardDataSwapThreshold == highValParam{
-//            dataSwap(newLineParam:nextDownWardDataSwapThreshold)
-//        }
-        
-//        print("initialYPlace: ",initial_Y_Place, "curr data Y: ", dataLine.place_In_Parent_Line_Array.description,", highValParam: ",highValParam.description
-//              , ", nextDownWardDataSwapThreshold: ",nextDownWardDataSwapThreshold,", lowValParam: ",lowValParam.description)
-        
-        
-        
     }
     
     func dataSwap(newLineParam:Int){

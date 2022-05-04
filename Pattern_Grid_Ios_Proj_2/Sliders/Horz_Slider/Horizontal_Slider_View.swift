@@ -17,8 +17,12 @@ struct Horizontal_Slider_View : UIViewRepresentable {
     
     var hSliderResponderArray : [P_HSlider_Responder]=[]
     
-    init(hSliderResponderArrayParam : [P_HSlider_Responder],horizontal_Slider_Coordinator_Store_Param : Horizontal_Slider_Coordinator_Store){
+    var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
+    
+    init(hSliderResponderArrayParam : [P_HSlider_Responder], horizontal_Slider_Coordinator_Store_Param : Horizontal_Slider_Coordinator_Store){
+        
         horizontal_Slider_Coordinator_Store = horizontal_Slider_Coordinator_Store_Param
+        print("horizontal_Slider_Coordinator_Store set in H_Slider")
         hSliderResponderArray = hSliderResponderArrayParam
         
         for x in 0..<dimensions.numberCellsSliderHorizontal{
@@ -26,7 +30,7 @@ struct Horizontal_Slider_View : UIViewRepresentable {
         }
         
         for hResponder in hSliderResponderArrayParam {
-        horizontal_Slider_Coordinator_Store_Param.responders.append(hResponder)
+        horizontal_Slider_Coordinator_Store_Param.horizontal_Slider_Responders.append(hResponder)
         }
 
     }
@@ -47,15 +51,12 @@ struct Horizontal_Slider_View : UIViewRepresentable {
         collectionView.showsHorizontalScrollIndicator = false
         context.coordinator.collection_View = collectionView
         Slider_Cell.registerWithCollectionView(collectionView: collectionView)
-        
         return collectionView
     }
 
     func updateUIView(_ uiView: UICollectionView, context: Context) {
         //
     }
-    
-    var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
     
     func makeCoordinator() -> Horizontal_Slider_Coordinator_Store {
 //        let cd = Horizontal_Slider_Coordinator_Store(self)
@@ -64,6 +65,9 @@ struct Horizontal_Slider_View : UIViewRepresentable {
 //        cd.responders.append(hResponder)
 //        }
 //        return cd
+        
+        print("makeCoordinator() called in H_Slider")
+        
         return horizontal_Slider_Coordinator_Store
     }
     

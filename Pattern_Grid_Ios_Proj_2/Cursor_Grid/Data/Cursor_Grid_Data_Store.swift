@@ -33,7 +33,7 @@ class Cursor_Grid_Data_Store : ObservableObject {
     func update_Data_Cursor_Y(new_Cursor_Y_Int:Int){
         if new_Cursor_Y_Int >= 0 , new_Cursor_Y_Int <= cell_Line_Array.count{
             if new_Cursor_Y_Int != current_Cursor_Y_Int {
-                
+
                 if let lclcurrentCursorData = currentCursorData{ lclcurrentCursorData.isCurrentCursor = false }
                 current_Cursor_Y_Int = new_Cursor_Y_Int
                 currentCursorData = cell_Line_Array[new_Cursor_Y_Int].select_Cell(cellIndex: current_Cursor_X_Int)
@@ -41,7 +41,7 @@ class Cursor_Grid_Data_Store : ObservableObject {
                 if noteWritingActivated == true {
                     note_UpDate_Handler()
                 }
-                
+
             }
         }
     }

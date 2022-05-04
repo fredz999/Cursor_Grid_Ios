@@ -10,11 +10,14 @@ import SwiftUI
 import Combine
 
 class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ObservableObject{
+        
         let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
         var collection_View : UICollectionView?
     
         var faceVals : [Int] = []
+    
+        var horizontal_Slider_Responders : [P_HSlider_Responder] = []
     
         private var parent: Horizontal_Slider_View?
 
@@ -38,7 +41,7 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
             let horizontal_Slider_Cell = Slider_Cell.getReusedCellFrom(collectionView: collectionView, cellForItemAt: indexPath)
             horizontal_Slider_Cell.backgroundColor = .lightGray
             if faceVals.count > indexPath.item{
-                horizontal_Slider_Cell.counter = faceVals[indexPath.item]    //0 //self.parent.h_Slider_Data[indexPath.item]
+                horizontal_Slider_Cell.labelText = faceVals[indexPath.item]    //0 //self.parent.h_Slider_Data[indexPath.item]
                 horizontal_Slider_Cell.update()
             }
             
@@ -46,14 +49,14 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
         }
 
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            if responders.count > 0 {
-                for res in responders {
+            if horizontal_Slider_Responders.count > 0 {
+                for res in horizontal_Slider_Responders {
                     res.react_To_Swiper_X(x_OffsetParam: scrollView.contentOffset.x)
                 }
             }
         }
 
-        var responders : [P_HSlider_Responder] = []
+        
 
         let dimz = ComponentDimensions.StaticComponentDimensions
 
