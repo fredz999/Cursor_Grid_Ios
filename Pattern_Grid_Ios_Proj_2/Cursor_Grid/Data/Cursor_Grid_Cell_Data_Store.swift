@@ -15,11 +15,6 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
     
     @Published var yNumber : Int
     @Published var xNumber : Int
-    
-    // this needs to be a status enum.....or does it .....this should be a laugh
-    // actually there really just needs to be a function that handle updates to this and the status enum and changes maybe three
-    // colors or two or whatever
-    
     @Published var isCurrentCursor : Bool = false {
         didSet {
             lclColors.return_CellData_Perimeter_Color(isCursorParam: isCurrentCursor, stateParam: grid_Cell_Data_Note_Status, returnedColor: &current_Perimeter_Color)
@@ -33,21 +28,13 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
     @Published var current_Font_Color : Color
     @Published var current_BackGround_Color : Color
     
-//    @Published var current_Perimeter_Color : Color       cellFontColor_Normal
-//    @Published var cellDataPerimeterColor : Color = Color.orange
-//    @Published var cellDataBackGroundColor : Color = Color.orange
-//    @Published var cellDataFontColor : Color = Color.orange
-    
     init(xParam:Int,yParam:Int){
-        print("Cursor_Grid_Cell_Data_Store.....................")
         xNumber = xParam
         yNumber = yParam
         current_Perimeter_Color = lclColors.cellPerimeterColor_Normal
         current_Font_Color = lclColors.cellFontColor_Normal
         current_BackGround_Color = lclColors.cellBackGroundColor_Normal
     }
-    
-    
     
 }
 

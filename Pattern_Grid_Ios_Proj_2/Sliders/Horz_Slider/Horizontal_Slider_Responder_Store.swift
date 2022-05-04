@@ -26,7 +26,6 @@ class Horizontal_Slider_Responder_Store : ObservableObject, P_HSlider_Responder 
     }
     
     func react_To_Swiper_X(x_OffsetParam: CGFloat) {
-        //print("x_OffsetParam: ",x_OffsetParam.description,", dimz cell width: ",lclDimensions.gridUnitSize)
         let floatDivision = x_OffsetParam/lclDimensions.gridUnitSize
         let intDivision = Int(floatDivision)
         if current_X_Bracket != intDivision {

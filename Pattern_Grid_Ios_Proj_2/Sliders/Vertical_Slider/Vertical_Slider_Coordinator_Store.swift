@@ -21,13 +21,17 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     
     var vertical_Slider_Responders : [P_VSlider_Responder] = []
     
-    override init(){
+     init(vSliderResponderArrayParam : [P_VSlider_Responder]){
 //                let vSliderStart : Int = lcldimensions.returnGridVerticalStart()
 //                let vSliderEnd : Int = lcldimensions.returnGridVerticalEnd()
 //
 //                for i in vSliderStart..<vSliderEnd {
 //                    v_Slider_Data.append(i)
 //                }
+        
+                for vResponder in vSliderResponderArrayParam {
+                    vertical_Slider_Responders.append(vResponder)
+                }
         
     }
 
@@ -51,9 +55,6 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
                 res.react_To_Swiper_Y(y_OffsetParam: scrollView.contentOffset.y)
             }
         }
-        else if vertical_Slider_Responders.count == 0{
-            print("responders.count == 0")
-        }
     }
     
     
@@ -74,9 +75,5 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-
-//    func addCellData(_ counter: Int) {
-//        self.parent.v_Slider_Data.append(counter)
-//    }
 
 }

@@ -24,7 +24,6 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
     var dimensions = ComponentDimensions.StaticComponentDimensions
 
     init(){
-        print("V_Slider_Responder_Store init in innit mate")
         trackedInt = dimensions.returnGridVerticalStart()//.gridVertical_Start
         currentLowVal = dimensions.returnGridVerticalStart()//.gridVertical_Start
         currentHighVal = dimensions.returnGridVerticalStart()+dimensions.cursor_GridVerticalFinalIndex//.gridVertical_Start+dimensions.gridVerticalFinalIndex

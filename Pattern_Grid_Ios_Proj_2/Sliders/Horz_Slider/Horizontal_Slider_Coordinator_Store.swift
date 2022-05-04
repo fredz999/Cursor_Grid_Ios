@@ -25,9 +25,12 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
 //            self.parent = gridView
 //        }
     
-        override init() {
+        init(hSliderResponderArrayParam : [P_HSlider_Responder]) {
             for x in 0..<lclDimensions.numberCellsSliderHorizontal{
                 faceVals.append(x)
+            }
+            for h_Responder in hSliderResponderArrayParam{
+                horizontal_Slider_Responders.append(h_Responder)
             }
         }
 
@@ -38,8 +41,11 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
         }
 
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            
             let horizontal_Slider_Cell = Slider_Cell.getReusedCellFrom(collectionView: collectionView, cellForItemAt: indexPath)
+            
             horizontal_Slider_Cell.backgroundColor = .lightGray
+            
             if faceVals.count > indexPath.item{
                 horizontal_Slider_Cell.labelText = faceVals[indexPath.item]    //0 //self.parent.h_Slider_Data[indexPath.item]
                 horizontal_Slider_Cell.update()
@@ -56,8 +62,6 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
             }
         }
 
-        
-
         let dimz = ComponentDimensions.StaticComponentDimensions
 
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -73,14 +77,6 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
             return 0
         }
-
-//        func addCellData(_ counter: Int) {
-//            self.parent.h_Slider_Data.append(counter)
-//        }
-    
-//        func respondToBtn(){
-//            print("respondToBtn jest octivateed, collection_View nil ? ",collection_View == nil ? "Y" : "N")
-//        }
     
         func goToEnd(){
             let indexToScrollTo = IndexPath(item: 13, section: 0)

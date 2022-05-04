@@ -54,32 +54,18 @@ class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
         
     }
     
-    // the deactiavtion of the previous cursor can be done at top level
-    
-    func activate_Cursor_By_X(xParam:Int) {
-        //cell_Store_Array[xParam].hostingCursor = true
-        print("setting aff the cursor assignment")
-    }
-    
-    //func update_yPosition_Int(lowValParam:Int,highValParam:Int,previousLowValParam:Int?,previousHighValParam:Int?){
     func update_yPosition_Int(lowValParam:Int){
         let newLineVal = lowValParam+initial_Y_Place
         dataSwap(newLineParam:newLineVal)
     }
     
     func dataSwap(newLineParam:Int){
-        //print("curr data Y: ", dataLine.place_In_Parent_Line_Array.description,", triggerLineParam" )
-        //print("proposedNewLine: ",newLineParam.description,", nextDownWardDataSwapThreshold: ",nextDownWardDataSwapThreshold.description)
-        //let upperLimit = parentGridRef.cursor_Grid_Data.cell_Line_Array.count
-        
         if newLineParam < parentGridRef.cursor_Grid_Data.cell_Line_Array.count {
             dataLine = parentGridRef.cursor_Grid_Data.cell_Line_Array[newLineParam]
             for x in 0..<lclDimensions.numberCellsGridHorizontal {
                 cell_Store_Array[x].data = dataLine.cell_Data_Array[x]
             }
         }
-
-        
     }
     
     func thresholdUpdate(lowValParam:Int,highValParam:Int){
@@ -89,15 +75,10 @@ class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     var yPosition_Int : Int {
         didSet {
             update_Y_Offset()
-            //if initial_Y_Place == 0{print("yPosition_Int: ",yPosition_Int,", initial_Y_Place: ",initial_Y_Place)}
-            
         }
     }
     
     func update_Y_Offset(){
-//        let invertedYPos = (lclDimensions.gridVerticalUnitCount-1) - yPosition_Int
-//        let newOffset = CGFloat(invertedYPos) * lclDimensions.gridUnitSize
-//        yOffset = newOffset
           let newOffset = CGFloat(yPosition_Int) * lclDimensions.gridUnitSize
           yOffset = newOffset
     }

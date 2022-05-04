@@ -15,23 +15,25 @@ struct Horizontal_Slider_View : UIViewRepresentable {
     
     var h_Slider_Data : [Int] = [] //= [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     
-    var hSliderResponderArray : [P_HSlider_Responder]=[]
+    //var hSliderResponderArray : [P_HSlider_Responder]=[]
     
     var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
     
-    init(hSliderResponderArrayParam : [P_HSlider_Responder], horizontal_Slider_Coordinator_Store_Param : Horizontal_Slider_Coordinator_Store){
+    init(horizontal_Slider_Coordinator_Store_Param : Horizontal_Slider_Coordinator_Store){
+        
+        print("horizontal_Slider_Coordinator_Store init called in H_Slider view")
         
         horizontal_Slider_Coordinator_Store = horizontal_Slider_Coordinator_Store_Param
-        print("horizontal_Slider_Coordinator_Store set in H_Slider")
-        hSliderResponderArray = hSliderResponderArrayParam
+        
+        //hSliderResponderArray = hSliderResponderArrayParam
         
         for x in 0..<dimensions.numberCellsSliderHorizontal{
             h_Slider_Data.append(x)
         }
         
-        for hResponder in hSliderResponderArrayParam {
-        horizontal_Slider_Coordinator_Store_Param.horizontal_Slider_Responders.append(hResponder)
-        }
+//        for hResponder in hSliderResponderArrayParam {
+//        horizontal_Slider_Coordinator_Store_Param.horizontal_Slider_Responders.append(hResponder)
+//        }
 
     }
     
@@ -59,22 +61,9 @@ struct Horizontal_Slider_View : UIViewRepresentable {
     }
     
     func makeCoordinator() -> Horizontal_Slider_Coordinator_Store {
-//        let cd = Horizontal_Slider_Coordinator_Store(self)
-//
-//        for hResponder in hSliderResponderArray{
-//        cd.responders.append(hResponder)
-//        }
-//        return cd
-        
-        print("makeCoordinator() called in H_Slider")
-        
+        print("makeCoordinator() called in H_Slider.......")
         return horizontal_Slider_Coordinator_Store
     }
     
     
 }
-
-
-
-
-

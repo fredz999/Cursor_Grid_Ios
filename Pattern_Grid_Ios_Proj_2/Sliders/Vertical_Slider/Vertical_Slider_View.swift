@@ -10,15 +10,14 @@ struct Vertical_Slider_View: UIViewRepresentable {
     
     var v_Slider_Data : [Int] = []
     
-    var vSliderResponderArray : [P_VSlider_Responder] = []
+    //var vSliderResponderArray : [P_VSlider_Responder] = []
     
-    init(vSliderResponderArrayParam : [P_VSlider_Responder],vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
-        
-        //print("Vertical_Slider_View init in innit mate")
-        
+    init(vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
+    //init(vSliderResponderArrayParam : [P_VSlider_Responder],vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
+        print("init() called in V_Slider voew.......")
         vertical_Slider_Coordinator_Store = vertical_Slider_Coordinator_Param
         
-        vSliderResponderArray = vSliderResponderArrayParam
+        //vSliderResponderArray = vSliderResponderArrayParam
 
         let vSliderStart : Int = dimensions.returnGridVerticalStart()
         let vSliderEnd : Int = dimensions.returnGridVerticalEnd()
@@ -27,12 +26,8 @@ struct Vertical_Slider_View: UIViewRepresentable {
             v_Slider_Data.append(i)
         }
         
-        for vResponder in vSliderResponderArrayParam {
-            vertical_Slider_Coordinator_Param.vertical_Slider_Responders.append(vResponder)
-        }
-        
-//        for hResponder in hSliderResponderArrayParam {
-//        horizontal_Slider_Coordinator_Store_Param.h_responders.append(hResponder)
+//        for vResponder in vSliderResponderArrayParam {
+//            vertical_Slider_Coordinator_Param.vertical_Slider_Responders.append(vResponder)
 //        }
 
     }
@@ -57,21 +52,12 @@ struct Vertical_Slider_View: UIViewRepresentable {
     var vertical_Slider_Coordinator_Store : Vertical_Slider_Coordinator_Store
     
     func makeCoordinator() -> Vertical_Slider_Coordinator_Store {
-        //Coordinator(self)
-//        let cd = Coordinator(self)
-//        for vSliderResponder in vSliderResponderArray{
-//            cd.responders.append(vSliderResponder)
-//        }
-//        return cd
-        
-        print("makeCoordinator() called in V_Slider")
+        print("makeCoordinator() called in V_Slider.......")
         return vertical_Slider_Coordinator_Store
     }
     
     
 }
-
-
 
 extension String {
 
@@ -88,6 +74,3 @@ extension String {
     }
 
 }
-
-
-

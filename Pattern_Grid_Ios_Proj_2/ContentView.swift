@@ -42,10 +42,6 @@ struct ContentView: View {
             Rectangle().frame(width: lclDimensions.bgRecWidth, height: lclDimensions.bgRecHeight).foregroundColor(.red)
             
             if measurementsWereSet == true {
-//                Thing_With_All_The_Things_On_It(v_Slider_Responder_Store: v_Slider_Responder_Store
-//                , h_Slider_Responder_Store: h_Slider_Responder_Store
-//                , noteDrawingButtonStore: noteDrawingButtonStore
-//                , cursor_Grid_Store: cursor_Grid_Store)
                 Thing_With_All_The_Things_On_It()
             }
             
@@ -54,48 +50,42 @@ struct ContentView: View {
 }
 
 struct Thing_With_All_The_Things_On_It : View {
-    
-//    @ObservedObject var v_Slider_Responder_Store = V_Slider_Responder_Store()
-//    @ObservedObject var h_Slider_Responder_Store = Horizontal_Slider_Responder_Store()
-//    var noteDrawingButtonStore = Note_Drawing_Button_Store()
-//    @ObservedObject var cursor_Grid_Store = Cursor_Grid_Store()
-    
-//    @ObservedObject var v_Slider_Responder_Store : V_Slider_Responder_Store
-//    @ObservedObject var h_Slider_Responder_Store : Horizontal_Slider_Responder_Store
-//    var noteDrawingButtonStore : Note_Drawing_Button_Store
-//    @ObservedObject var cursor_Grid_Store : Cursor_Grid_Store
-    
-        var v_Slider_Responder_Store = V_Slider_Responder_Store()
-        var h_Slider_Responder_Store = Horizontal_Slider_Responder_Store()
-        var noteDrawingButtonStore = Note_Drawing_Button_Store()
-        @ObservedObject var cursor_Grid_Store = Cursor_Grid_Store()
-    
+
+    var v_Slider_Responder_Store = V_Slider_Responder_Store()
+    var h_Slider_Responder_Store = Horizontal_Slider_Responder_Store()
+    var noteDrawingButtonStore = Note_Drawing_Button_Store()
+    var cursor_Grid_Store = Cursor_Grid_Store()
     let dimensions = ComponentDimensions.StaticComponentDimensions
+    
+    //var vertical_Slider_Coordinator_Store = Vertical_Slider_Coordinator_Store()
+    var vertical_Slider_Coordinator_Store : Vertical_Slider_Coordinator_Store
+    var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
+    
     init(){
-//        v_Slider_Responder_Store.cursor_Grid_Store = cursor_Grid_Store
-//        v_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
-//        h_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
-//        noteDrawingButtonStore.cursor_Grid_Data_Store_Ref = cursor_Grid_Store.cursor_Grid_Data
+        
+    vertical_Slider_Coordinator_Store = Vertical_Slider_Coordinator_Store(vSliderResponderArrayParam: [v_Slider_Responder_Store])
+    horizontal_Slider_Coordinator_Store = Horizontal_Slider_Coordinator_Store(hSliderResponderArrayParam: [h_Slider_Responder_Store])
         
     v_Slider_Responder_Store.cursor_Grid_Store = cursor_Grid_Store
     v_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
     h_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
     noteDrawingButtonStore.cursor_Grid_Data_Store_Ref = cursor_Grid_Store.cursor_Grid_Data
+        
     }
 
     var body: some View {
         
         return ZStack(alignment: .topLeading){
             
-        Vertical_Slider_Container_View(v_Slider_Responder_Store: v_Slider_Responder_Store)
+        Vertical_Slider_Container_View(vertical_Slider_Coordinator_Store: vertical_Slider_Coordinator_Store)
         .offset(x: 300, y: 10)
-            
-        Horizontal_Slider_Container_View(h_Slider_Responder_Store: h_Slider_Responder_Store)
-        .offset(x: dimensions.h_Slider_X_Offset, y: dimensions.h_Slider_Y_Offset)
-            
+
         Cursor_Grid_View(cursor_Grid_Store: cursor_Grid_Store)
         .offset(x: 10, y: 10)
             
+        Horizontal_Slider_Container_View(h_Slider_Responder_Store: h_Slider_Responder_Store, horizontal_Slider_Coordinator_Store: horizontal_Slider_Coordinator_Store)
+        .offset(x: dimensions.h_Slider_X_Offset, y: dimensions.h_Slider_Y_Offset)
+
         Note_Drawing_Button_View(note_Drawing_Button_Store: noteDrawingButtonStore)
         .offset(x: dimensions.return_Note_Drawing_Button_X_Pos(), y:dimensions.return_Note_Drawing_Button_Y_Pos())
             
@@ -106,31 +96,25 @@ struct Thing_With_All_The_Things_On_It : View {
 
 struct Vertical_Slider_Container_View : View {
     let dimensions = ComponentDimensions.StaticComponentDimensions
-    @ObservedObject var v_Slider_Responder_Store : V_Slider_Responder_Store
-    @ObservedObject var vertical_Slider_Coordinator_Store = Vertical_Slider_Coordinator_Store()
+    @ObservedObject var vertical_Slider_Coordinator_Store : Vertical_Slider_Coordinator_Store
     var body: some View {
         return ZStack(alignment: .topLeading) {
         VStack {
-        Vertical_Slider_View(vSliderResponderArrayParam: [v_Slider_Responder_Store], vertical_Slider_Coordinator_Param: vertical_Slider_Coordinator_Store)
+        Vertical_Slider_View(vertical_Slider_Coordinator_Param: vertical_Slider_Coordinator_Store)
         .frame(width: dimensions.v_SliderCellWidth, height: dimensions.returnVSLiderFrameHeight())
-            
-            
-//        Vertical_Slider_View(hSliderResponderArrayParam: [h_Slider_Responder_Store], horizontal_Slider_Coordinator_Store_Param: horizontal_Slider_Coordinator_Store)
-//        .frame(width: dimensions.returnHSLiderFrameWidth(), height: dimensions.v_SliderCellHeight)
         }
         }
-
     }
 }
 
 struct Horizontal_Slider_Container_View : View {
     let dimensions = ComponentDimensions.StaticComponentDimensions
     @ObservedObject var h_Slider_Responder_Store : Horizontal_Slider_Responder_Store
-    @ObservedObject var horizontal_Slider_Coordinator_Store = Horizontal_Slider_Coordinator_Store()
+    @ObservedObject var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
     var body: some View {
         return ZStack(alignment: .topLeading) {
         VStack {
-        Horizontal_Slider_View(hSliderResponderArrayParam: [h_Slider_Responder_Store], horizontal_Slider_Coordinator_Store_Param: horizontal_Slider_Coordinator_Store)
+        Horizontal_Slider_View(horizontal_Slider_Coordinator_Store_Param: horizontal_Slider_Coordinator_Store)
         .frame(width: dimensions.returnHSLiderFrameWidth(), height: dimensions.v_SliderCellHeight)
         }
         }.onAppear{
