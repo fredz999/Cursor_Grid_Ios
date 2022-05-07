@@ -52,7 +52,6 @@ struct Vertical_Slider_View: UIViewRepresentable {
     var vertical_Slider_Coordinator_Store : Vertical_Slider_Coordinator_Store
     
     func makeCoordinator() -> Vertical_Slider_Coordinator_Store {
-        print("makeCoordinator() called in V_Slider.......")
         return vertical_Slider_Coordinator_Store
     }
     

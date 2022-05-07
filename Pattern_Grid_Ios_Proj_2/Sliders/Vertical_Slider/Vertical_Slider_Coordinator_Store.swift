@@ -61,8 +61,6 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     
     var v_Collection_View : UICollectionView?
     
-    //var tisFrozen : Bool = false
-    
     func toggleFreeze(toFreeze : Bool) {
         if toFreeze == true {
             if let lclV_Collection_View = v_Collection_View {

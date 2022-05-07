@@ -52,9 +52,7 @@ class Cursor_Grid_Data_Store : ObservableObject {
                 
                 current_Cursor_Y_Int = new_Cursor_Y_Int
                 currCellData = cell_Line_Array[new_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
-                //currCellData.changeStatus(newStatus: .cursor_Writable)
-                // TODO: Status Update
-                
+
                 if noteWritingActivated == true {
                     note_UpDate_Handler()
                 }
@@ -72,8 +70,6 @@ class Cursor_Grid_Data_Store : ObservableObject {
 
                 current_Cursor_X_Int = new_Cursor_X_Int
                 currCellData = cell_Line_Array[current_Cursor_Y_Int].return_Inverse_Cell(x_Param: new_Cursor_X_Int)
-                //currCellData.changeStatus(newStatus: .cursor_Writable)
-                // TODO: Status Update
 
                 if noteWritingActivated == true {
                     note_UpDate_Handler()

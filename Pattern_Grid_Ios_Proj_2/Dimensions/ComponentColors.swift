@@ -61,21 +61,21 @@ class Status_Cell_Painter {
     var potentialEnd_Background_Color : Color = Color(red:0.4,green:0.4,blue:0)
     
     //=========== confirmed ====================================================
-    var confirmedSingle_Font_Color : Color = Color(red:0,green:1,blue:0)
-    var confirmedSingle_Perimeter_Color : Color = Color(red:0,green:1,blue:0)
-    var confirmedSingle_Background_Color : Color = Color(red:0,green:0.4,blue:0)
+    var confirmedSingle_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedSingle_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedSingle_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.4)
     
-    var confirmedStart_Font_Color : Color = Color(red:0,green:0,blue:0)
-    var confirmedStart_Perimeter_Color : Color = Color(red:0,green:1,blue:0)
-    var confirmedStart_Background_Color : Color = Color(red:1,green:1,blue:1)
+    var confirmedStart_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedStart_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedStart_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.4)
     
-    var confirmedMiddle_Font_Color : Color = Color(red:0,green:1,blue:0)
-    var confirmedMiddle_Perimeter_Color : Color = Color(red:0,green:1,blue:0)
-    var confirmedMiddle_Background_Color : Color = Color(red:0,green:0.4,blue:0)
+    var confirmedMiddle_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedMiddle_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedMiddle_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.5)
     
-    var confirmedEnd_Font_Color : Color = Color(red:1,green:1,blue:1)
-    var confirmedEnd_Perimeter_Color : Color = Color(red:0,green:0,blue:0)
-    var confirmedEnd_Background_Color : Color = Color(red:0,green:0,blue:0)
+    var confirmedEnd_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedEnd_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
+    var confirmedEnd_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.7)
     //===========/confirmed ====================================================
     
     var selectableColorConfig : Status_Color_Config

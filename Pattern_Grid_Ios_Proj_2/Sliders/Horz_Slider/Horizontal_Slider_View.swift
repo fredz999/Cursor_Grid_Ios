@@ -61,7 +61,6 @@ struct Horizontal_Slider_View : UIViewRepresentable {
     }
     
     func makeCoordinator() -> Horizontal_Slider_Coordinator_Store {
-        print("makeCoordinator() called in H_Slider.......")
         return horizontal_Slider_Coordinator_Store
     }
     

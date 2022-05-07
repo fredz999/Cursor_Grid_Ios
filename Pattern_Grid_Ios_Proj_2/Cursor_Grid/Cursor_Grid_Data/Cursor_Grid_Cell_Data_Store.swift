@@ -25,22 +25,6 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
         }
     }
     
-//    func changeStatus(newStatus:Grid_Cell_Data_Note_Status) {
-//
-//        if let lclFormer = status_Before_I_Became_The_Cursor {
-//            print("statey, xNumber: ",xNumber,", yNumber: ",yNumber,", formerly: ",lclFormer,", now: ",newStatus)
-//        }
-//
-//        if newStatus == .cursor_Writable || newStatus == .cursor_Prohibited {
-//            status_Before_I_Became_The_Cursor = grid_Cell_Data_Note_Status
-//            grid_Cell_Data_Note_Status = newStatus
-//        }
-//        else {
-//            grid_Cell_Data_Note_Status = newStatus
-//        }
-//
-//    }
-    
     func processStatusUpdate(isCurrentSelectedPosition:Bool,statusUpdateParam:Grid_Cell_Data_Note_Status?){
         if let lclUpdate = statusUpdateParam {
             if isCurrentSelectedPosition == false {
@@ -49,7 +33,7 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
             else if isCurrentSelectedPosition == true {
                 status_Before_I_Became_The_Cursor = lclUpdate
                 grid_Cell_Data_Note_Status = .cursor_Writable
-                print("processStatusUpdate(, statusUpdateParam: ",lclUpdate.rawValue)
+                //print("processStatusUpdate(, statusUpdateParam: ",lclUpdate.rawValue)
             }
         }
         else if statusUpdateParam == nil {
