@@ -11,33 +11,18 @@ import UIKit
 
 class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ObservableObject {
     
-    //private var parent: Vertical_Slider_View
-    
     let lcldimensions = ComponentDimensions.StaticComponentDimensions
-    
-//    init(_ gridView: Vertical_Slider_View) {
-//        self.parent = gridView
-//    }
     
     var vertical_Slider_Responders : [P_VSlider_Responder] = []
     
      init(vSliderResponderArrayParam : [P_VSlider_Responder]){
-//                let vSliderStart : Int = lcldimensions.returnGridVerticalStart()
-//                let vSliderEnd : Int = lcldimensions.returnGridVerticalEnd()
-//
-//                for i in vSliderStart..<vSliderEnd {
-//                    v_Slider_Data.append(i)
-//                }
-        
-                for vResponder in vSliderResponderArrayParam {
-                    vertical_Slider_Responders.append(vResponder)
-                }
-        
+        for vResponder in vSliderResponderArrayParam {
+            vertical_Slider_Responders.append(vResponder)
+        }
     }
 
     // MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //self.parent.v_Slider_Data.count
         lcldimensions.returnGridVerticalEnd()
     }
 
@@ -57,8 +42,6 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
         }
     }
     
-    
-
     let dimz = ComponentDimensions.StaticComponentDimensions
     // MARK: UICollectionViewDelegateFlowLayout
     
@@ -74,6 +57,23 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    var v_Collection_View : UICollectionView?
+    
+    //var tisFrozen : Bool = false
+    
+    func toggleFreeze(toFreeze : Bool) {
+        if toFreeze == true {
+            if let lclV_Collection_View = v_Collection_View {
+                lclV_Collection_View.isScrollEnabled = false
+            }
+        }
+        else if toFreeze == false {
+            if let lclV_Collection_View = v_Collection_View {
+                lclV_Collection_View.isScrollEnabled = true
+            }
+        }
     }
 
 }

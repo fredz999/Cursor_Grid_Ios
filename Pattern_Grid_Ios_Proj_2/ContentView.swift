@@ -51,7 +51,7 @@ struct ContentView: View {
 
 struct Thing_With_All_The_Things_On_It : View {
 
-    var v_Slider_Responder_Store = V_Slider_Responder_Store()
+    var v_Slider_Responder_Store = Vertical_Slider_Responder_Store()
     var h_Slider_Responder_Store = Horizontal_Slider_Responder_Store()
     var noteDrawingButtonStore = Note_Drawing_Button_Store()
     var cursor_Grid_Store = Cursor_Grid_Store()
@@ -70,7 +70,7 @@ struct Thing_With_All_The_Things_On_It : View {
     v_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
     h_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
     noteDrawingButtonStore.cursor_Grid_Data_Store_Ref = cursor_Grid_Store.cursor_Grid_Data
-        
+    noteDrawingButtonStore.vertical_Slider_Coordinator_Store_Ref = vertical_Slider_Coordinator_Store
     }
 
     var body: some View {

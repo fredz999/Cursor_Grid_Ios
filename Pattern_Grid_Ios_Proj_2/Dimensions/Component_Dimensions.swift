@@ -102,6 +102,7 @@ class ComponentDimensions {
         let retval = CGFloat(VSliderFrameLastUnit) * v_SliderCellHeight
         return retval
     }
+    
     //====================================================================
     
     var cursorGridDataViewFontSize : CGFloat = 14
@@ -122,47 +123,4 @@ class ComponentDimensions {
     }
     
     static let StaticComponentDimensions = ComponentDimensions()
-}
-
-class ComponentColors {
-    
-    var cellBackGroundColor_Normal : Color = Color(red: 0.6, green: 0, blue: 0)
-    var cellBackGroundColor_IsCursor : Color = Color(red: 0, green: 0.6, blue: 0.6)
-    
-    var cellFontColor_Normal : Color = .white//Color(red: 0.8, green: 0, blue: 0)
-    var cellFontColor_IsCursor : Color = Color(red: 0, green: 1, blue: 1)
-    
-    var cellPerimeterColor_Normal : Color = Color(red: 0.2, green: 0, blue: 0)
-    var cellPerimeterColor_IsCursor : Color = Color(red: 0, green: 1, blue: 1)
-    
-    func return_CellData_Perimeter_Color(isCursorParam:Bool, stateParam:Grid_Cell_Data_Note_Status, returnedColor : inout Color){
-        if isCursorParam == true {
-            returnedColor = cellPerimeterColor_IsCursor
-        }
-        else if isCursorParam == false {
-            returnedColor = cellPerimeterColor_Normal
-        }
-    }
-    
-    func return_CellData_Font_Color(isCursorParam:Bool, stateParam:Grid_Cell_Data_Note_Status, returnedColor : inout Color){
-        if isCursorParam == true {
-            returnedColor = cellFontColor_IsCursor
-        }
-        else if isCursorParam == false {
-            returnedColor = cellFontColor_Normal
-        }
-    }
-    
-    func return_CellData_BackGround_Color(isCursorParam:Bool, stateParam:Grid_Cell_Data_Note_Status, returnedColor : inout Color){
-        if isCursorParam == true {
-            returnedColor = cellBackGroundColor_IsCursor
-        }
-        else if isCursorParam == false {
-            returnedColor = cellBackGroundColor_Normal
-        }
-    }
-    
-    var appBackGround : Color = Color(red: 0, green: 0, blue: 0.3)
-    
-    static let StaticComponentColors = ComponentColors()
 }

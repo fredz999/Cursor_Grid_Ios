@@ -9,16 +9,18 @@ import Foundation
 import SwiftUI
 import Combine
 
-class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
+class Vertical_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
 
     var cursor_Grid_Data : Cursor_Grid_Data_Store?
 
     var cursor_Grid_Store : Cursor_Grid_Store?
     
     var currentLowVal : Int
-    @Published var previousLowVal : Int?
+    
+    var previousLowVal : Int?
 
     var currentHighVal : Int
+    
     var previousHighVal : Int?
 
     var dimensions = ComponentDimensions.StaticComponentDimensions
@@ -83,6 +85,8 @@ class V_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
             }
         }
     }
+    
+
 
 
 }

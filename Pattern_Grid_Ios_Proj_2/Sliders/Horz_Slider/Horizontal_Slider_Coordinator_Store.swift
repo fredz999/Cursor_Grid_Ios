@@ -13,7 +13,7 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
         
         let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
-        var collection_View : UICollectionView?
+        var h_Collection_View : UICollectionView?
     
         var faceVals : [Int] = []
     
@@ -80,7 +80,7 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
     
         func goToEnd(){
             let indexToScrollTo = IndexPath(item: 13, section: 0)
-            if let lclCollection_View = collection_View{
+            if let lclCollection_View = h_Collection_View{
                 lclCollection_View.scrollToItem(at: indexToScrollTo, at: .left, animated: false)
             }
         }

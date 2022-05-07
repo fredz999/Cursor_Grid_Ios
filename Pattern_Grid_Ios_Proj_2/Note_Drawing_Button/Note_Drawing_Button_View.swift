@@ -18,7 +18,7 @@ struct Note_Drawing_Button_View: View {
             .frame(width: lclDimensions.return_Note_Drawing_Button_Width(), height: lclDimensions.return_Note_Drawing_Button_Height())
             .foregroundColor(note_Drawing_Button_Store.bgCol)
             VStack(alignment: .leading) {
-                Text("Note Writing").font(.system(size: 14)).foregroundColor(.white)
+                Text("Write Note").font(.system(size: 14)).foregroundColor(.white)
                 Text(note_Drawing_Button_Store.txt).font(.system(size: 14)).foregroundColor(.white)
             }
             

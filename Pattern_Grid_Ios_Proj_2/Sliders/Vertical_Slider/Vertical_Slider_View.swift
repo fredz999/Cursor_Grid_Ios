@@ -40,7 +40,7 @@ struct Vertical_Slider_View: UIViewRepresentable {
         collectionView.delegate = context.coordinator
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-
+        context.coordinator.v_Collection_View = collectionView       
         Slider_Cell.registerWithCollectionView(collectionView: collectionView)
         return collectionView
     }

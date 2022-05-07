@@ -51,7 +51,7 @@ struct Horizontal_Slider_View : UIViewRepresentable {
         collectionView.delegate = context.coordinator
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        context.coordinator.collection_View = collectionView
+        context.coordinator.h_Collection_View = collectionView
         Slider_Cell.registerWithCollectionView(collectionView: collectionView)
         return collectionView
     }
