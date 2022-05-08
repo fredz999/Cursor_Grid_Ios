@@ -103,47 +103,115 @@ class Note_Cell_Accumulator {
     var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []
     
     func add_Note(cell:Cursor_Grid_Cell_Data_Store){
-        current_potentialNoteCellArray.append(cell)
-        setStatus_Of_Member_Cells()
+        
+        print("add note func, curr status:",cell.grid_Cell_Data_Note_Status.rawValue)
+        if cell.status_Before_I_Became_The_Cursor == .unassigned || cell.grid_Cell_Data_Note_Status == .unassigned {
+            current_potentialNoteCellArray.append(cell)
+            setStatus_Of_Member_Cells()
+        }
+        else if cell.status_Before_I_Became_The_Cursor != .unassigned || cell.grid_Cell_Data_Note_Status != .unassigned {
+            setStatus_Of_Member_Cells()
+            commit_Note(currCell: cell)
+        }
+
+        
+        
     }
     
     // TODO: Status Update
     func setStatus_Of_Member_Cells(){
+        
         if current_potentialNoteCellArray.count == 1{
             current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialSingle)
         }
         else if current_potentialNoteCellArray.count == 2{
-            current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
-            current_potentialNoteCellArray[1].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+            
+            let xNumStart = current_potentialNoteCellArray[0].xNumber
+            let xNumEnd = current_potentialNoteCellArray[1].xNumber
+            
+            if xNumStart < xNumEnd {
+                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
+                current_potentialNoteCellArray[1].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+            }
+            else if xNumStart > xNumEnd {
+                current_potentialNoteCellArray[1].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
+                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+            }
+            
+            
         }
-        else if current_potentialNoteCellArray.count > 2{
+        else if current_potentialNoteCellArray.count > 2 {
+            
               let finalIndex = current_potentialNoteCellArray.count-1
-              current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
-              for i in 1..<finalIndex{
-              current_potentialNoteCellArray[i].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialMiddle)
-              }
-              current_potentialNoteCellArray[finalIndex].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+              let xNumStart = current_potentialNoteCellArray[0].xNumber
+              let xNumEnd = current_potentialNoteCellArray[finalIndex].xNumber
+              if xNumStart < xNumEnd{
+                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
+                for i in 1..<finalIndex{
+                    current_potentialNoteCellArray[i].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialMiddle)
+                }
+                current_potentialNoteCellArray[finalIndex].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+            }
+            if xNumStart > xNumEnd{
+                current_potentialNoteCellArray[finalIndex].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
+                for i in 1..<finalIndex{
+                    current_potentialNoteCellArray[i].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialMiddle)
+                }
+                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+            }
+              
+            
         }
+        
+        
+        
     }
     // TODO: Status Update
-    func disengage(){
+    func commit_Note(currCell:Cursor_Grid_Cell_Data_Store){
         
         for cell in current_potentialNoteCellArray {
 
-            if cell.grid_Cell_Data_Note_Status == .potentialSingle {
-                cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedSingle)
+            
+            
+            if cell == currCell {
+                //currCell.grid_Cell_Data_Note_Status = .cursor_Prohibited
+                //print("cell == currCell")
+                print("cell == currCell")
+                
+                if cell.grid_Cell_Data_Note_Status == .potentialSingle {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedSingle)
+                }
+                else if cell.grid_Cell_Data_Note_Status == .potentialStart {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedStart)
+                }
+                // this should not be possible
+                else if cell.grid_Cell_Data_Note_Status == .potentialMiddle {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedMiddle)
+                }
+                else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedEnd)
+                }
+                currCell.grid_Cell_Data_Note_Status = .cursor_Prohibited
+                
             }
-            else if cell.grid_Cell_Data_Note_Status == .potentialStart {
-                cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedStart)
+            else if cell != currCell {
+                // the lift up can happen when the note has been dragged from either direction - all of these can actually happen
+                print("cell != currCell")
+                if cell.grid_Cell_Data_Note_Status == .potentialSingle {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedSingle)
+                }
+                else if cell.grid_Cell_Data_Note_Status == .potentialStart {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedStart)
+                }
+                else if cell.grid_Cell_Data_Note_Status == .potentialMiddle {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedMiddle)
+                }
+                else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
+                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedEnd)
+                }
             }
-            else if cell.grid_Cell_Data_Note_Status == .potentialMiddle {
-                cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedMiddle)
-            }
-            else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
-                cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedEnd)
-            }
+            
         }
-        
         current_potentialNoteCellArray.removeAll()
     }
 }

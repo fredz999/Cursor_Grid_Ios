@@ -37,7 +37,7 @@ class Note_Drawing_Button_Store : ObservableObject {
               
               lclDataClass.noteWritingActivated = false
               
-              lclDataClass.note_Cell_Accumulator.disengage()
+              lclDataClass.note_Cell_Accumulator.commit_Note(currCell: lclDataClass.currCellData)
               
               if let lclVSliderRef = vertical_Slider_Coordinator_Store_Ref {
                   lclVSliderRef.toggleFreeze(toFreeze: false)

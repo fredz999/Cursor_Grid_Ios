@@ -65,17 +65,17 @@ class Status_Cell_Painter {
     var confirmedSingle_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
     var confirmedSingle_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.4)
     
-    var confirmedStart_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
-    var confirmedStart_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
-    var confirmedStart_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.4)
+    var confirmedStart_Font_Color : Color = Color(red:0.8,green:0.8,blue:1)
+    var confirmedStart_Perimeter_Color : Color = Color(red:0.5,green:0.5,blue:0.7)
+    var confirmedStart_Background_Color : Color = Color(red:0.1,green:0.1,blue:0.2)
     
     var confirmedMiddle_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
     var confirmedMiddle_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
     var confirmedMiddle_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.5)
     
-    var confirmedEnd_Font_Color : Color = Color(red:0.7,green:0.7,blue:1)
-    var confirmedEnd_Perimeter_Color : Color = Color(red:0.7,green:0.7,blue:1)
-    var confirmedEnd_Background_Color : Color = Color(red:0.2,green:0.2,blue:0.7)
+    var confirmedEnd_Font_Color : Color = Color(red:0.8,green:0.8,blue:1)
+    var confirmedEnd_Perimeter_Color : Color = Color(red:0.8,green:0.8,blue:1)
+    var confirmedEnd_Background_Color : Color = Color(red:0.6,green:0.6,blue:1)
     //===========/confirmed ====================================================
     
     var selectableColorConfig : Status_Color_Config

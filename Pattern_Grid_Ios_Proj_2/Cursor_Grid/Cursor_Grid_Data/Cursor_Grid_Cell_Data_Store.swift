@@ -9,7 +9,14 @@ import Foundation
 import SwiftUI
 import Combine
 
-class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
+class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
+    
+    static func == (lhs: Cursor_Grid_Cell_Data_Store, rhs: Cursor_Grid_Cell_Data_Store) -> Bool {
+        var retVal = false
+        if lhs.xNumber == rhs.xNumber , lhs.yNumber == rhs.yNumber{retVal = true}
+        return retVal
+    }
+    
     
     let lclColors = ComponentColors.StaticComponentColors
     var id = UUID()
@@ -33,7 +40,6 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable {
             else if isCurrentSelectedPosition == true {
                 status_Before_I_Became_The_Cursor = lclUpdate
                 grid_Cell_Data_Note_Status = .cursor_Writable
-                //print("processStatusUpdate(, statusUpdateParam: ",lclUpdate.rawValue)
             }
         }
         else if statusUpdateParam == nil {
