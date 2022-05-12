@@ -43,6 +43,7 @@ class ComponentDimensions {
     var cursorOnlyAdjustment : Int = 3
     var numberCellsGridHorizontal : Int = 14
     var numberCellsSliderHorizontal : Int = 17 // the delta here appears to be derived from the size of the H_Slider
+    var gridCellsHorizontalFinalIndex : Int = 13
     
     var cursor_GridVerticalUnitCount : Int = 7
     var cursor_GridVerticalFinalIndex : Int = 6

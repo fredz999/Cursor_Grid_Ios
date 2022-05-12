@@ -11,12 +11,9 @@ import Combine
 
 class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     
-    static func == (lhs: Cursor_Grid_Cell_Data_Store, rhs: Cursor_Grid_Cell_Data_Store) -> Bool {
-        var retVal = false
-        if lhs.xNumber == rhs.xNumber , lhs.yNumber == rhs.yNumber{retVal = true}
-        return retVal
-    }
-    
+    @Published var current_Perimeter_Color : Color
+    @Published var current_Font_Color : Color
+    @Published var current_BackGround_Color : Color
     
     let lclColors = ComponentColors.StaticComponentColors
     var id = UUID()
@@ -24,7 +21,36 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     var yNumber : Int
     var xNumber : Int
     
+    var parentDataLine : Cursor_Grid_Line_Data_Store?
+
+    init(xParam:Int,yParam:Int){
+        xNumber = xParam
+        yNumber = yParam
+        current_Perimeter_Color = lclColors.status_Cell_Painter.unassigned_Cell_Perimeter_Color //lclColors.cellPerimeterColor_Normal
+        current_Font_Color = lclColors.status_Cell_Painter.unassigned_Cell_Font_Color//lclColors.cellFontColor_Normal
+        current_BackGround_Color = lclColors.status_Cell_Painter.unassigned_Cell_Background_Color//lclColors.cellBackGroundColor_Normal
+    }
+    
+    static func == (lhs: Cursor_Grid_Cell_Data_Store, rhs: Cursor_Grid_Cell_Data_Store) -> Bool {
+        var retVal = false
+        if lhs.xNumber == rhs.xNumber , lhs.yNumber == rhs.yNumber{ retVal = true }
+        return retVal
+    }
+    
+    func setParentLineData(parentDataLineParam:Cursor_Grid_Line_Data_Store){
+        parentDataLine = parentDataLineParam
+    }
+    
+    
+    
+    
+    
+    
+    
+    // TODO: parallell state changes -- cursor
+    
     var status_Before_I_Became_The_Cursor : Grid_Cell_Data_Note_Status? = nil
+    
     var grid_Cell_Data_Note_Status : Grid_Cell_Data_Note_Status = .unassigned
     {
         didSet {
@@ -32,47 +58,87 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         }
     }
     
-    func processStatusUpdate(isCurrentSelectedPosition:Bool,statusUpdateParam:Grid_Cell_Data_Note_Status?){
-        if let lclUpdate = statusUpdateParam {
-            if isCurrentSelectedPosition == false {
-                grid_Cell_Data_Note_Status = lclUpdate
-            }
-            else if isCurrentSelectedPosition == true {
-                status_Before_I_Became_The_Cursor = lclUpdate
-                grid_Cell_Data_Note_Status = .cursor_Writable
-            }
-        }
-        else if statusUpdateParam == nil {
-            if isCurrentSelectedPosition == true {
-                if grid_Cell_Data_Note_Status == .unassigned {
-                    status_Before_I_Became_The_Cursor = .unassigned
-                    grid_Cell_Data_Note_Status = .cursor_Writable
-                }
-                else if grid_Cell_Data_Note_Status != .unassigned {
-                    status_Before_I_Became_The_Cursor = grid_Cell_Data_Note_Status
-                    grid_Cell_Data_Note_Status = .cursor_Prohibited
-                }
-            }
-        }
-    }
-    
-    
-
     func handleStatusChange(){
         lclColors.status_Cell_Painter.selectColorConfig(cellDataParam: self)
     }
-    
-    @Published var current_Perimeter_Color : Color
-    @Published var current_Font_Color : Color
-    @Published var current_BackGround_Color : Color
-    
-    init(xParam:Int,yParam:Int){
-        xNumber = xParam
-        yNumber = yParam
-        current_Perimeter_Color = lclColors.cellPerimeterColor_Normal
-        current_Font_Color = lclColors.cellFontColor_Normal
-        current_BackGround_Color = lclColors.cellBackGroundColor_Normal
+
+    func restoreToPreCursor(){
+        if let previousStatus = status_Before_I_Became_The_Cursor {
+            grid_Cell_Data_Note_Status = previousStatus
+            status_Before_I_Became_The_Cursor = nil
+        }
     }
+    
+    var selectability_Status : Grid_Cell_Data_Selectability_Status = .selectability_Unassigned
+    
+    // TODO: parallell state changes -- selectability
+    func processSelectabilityUpdate(isCurrentSelectedPosition:Bool,selectabilityUpdateParam:Grid_Cell_Data_Selectability_Status?){
+        
+        if selectabilityUpdateParam == .selectable {
+            selectability_Status = .selectable
+        }
+        
+        else if selectabilityUpdateParam == .selectability_Unassigned {
+            selectability_Status = .selectability_Unassigned
+        }
+        
+        handleStatusChange()
+        
+    }
+    
+    // TODO: parallell state changes -- status
+    func processStatusUpdate(isCurrentSelectedPosition:Bool,statusUpdateParam:Grid_Cell_Data_Note_Status?){
+        
+        if let lclStat = statusUpdateParam {
+            print("processStatusUpdate(, isCurrentSelectedPosition: ", isCurrentSelectedPosition.description
+                          ,", statusUpdateParam: ",lclStat.rawValue)
+        }
+        else if statusUpdateParam == nil {
+            print("processStatusUpdate(, isCurrentSelectedPosition: ", isCurrentSelectedPosition.description
+                          ,", statusUpdateParam: nil")
+        }
+        
+        if let lclParentLine = parentDataLine {
+            if let lclParentGrid = lclParentLine.parentGridData {
+
+                if statusUpdateParam == nil {
+                    if status_Before_I_Became_The_Cursor == nil {
+                        status_Before_I_Became_The_Cursor = grid_Cell_Data_Note_Status
+                        grid_Cell_Data_Note_Status = .cursor_Passive
+                    }
+                }
+                
+                else if let lclStatusUpdate = statusUpdateParam {
+                    
+                    if isCurrentSelectedPosition == true {
+                        
+                        if lclStatusUpdate == .cursor_Active_Writable {
+                            status_Before_I_Became_The_Cursor = grid_Cell_Data_Note_Status
+                            grid_Cell_Data_Note_Status = .cursor_Active_Writable
+                        }
+                        
+                        else if lclStatusUpdate == .cursor_Active_Prohibited {
+                            status_Before_I_Became_The_Cursor = grid_Cell_Data_Note_Status
+                            grid_Cell_Data_Note_Status = .cursor_Active_Prohibited
+                        }
+                        
+//                        else if lclStatusUpdate == .selectable {
+//                            status_Before_I_Became_The_Cursor = .selectable
+//                            grid_Cell_Data_Note_Status = .cursor_Active_Writable
+//                        }
+                        
+                    }
+                    else if isCurrentSelectedPosition == false {
+                        grid_Cell_Data_Note_Status = lclStatusUpdate
+                    }
+                    
+                }
+            }
+        }
+
+    }
+    
+    
     
 }
 
@@ -101,5 +167,3 @@ struct Cursor_Grid_Cell_Data_View : View {
         }
     }
 }
-
-

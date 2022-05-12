@@ -8,12 +8,13 @@
 import Foundation
 
 enum Grid_Cell_Data_Note_Status : String {
-    case selectable = "selectable"
+    
     
     case unassigned = "unassigned"
     
-    case cursor_Writable = "cursor_Writable"
-    case cursor_Prohibited = "cursor_Prohibited"
+    case cursor_Active_Writable = "cursor_Active_Writable"
+    case cursor_Active_Prohibited = "cursor_Active_Prohibited"
+    case cursor_Passive = "cursor_Passive"
     
     case potentialSingle = "potentialSingle"
     case potentialStart = "potentialStart"
@@ -25,4 +26,9 @@ enum Grid_Cell_Data_Note_Status : String {
     case confirmedMiddle = "confirmedMiddle"
     case confirmedEnd = "confirmedEnd"
     
+}
+
+enum Grid_Cell_Data_Selectability_Status : String {
+    case selectability_Unassigned = "selectability_Unassigned"
+    case selectable = "selectable"
 }

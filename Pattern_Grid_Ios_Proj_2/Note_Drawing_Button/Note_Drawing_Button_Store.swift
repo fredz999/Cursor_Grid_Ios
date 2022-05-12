@@ -23,7 +23,9 @@ class Note_Drawing_Button_Store : ObservableObject {
         
         if let lclDataClass = self.cursor_Grid_Data_Store_Ref {
           if lclDataClass.noteWritingActivated == false {
+              
               lclDataClass.noteWritingActivated = true
+              
             if let lclVSliderRef = vertical_Slider_Coordinator_Store_Ref {
                 lclVSliderRef.toggleFreeze(toFreeze: true)
             }
@@ -37,7 +39,9 @@ class Note_Drawing_Button_Store : ObservableObject {
               
               lclDataClass.noteWritingActivated = false
               
-              lclDataClass.note_Cell_Accumulator.commit_Note(currCell: lclDataClass.currCellData)
+              if let lclCurrData = lclDataClass.currCellData{
+                  lclDataClass.note_Writer.commit_Note(currCell: lclCurrData)
+              }
               
               if let lclVSliderRef = vertical_Slider_Coordinator_Store_Ref {
                   lclVSliderRef.toggleFreeze(toFreeze: false)
