@@ -32,8 +32,8 @@ class Cursor_Grid_Data_Store : ObservableObject {
         cell_Line_Array.append(line_Data)
         }
         currCellData = cell_Line_Array[0].return_Inverse_Cell(x_Param: 0)
-        cell_Line_Array[0].cell_Data_Array[2].grid_Cell_Data_Note_Status = .confirmedSingle
-        cell_Line_Array[0].cell_Data_Array[11].grid_Cell_Data_Note_Status = .confirmedSingle
+        cell_Line_Array[0].cell_Data_Array[2].note_Status = .confirmedSingle
+        cell_Line_Array[0].cell_Data_Array[11].note_Status = .confirmedSingle
         note_Writer.parentGridData = self
     }
     
@@ -52,7 +52,9 @@ class Cursor_Grid_Data_Store : ObservableObject {
                 
                 else if noteWritingActivated == false {
                     if let lclCurrData = currCellData {
-                        lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
+                        // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
+                        // lclCurrData.processStatusUpdate(statusUpdateParam: nil)
+                        lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
                     }
                 }
                 
@@ -76,7 +78,11 @@ class Cursor_Grid_Data_Store : ObservableObject {
             
             else if noteWritingActivated == false {
                 if let lclCurrData = currCellData {
-                    lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
+                    // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
+                    // lclCurrData.processStatusUpdate(statusUpdateParam: nil)
+                    // probably only the cursor here, the status in the note writer and the selectability in the
+                    // selection activation thingy...will see if its actually a net positive for the UIX
+                    lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
                 }
             }
                                 
@@ -124,11 +130,15 @@ class Cursor_Grid_Data_Store : ObservableObject {
     var currCellData : Cursor_Grid_Cell_Data_Store? {
         willSet {
             if let lclCurrCellData = currCellData {
-                if lclCurrCellData.status_Before_I_Became_The_Cursor != nil{
-                    lclCurrCellData.restoreToPreCursor()
+//                if lclCurrCellData.status_Before_I_Became_The_Cursor != nil{
+//                    lclCurrCellData.restoreToPreCursor()
+//                }
+                if lclCurrCellData.cursor_Status == .is_The_Current_Cursor {
+                    lclCurrCellData.cursor_Status = .not_The_Current_Cursor
                 }
             }
         }
+        
     }
     
     func note_UpDate_Handler() {
@@ -156,14 +166,24 @@ class Cursor_Grid_Data_Store : ObservableObject {
                             // may 13th
                             // write in here but only refer to the cells within the viable list and ...ok were already within the
                             // viable upper and lower limits.....
-                            lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Writable)
+                            
+                            
+                            // TODO: parallell state changes
+                            // this has to now change because the cursor is being handled seperately
+                            // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Writable)
+                            
                             //print("we need a write in here")
                         }
                         else {
                             // may 13th contd ...
                             // figure oot why the out commented stuff in here only does prohib after the cursor leaves
                             // and why it dosent get put back to normal after the cursor goes out
-                            lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Prohibited)
+                            
+                            // TODO: parallell state changes
+                            // this has to now change because the cursor is being handled seperately
+                            // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Prohibited)
+                            
+                            
                             //print("either there needs to be a prohib, or a viable array re-definition")
                         }
                     }

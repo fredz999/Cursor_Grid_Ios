@@ -144,62 +144,120 @@ class Status_Cell_Painter {
                                                        , perimeterColParam: confirmedEnd_Cell_Perimeter_Color, backgroundColParam: confirmedEnd_Cell_Background_Color)
     }
     
-
     func selectColorConfig(cellDataParam : Cursor_Grid_Cell_Data_Store) {
-        if cellDataParam.selectability_Status == .selectability_Unassigned {
+        if cellDataParam.cursor_Status == .is_The_Current_Cursor {
             
-            if cellDataParam.grid_Cell_Data_Note_Status == .unassigned{paintDataCell(cell: cellDataParam, colorConfig: cell_Unassigned_ColorConfig)}
-                    
-            else if cellDataParam.grid_Cell_Data_Note_Status == .cursor_Passive {
-                paintDataCell(cell: cellDataParam, colorConfig: cursor_Passive_ColorConfig)
-            }
-            
-            else if cellDataParam.grid_Cell_Data_Note_Status == .cursor_Active_Writable {
-                paintDataCell(cell: cellDataParam, colorConfig: cursor_Writable_ColorConfig)
-            }
-            
-            else if cellDataParam.grid_Cell_Data_Note_Status == .cursor_Active_Prohibited {
-                paintDataCell(cell: cellDataParam, colorConfig: cursor_Prohibited_ColorConfig)
-            }
-
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialSingle{ paintDataCell(cell: cellDataParam, colorConfig: potentialSingleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialStart{  paintDataCell(cell: cellDataParam, colorConfig: potentialStartColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialMiddle{  paintDataCell(cell: cellDataParam, colorConfig: potentialMiddleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialEnd{  paintDataCell(cell: cellDataParam, colorConfig: potentialEndColorConfig)}
-
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedSingle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedSingleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedStart{  paintDataCell(cell: cellDataParam, colorConfig: confirmedStartColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedMiddle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedMiddleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedEnd{  paintDataCell(cell: cellDataParam, colorConfig: confirmedEndColorConfig)}
+            color_Cell_Thats_Currently_A_Cursor(cellDataParam: cellDataParam)
             
         }
-        else if cellDataParam.selectability_Status == .selectable {
-            if cellDataParam.grid_Cell_Data_Note_Status == .unassigned{paintDataCell(cell: cellDataParam, colorConfig: cell_Unassigned_And_Viable_For_Selection)}
-                    
-            else if cellDataParam.grid_Cell_Data_Note_Status == .cursor_Passive {
-                paintDataCell(cell: cellDataParam, colorConfig: cursor_Passive_ColorConfig)
-            }
+        else if cellDataParam.cursor_Status == .not_The_Current_Cursor {
             
-            else if cellDataParam.grid_Cell_Data_Note_Status == .cursor_Active_Writable {
-                paintDataCell(cell: cellDataParam, colorConfig: cursor_Writable_ColorConfig)
-            }
+            color_Cell_Thats_Currently_Not_A_Cursor(cellDataParam: cellDataParam)
             
-            else if cellDataParam.grid_Cell_Data_Note_Status == .cursor_Active_Prohibited {
-                paintDataCell(cell: cellDataParam, colorConfig: cursor_Prohibited_ColorConfig)
-            }
-
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialSingle{ paintDataCell(cell: cellDataParam, colorConfig: potentialSingleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialStart{  paintDataCell(cell: cellDataParam, colorConfig: potentialStartColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialMiddle{  paintDataCell(cell: cellDataParam, colorConfig: potentialMiddleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .potentialEnd{  paintDataCell(cell: cellDataParam, colorConfig: potentialEndColorConfig)}
-
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedSingle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedSingleColorConfig)}
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedStart{  paintDataCell(cell: cellDataParam, colorConfig: confirmedStartColorConfig)  }
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedMiddle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedMiddleColorConfig)  }
-            else if cellDataParam.grid_Cell_Data_Note_Status == .confirmedEnd{  paintDataCell(cell: cellDataParam, colorConfig: confirmedEndColorConfig)  }
         }
-    
     }
+    
+    func color_Cell_Thats_Currently_A_Cursor(cellDataParam : Cursor_Grid_Cell_Data_Store) {
+        if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
+            color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+        else if cellDataParam.selectability_Status == .in_A_Write_Viable_Group {
+            color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+    }
+    
+    func color_Cell_Thats_Currently_Not_A_Cursor(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
+            color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+        else if cellDataParam.selectability_Status == .in_A_Write_Viable_Group {
+            color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+    }
+    
+    
+    func color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .confirmedSingle {
+            paintDataCell(cell: cellDataParam, colorConfig: cursor_Writable_ColorConfig)
+        }
+    }
+    func color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .confirmedSingle {
+            paintDataCell(cell: cellDataParam, colorConfig: cursor_Prohibited_ColorConfig)
+        }
+        else if cellDataParam.note_Status == .unassigned {
+            paintDataCell(cell: cellDataParam, colorConfig: cursor_Passive_ColorConfig)
+        }
+    }
+    
+    
+    func color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        
+    }
+    func color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .confirmedSingle {
+            paintDataCell(cell: cellDataParam, colorConfig: confirmedSingleColorConfig)
+        }
+        else if cellDataParam.note_Status == .unassigned {
+            paintDataCell(cell: cellDataParam, colorConfig: cell_Unassigned_ColorConfig)
+        }
+    }
+
+//    func selectColorConfig(cellDataParam : Cursor_Grid_Cell_Data_Store) {
+//        if cellDataParam.selectability_Status == .selectability_Unassigned {
+//
+//            if cellDataParam.note_Status == .unassigned{paintDataCell(cell: cellDataParam, colorConfig: cell_Unassigned_ColorConfig)}
+//
+//            else if cellDataParam.note_Status == .cursor_Passive {
+//                paintDataCell(cell: cellDataParam, colorConfig: cursor_Passive_ColorConfig)
+//            }
+//
+//            else if cellDataParam.note_Status == .cursor_Active_Writable {
+//                paintDataCell(cell: cellDataParam, colorConfig: cursor_Writable_ColorConfig)
+//            }
+//
+//            else if cellDataParam.note_Status == .cursor_Active_Prohibited {
+//                paintDataCell(cell: cellDataParam, colorConfig: cursor_Prohibited_ColorConfig)
+//            }
+//
+//            else if cellDataParam.note_Status == .potentialSingle{ paintDataCell(cell: cellDataParam, colorConfig: potentialSingleColorConfig)}
+//            else if cellDataParam.note_Status == .potentialStart{  paintDataCell(cell: cellDataParam, colorConfig: potentialStartColorConfig)}
+//            else if cellDataParam.note_Status == .potentialMiddle{  paintDataCell(cell: cellDataParam, colorConfig: potentialMiddleColorConfig)}
+//            else if cellDataParam.note_Status == .potentialEnd{  paintDataCell(cell: cellDataParam, colorConfig: potentialEndColorConfig)}
+//
+//            else if cellDataParam.note_Status == .confirmedSingle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedSingleColorConfig)}
+//            else if cellDataParam.note_Status == .confirmedStart{  paintDataCell(cell: cellDataParam, colorConfig: confirmedStartColorConfig)}
+//            else if cellDataParam.note_Status == .confirmedMiddle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedMiddleColorConfig)}
+//            else if cellDataParam.note_Status == .confirmedEnd{  paintDataCell(cell: cellDataParam, colorConfig: confirmedEndColorConfig)}
+//
+//        }
+//        else if cellDataParam.selectability_Status == .selectable {
+//            if cellDataParam.note_Status == .unassigned{paintDataCell(cell: cellDataParam, colorConfig: cell_Unassigned_And_Viable_For_Selection)}
+//
+//            else if cellDataParam.note_Status == .cursor_Passive {
+//                paintDataCell(cell: cellDataParam, colorConfig: cursor_Passive_ColorConfig)
+//            }
+//
+//            else if cellDataParam.note_Status == .cursor_Active_Writable {
+//                paintDataCell(cell: cellDataParam, colorConfig: cursor_Writable_ColorConfig)
+//            }
+//
+//            else if cellDataParam.note_Status == .cursor_Active_Prohibited {
+//                paintDataCell(cell: cellDataParam, colorConfig: cursor_Prohibited_ColorConfig)
+//            }
+//
+//            else if cellDataParam.note_Status == .potentialSingle{ paintDataCell(cell: cellDataParam, colorConfig: potentialSingleColorConfig)}
+//            else if cellDataParam.note_Status == .potentialStart{  paintDataCell(cell: cellDataParam, colorConfig: potentialStartColorConfig)}
+//            else if cellDataParam.note_Status == .potentialMiddle{  paintDataCell(cell: cellDataParam, colorConfig: potentialMiddleColorConfig)}
+//            else if cellDataParam.note_Status == .potentialEnd{  paintDataCell(cell: cellDataParam, colorConfig: potentialEndColorConfig)}
+//
+//            else if cellDataParam.note_Status == .confirmedSingle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedSingleColorConfig)}
+//            else if cellDataParam.note_Status == .confirmedStart{  paintDataCell(cell: cellDataParam, colorConfig: confirmedStartColorConfig)  }
+//            else if cellDataParam.note_Status == .confirmedMiddle{  paintDataCell(cell: cellDataParam, colorConfig: confirmedMiddleColorConfig)  }
+//            else if cellDataParam.note_Status == .confirmedEnd{  paintDataCell(cell: cellDataParam, colorConfig: confirmedEndColorConfig)  }
+//        }
+//
+//    }
 
     func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){
         cell.current_Font_Color = colorConfig.fontColor

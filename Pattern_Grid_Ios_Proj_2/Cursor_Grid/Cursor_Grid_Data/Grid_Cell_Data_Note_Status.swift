@@ -29,6 +29,11 @@ enum Grid_Cell_Data_Note_Status : String {
 }
 
 enum Grid_Cell_Data_Selectability_Status : String {
-    case selectability_Unassigned = "selectability_Unassigned"
-    case selectable = "selectable"
+    case not_In_A_Write_Viable_Group = "not_In_A_Write_Viable_Group"
+    case in_A_Write_Viable_Group = "in_A_Write_Viable_Group"
+}
+
+enum Grid_Cell_Data_Cursor_Status : String {
+    case is_The_Current_Cursor = "is_The_Current_Cursor"
+    case not_The_Current_Cursor = "not_Current_Cursor"
 }

@@ -73,42 +73,42 @@ class Note_Writer {
 
     func commit_Note(currCell:Cursor_Grid_Cell_Data_Store){
         
-        for cell in current_potentialNoteCellArray {
-
-            if cell == currCell {
-                if cell.grid_Cell_Data_Note_Status == .potentialSingle {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedSingle)
-                }
-                else if cell.grid_Cell_Data_Note_Status == .potentialStart {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedStart)
-                }
-                // TODO: Check if this is in error
-                else if cell.grid_Cell_Data_Note_Status == .potentialMiddle {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedMiddle)
-                }
-                else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedEnd)
-                }
-                currCell.grid_Cell_Data_Note_Status = .cursor_Active_Prohibited
-                
-            }
-            else if cell != currCell {
-                if cell.grid_Cell_Data_Note_Status == .potentialSingle {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedSingle)
-                }
-                else if cell.grid_Cell_Data_Note_Status == .potentialStart {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedStart)
-                }
-                else if cell.grid_Cell_Data_Note_Status == .potentialMiddle {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedMiddle)
-                }
-                else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
-                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedEnd)
-                }
-            }
-            
-        }
-        current_potentialNoteCellArray.removeAll()
+//        for cell in current_potentialNoteCellArray {
+//
+//            if cell == currCell {
+//                if cell.note_Status == .potentialSingle {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedSingle)
+//                }
+//                else if cell.note_Status == .potentialStart {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedStart)
+//                }
+//                // TODO: Check if this is in error
+//                else if cell.note_Status == .potentialMiddle {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedMiddle)
+//                }
+//                else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedEnd)
+//                }
+//                currCell.note_Status = .cursor_Active_Prohibited
+//
+//            }
+//            else if cell != currCell {
+//                if cell.note_Status == .potentialSingle {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedSingle)
+//                }
+//                else if cell.note_Status == .potentialStart {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedStart)
+//                }
+//                else if cell.note_Status == .potentialMiddle {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedMiddle)
+//                }
+//                else if cell.status_Before_I_Became_The_Cursor == .potentialEnd {
+//                    cell.processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .confirmedEnd)
+//                }
+//            }
+//
+//        }
+//        current_potentialNoteCellArray.removeAll()
     }
 
 }
@@ -131,33 +131,32 @@ class Recursive_Set_Manager {
     
     // TODO: parallell state changes
     func nil_Viable_Set(){
-        
         if let parentNoteWriter = parent_Note_Writer {
-            if let parentData = parentNoteWriter.parentGridData {
-                if let lclCurrCell = parentData.currCellData {
-                    
-                    
-                    if currentViableDataCellArray.count != 0 {
-                        for sell in currentViableDataCellArray {
-                            if sell == lclCurrCell {
-                                if sell.selectability_Status != .selectability_Unassigned {
-                                    sell.processSelectabilityUpdate(isCurrentSelectedPosition: true, selectabilityUpdateParam: .selectability_Unassigned)
-                                    if let sellPre = sell.status_Before_I_Became_The_Cursor {
-                                        sell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: sellPre)
-                                    }
-                                }
-                            }
-                            else if sell != lclCurrCell {
-                                if sell.selectability_Status != .selectability_Unassigned {
-                                    sell.processSelectabilityUpdate(isCurrentSelectedPosition: false, selectabilityUpdateParam: .selectability_Unassigned)
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                }
-            }
+//            if let parentData = parentNoteWriter.parentGridData {
+//                if let lclCurrCell = parentData.currCellData {
+//
+//
+//                    if currentViableDataCellArray.count != 0 {
+//                        for sell in currentViableDataCellArray {
+//                            if sell == lclCurrCell {
+//                                if sell.selectability_Status != .selectability_Unassigned {
+//                                    sell.processSelectabilityUpdate(isCurrentSelectedPosition: true, selectabilityUpdateParam: .selectability_Unassigned)
+//                                    if let sellPre = sell.status_Before_I_Became_The_Cursor {
+//                                        sell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: sellPre)
+//                                    }
+//                                }
+//                            }
+//                            else if sell != lclCurrCell {
+//                                if sell.selectability_Status != .selectability_Unassigned {
+//                                    sell.processSelectabilityUpdate(isCurrentSelectedPosition: false, selectabilityUpdateParam: .selectability_Unassigned)
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//
+//                }
+//            }
         }
         
         currentLowestViableCell_X_Index = nil
@@ -199,10 +198,10 @@ class Recursive_Set_Manager {
                 if let lclCurrCell = lclParentGridData.currCellData {
                     for cell in currentViableDataCellArray {
                         if cell == lclCurrCell {
-                            cell.processSelectabilityUpdate(isCurrentSelectedPosition: true, selectabilityUpdateParam: .selectable)
+                            cell.processSelectabilityUpdate(isCurrentSelectedPosition: true, selectabilityUpdateParam: .in_A_Write_Viable_Group)
                         }
                         else if cell != lclCurrCell {
-                            cell.processSelectabilityUpdate(isCurrentSelectedPosition: false, selectabilityUpdateParam: .selectable)
+                            cell.processSelectabilityUpdate(isCurrentSelectedPosition: false, selectabilityUpdateParam: .in_A_Write_Viable_Group)
                         }
                     }
                 }
@@ -212,9 +211,9 @@ class Recursive_Set_Manager {
     
     func checkTheCellIsWriteable(x_PlaceParam:Int,line_Cell_Array_Param : [Cursor_Grid_Cell_Data_Store])->Bool{
         var retval = false
-        if line_Cell_Array_Param[x_PlaceParam].grid_Cell_Data_Note_Status == .unassigned ||
-            line_Cell_Array_Param[x_PlaceParam].grid_Cell_Data_Note_Status == .cursor_Passive ||
-            line_Cell_Array_Param[x_PlaceParam].grid_Cell_Data_Note_Status == .cursor_Active_Writable {
+        if line_Cell_Array_Param[x_PlaceParam].note_Status == .unassigned ||
+            line_Cell_Array_Param[x_PlaceParam].note_Status == .cursor_Passive ||
+            line_Cell_Array_Param[x_PlaceParam].note_Status == .cursor_Active_Writable {
             retval = true
         }
         return retval
@@ -246,12 +245,12 @@ class Recursive_Set_Manager {
     
     func check_Higher_Termination_Criteria(valueToCheck: Int) {
         if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-            if lclLocked_Line_Cell_Array[valueToCheck].grid_Cell_Data_Note_Status != .unassigned {
+            if lclLocked_Line_Cell_Array[valueToCheck].note_Status != .unassigned {
                 if currentHighestViableCell_X_Index == nil {
                     currentHighestViableCell_X_Index = valueToCheck-1
                 }
             }
-            else if lclLocked_Line_Cell_Array[valueToCheck].grid_Cell_Data_Note_Status == .unassigned {
+            else if lclLocked_Line_Cell_Array[valueToCheck].note_Status == .unassigned {
                 raise_X_One_AndCheckAgain(int_To_Raise: (valueToCheck))
             }
         }
@@ -259,12 +258,12 @@ class Recursive_Set_Manager {
     
     func check_Lower_Termination_Criteria(valueToCheck: Int) {
         if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-            if lclLocked_Line_Cell_Array[valueToCheck].grid_Cell_Data_Note_Status != .unassigned {
+            if lclLocked_Line_Cell_Array[valueToCheck].note_Status != .unassigned {
                 if currentLowestViableCell_X_Index == nil {
                     currentLowestViableCell_X_Index = valueToCheck+1
                 }
             }
-            else if lclLocked_Line_Cell_Array[valueToCheck].grid_Cell_Data_Note_Status == .unassigned {
+            else if lclLocked_Line_Cell_Array[valueToCheck].note_Status == .unassigned {
                 drop_X_One_AndCheckAgain(int_To_Drop: (valueToCheck))
             }
         }
