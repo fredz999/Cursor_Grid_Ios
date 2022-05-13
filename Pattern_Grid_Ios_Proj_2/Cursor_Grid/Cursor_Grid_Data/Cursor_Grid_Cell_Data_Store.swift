@@ -26,9 +26,9 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     init(xParam:Int,yParam:Int){
         xNumber = xParam
         yNumber = yParam
-        current_Perimeter_Color = lclColors.status_Cell_Painter.unassigned_Cell_Perimeter_Color //lclColors.cellPerimeterColor_Normal
-        current_Font_Color = lclColors.status_Cell_Painter.unassigned_Cell_Font_Color//lclColors.cellFontColor_Normal
-        current_BackGround_Color = lclColors.status_Cell_Painter.unassigned_Cell_Background_Color//lclColors.cellBackGroundColor_Normal
+        current_Perimeter_Color = lclColors.status_Cell_Painter.color_Config_Bank.unassigned_Cell_Perimeter_Color
+        current_Font_Color = lclColors.status_Cell_Painter.color_Config_Bank.unassigned_Cell_Font_Color
+        current_BackGround_Color = lclColors.status_Cell_Painter.color_Config_Bank.unassigned_Cell_Background_Color
     }
     
     static func == (lhs: Cursor_Grid_Cell_Data_Store, rhs: Cursor_Grid_Cell_Data_Store) -> Bool {
@@ -72,7 +72,7 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     //===============================================================================================
     //===============================================================================================
     func handleStatusChange(){
-        lclColors.status_Cell_Painter.selectColorConfig(cellDataParam: self)
+        lclColors.status_Cell_Painter.color_Processor.color_Evaluation_Cursor(cellDataParam: self)
     }
     //===============================================================================================
 //    func restoreToPreCursor(){

@@ -27,7 +27,7 @@ class Cursor_Grid_Line_Data_Store : ObservableObject, Identifiable {
         for x in 0..<lclDimensions.numberCellsGridHorizontal {
         let data = Cursor_Grid_Cell_Data_Store(xParam: x, yParam: place_In_Parent_Line_Array)
         data.setParentLineData(parentDataLineParam: self)
-        lclColors.status_Cell_Painter.selectColorConfig(cellDataParam: data)
+            lclColors.status_Cell_Painter.color_Processor.color_Evaluation_Cursor(cellDataParam: data)
         cell_Data_Array.append(data)
         }
     }

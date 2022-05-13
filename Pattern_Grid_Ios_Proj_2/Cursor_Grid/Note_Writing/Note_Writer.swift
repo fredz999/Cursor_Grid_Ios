@@ -47,6 +47,7 @@ class Note_Writer {
             
             
         }
+        
         else if current_potentialNoteCellArray.count > 2 {
             
               let finalIndex = current_potentialNoteCellArray.count-1
@@ -132,31 +133,23 @@ class Recursive_Set_Manager {
     // TODO: parallell state changes
     func nil_Viable_Set(){
         if let parentNoteWriter = parent_Note_Writer {
-//            if let parentData = parentNoteWriter.parentGridData {
-//                if let lclCurrCell = parentData.currCellData {
-//
-//
-//                    if currentViableDataCellArray.count != 0 {
-//                        for sell in currentViableDataCellArray {
-//                            if sell == lclCurrCell {
-//                                if sell.selectability_Status != .selectability_Unassigned {
-//                                    sell.processSelectabilityUpdate(isCurrentSelectedPosition: true, selectabilityUpdateParam: .selectability_Unassigned)
-//                                    if let sellPre = sell.status_Before_I_Became_The_Cursor {
-//                                        sell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: sellPre)
-//                                    }
-//                                }
-//                            }
-//                            else if sell != lclCurrCell {
-//                                if sell.selectability_Status != .selectability_Unassigned {
-//                                    sell.processSelectabilityUpdate(isCurrentSelectedPosition: false, selectabilityUpdateParam: .selectability_Unassigned)
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//
-//                }
-//            }
+            if let parentData = parentNoteWriter.parentGridData {
+                if let lclCurrCell = parentData.currCellData {
+
+                    
+                    if currentViableDataCellArray.count != 0 {
+                        for sell in currentViableDataCellArray {
+                            if sell == lclCurrCell {
+                                
+                            }
+                            else if sell != lclCurrCell {
+
+                            }
+                        }
+                    }
+
+                }
+            }
         }
         
         currentLowestViableCell_X_Index = nil

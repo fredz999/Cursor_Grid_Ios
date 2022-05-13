@@ -21,7 +21,6 @@ struct Note_Drawing_Button_View: View {
                 Text("Write Note").font(.system(size: 14)).foregroundColor(.white)
                 Text(note_Drawing_Button_Store.txt).font(.system(size: 14)).foregroundColor(.white)
             }
-            
         }.onTapGesture {
             note_Drawing_Button_Store.flipNoteWriting()
         }

@@ -156,12 +156,14 @@ class Cursor_Grid_Data_Store : ObservableObject {
             }
         
             else if note_Writer.recursive_Set_Manager.currentViableDataCellArray.count != 0 {
+                print("bu'zuuuuh")
                 if let lclLower = note_Writer.recursive_Set_Manager.currentLowestViableCell_X_Index
                 , let lclUpper = note_Writer.recursive_Set_Manager.currentHighestViableCell_X_Index {
-                    
+                    print("bu'zuuuuh, tuuuuh")
                     if let lclCurrData = currCellData {
+                        print("bu'zuuuuh, thruuuuh")
                         if lclCurrData.xNumber >= lclLower, lclCurrData.xNumber <= lclUpper {
-                            
+                            print("bu'zuuuuh, fuuuuh, xnumbahhh: ",lclCurrData.xNumber)
                             // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .selectable)
                             // may 13th
                             // write in here but only refer to the cells within the viable list and ...ok were already within the
@@ -171,6 +173,12 @@ class Cursor_Grid_Data_Store : ObservableObject {
                             // TODO: parallell state changes
                             // this has to now change because the cursor is being handled seperately
                             // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Writable)
+                            
+                            
+                            lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+                            
+                            lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Writable)
+                            
                             
                             //print("we need a write in here")
                         }
@@ -183,6 +191,9 @@ class Cursor_Grid_Data_Store : ObservableObject {
                             // this has to now change because the cursor is being handled seperately
                             // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Prohibited)
                             
+                            lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+                            
+                            lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Prohibited)
                             
                             //print("either there needs to be a prohib, or a viable array re-definition")
                         }
