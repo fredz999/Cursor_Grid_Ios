@@ -21,7 +21,6 @@ struct Horizontal_Slider_View : UIViewRepresentable {
     
     init(horizontal_Slider_Coordinator_Store_Param : Horizontal_Slider_Coordinator_Store){
         
-        print("horizontal_Slider_Coordinator_Store init called in H_Slider view")
         
         horizontal_Slider_Coordinator_Store = horizontal_Slider_Coordinator_Store_Param
         

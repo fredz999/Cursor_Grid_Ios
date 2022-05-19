@@ -78,7 +78,7 @@ class Horizontal_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource,
             return 0
         }
     
-        func goToEnd(){
+        func horizontal_GoToEnd(){
             let indexToScrollTo = IndexPath(item: 13, section: 0)
             if let lclCollection_View = h_Collection_View{
                 lclCollection_View.scrollToItem(at: indexToScrollTo, at: .left, animated: false)

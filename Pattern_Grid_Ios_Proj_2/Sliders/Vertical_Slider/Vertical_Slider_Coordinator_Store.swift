@@ -46,7 +46,7 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     // MARK: UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = dimz.v_SliderCellWidth  //collectionView.frame.width / 3
+        let width = dimz.v_SliderCellWidth
         let height = dimz.v_SliderCellHeight
         return CGSize(width: width, height: height)
     }
@@ -72,6 +72,20 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
                 lclV_Collection_View.isScrollEnabled = true
             }
         }
+    }
+    
+    let lclDimensions = ComponentDimensions.StaticComponentDimensions
+    
+    func vertical_GoToEnd(){
+        
+        let last = lclDimensions.useable_Data_Range_Upper_Limit-1
+        print("vertical_GoToEnd(), last: ",last.description)
+        let indexToScrollTo = IndexPath(item: 33, section: 0)
+        
+        if let lclCollection_View = v_Collection_View {
+            lclCollection_View.scrollToItem(at: indexToScrollTo, at: .bottom, animated: false)
+        }
+        
     }
 
 }

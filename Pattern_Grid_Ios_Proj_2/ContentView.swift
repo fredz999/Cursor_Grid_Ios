@@ -89,6 +89,19 @@ struct Thing_With_All_The_Things_On_It : View {
         Note_Drawing_Button_View(note_Drawing_Button_Store: noteDrawingButtonStore)
         .offset(x: dimensions.return_Note_Drawing_Button_X_Pos(), y:dimensions.return_Note_Drawing_Button_Y_Pos())
             
+        // button to take the vertical to the end(have to reverse the direction of the slide...might make the sliders independant)
+        // entities that just yield single Integers
+            
+        Button(action:{
+            vertical_Slider_Coordinator_Store.vertical_GoToEnd()
+        }){
+            ZStack(alignment: .topLeading){
+                Rectangle().frame(width: 50, height: 50).foregroundColor(Color(red: 0.5, green: 1.0, blue: 0)).cornerRadius(6)
+                Text("⬇").foregroundColor(Color(red: 0, green: 0, blue: 0.4))
+            }
+        }.offset(x: 10, y: 360)
+            
+            
         }
     }
     
@@ -119,7 +132,7 @@ struct Horizontal_Slider_Container_View : View {
         }
         }.onAppear{
             DispatchQueue.main.async {
-                horizontal_Slider_Coordinator_Store.goToEnd()
+                horizontal_Slider_Coordinator_Store.horizontal_GoToEnd()
             }
         }
     }

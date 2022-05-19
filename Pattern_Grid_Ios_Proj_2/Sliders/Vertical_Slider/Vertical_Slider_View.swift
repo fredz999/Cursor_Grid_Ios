@@ -14,7 +14,7 @@ struct Vertical_Slider_View: UIViewRepresentable {
     
     init(vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
     //init(vSliderResponderArrayParam : [P_VSlider_Responder],vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
-        print("init() called in V_Slider voew.......")
+
         vertical_Slider_Coordinator_Store = vertical_Slider_Coordinator_Param
         
         //vSliderResponderArray = vSliderResponderArrayParam

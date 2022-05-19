@@ -11,9 +11,7 @@ import Combine
 
 class Cursor_Grid_Data_Store : ObservableObject {
     
-    var current_Cursor_Y_Int : Int = 0
     
-    var current_Cursor_X_Int : Int = 0
     
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
@@ -26,71 +24,117 @@ class Cursor_Grid_Data_Store : ObservableObject {
     }
     
     func setChildren(){
+        
         for y in 0..<lclDimensions.returnGridVerticalEnd(){
         let line_Data = Cursor_Grid_Line_Data_Store(lineNumberParam: y)
         line_Data.setParentGridData(parentGridParam: self)
+        //line_Data.set_In_Line_Cursor_Cell(xParam: current_Cursor_Y_Int)
         cell_Line_Array.append(line_Data)
         }
-        currCellData = cell_Line_Array[0].return_Inverse_Cell(x_Param: 0)
-        cell_Line_Array[0].cell_Data_Array[2].note_Status = .confirmedSingle
-        cell_Line_Array[0].cell_Data_Array[11].note_Status = .confirmedSingle
+        
+        currCellData = cell_Line_Array[0].cell_Data_Array[current_Cursor_X_Int]          //.return_Inverse_Cell(x_Param: 0)
+        //update_Data_Cursor_Y(new_Cursor_Y_Int: 0)
+        
+//        cell_Line_Array[0].cell_Data_Array[2].note_Status = .confirmedSingle
+//        cell_Line_Array[0].cell_Data_Array[11].note_Status = .confirmedSingle
+        
+        current_Cursor_Line = cell_Line_Array[0]
+        
         note_Writer.parentGridData = self
+        
+        
     }
     
+    var current_Cursor_Line : Cursor_Grid_Line_Data_Store?
+    {
+        willSet {
+            if let lcl_current_Cursor_Line = current_Cursor_Line {
+                lcl_current_Cursor_Line.nil_In_Line_Cursor_Cell()
+            }
+        }
+        didSet {
+            if let lcl_current_Cursor_Line = current_Cursor_Line {
+                lcl_current_Cursor_Line.set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
+            }
+        }
+    }
+
+    var current_Cursor_Y_Int : Int = 0
+    
     func update_Data_Cursor_Y(new_Cursor_Y_Int:Int){
+
         if new_Cursor_Y_Int >= 0 , new_Cursor_Y_Int <= cell_Line_Array.count {
             
             if new_Cursor_Y_Int != current_Cursor_Y_Int {
                 
                 current_Cursor_Y_Int = new_Cursor_Y_Int
                 
-                currCellData = cell_Line_Array[new_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
-
-                if noteWritingActivated == true {
-                    note_UpDate_Handler()
-                }
+                current_Cursor_Line = cell_Line_Array[new_Cursor_Y_Int]
                 
-                else if noteWritingActivated == false {
-                    if let lclCurrData = currCellData {
-                        // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
-                        // lclCurrData.processStatusUpdate(statusUpdateParam: nil)
-                        lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-                    }
-                }
+                //currCellData = cell_Line_Array[new_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
+
+                //current_Cursor_Line = new_Cursor_Y_Int
+                
+//                if noteWritingActivated == true {
+//                    note_UpDate_Handler()
+//                }
+//                
+//                else if noteWritingActivated == false {
+                
+//                    if let lclCurrData = currCellData {
+//                        lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                    }
+                
+                
+//                }
                 
             }
         }
     }
     
+    var current_Cursor_X_Int : Int = 0
+    
     func update_Data_Cursor_X(new_Cursor_X_Int:Int) {
-        
+
         if new_Cursor_X_Int >= 0, new_Cursor_X_Int < lclDimensions.numberCellsGridHorizontal {
             
             if new_Cursor_X_Int != current_Cursor_X_Int {
+                
+            cell_Line_Array[current_Cursor_Y_Int].nil_In_Line_Cursor_Cell()
 
             current_Cursor_X_Int = new_Cursor_X_Int
-            
-            currCellData = cell_Line_Array[current_Cursor_Y_Int].return_Inverse_Cell(x_Param: new_Cursor_X_Int)
+                
+            cell_Line_Array[current_Cursor_Y_Int].set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
 
-            if noteWritingActivated == true {
-                note_UpDate_Handler()
             }
-            
-            else if noteWritingActivated == false {
-                if let lclCurrData = currCellData {
-                    // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
-                    // lclCurrData.processStatusUpdate(statusUpdateParam: nil)
-                    // probably only the cursor here, the status in the note writer and the selectability in the
-                    // selection activation thingy...will see if its actually a net positive for the UIX
-                    lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-                }
-            }
-                                
-            }
+
         }
     }
     
-    // TODO: parallell state changes
+//    func update_Data_Cursor_X(new_Cursor_X_Int:Int) {
+//
+//        if new_Cursor_X_Int >= 0, new_Cursor_X_Int < lclDimensions.numberCellsGridHorizontal {
+//
+//            if new_Cursor_X_Int != current_Cursor_X_Int {
+//
+//            current_Cursor_X_Int = new_Cursor_X_Int
+//
+//            currCellData = cell_Line_Array[current_Cursor_Y_Int].return_Inverse_Cell(x_Param: new_Cursor_X_Int)
+//
+//            if noteWritingActivated == true {
+//                note_UpDate_Handler()
+//            }
+//
+//            else if noteWritingActivated == false {
+//                if let lclCurrData = currCellData {
+//                    lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                }
+//            }
+//
+//            }
+//        }
+//    }
+    
     var noteWritingActivated : Bool = false {
         didSet {
             
@@ -99,119 +143,58 @@ class Cursor_Grid_Data_Store : ObservableObject {
             }
             
             else if noteWritingActivated == false {
-                // print("pre nil viable set currentViableDataCellArray.count",note_Writer.recursive_Set_Manager.currentViableDataCellArray.count)
+                note_Writer.react_To_Write_Off()
                 note_Writer.recursive_Set_Manager.nil_Viable_Set()
-                // set cursor - it will be prohib for the majority of cases
-                if let lclCurrData = currCellData {
-                    lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: nil)
-                }
-                
-                // hmm 0? ..... find oot why
-                // print("note_Writer.recursive_Set_Manager.currentViableDataCellArray.count",note_Writer.recursive_Set_Manager.currentViableDataCellArray.count)
-                // if there is a viable set then it has to have its member cells de - selected here
-                
-//                if note_Writer.recursive_Set_Manager.currentViableDataCellArray.count != 0 {
-//                    for sell in note_Writer.recursive_Set_Manager.currentViableDataCellArray {
-//                        if sell.selectability_Status != .selectability_Unassigned {
-//                            sell.selectability_Status = .selectability_Unassigned
+//                if let lclCurrData = currCellData {
+//                    lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                }
+            }
+        }
+    }
+    
+    var currCellData : Cursor_Grid_Cell_Data_Store?
+//    {
+//        willSet {
+//            if let lclCurrCellData = currCellData {
+//                if lclCurrCellData.cursor_Status == .is_The_Current_Cursor {
+//                    lclCurrCellData.cursor_Status = .not_The_Current_Cursor
+//                }
+//            }
+//        }
+//    }
+    
+    func note_UpDate_Handler() {
+//        if note_Writer.recursive_Set_Manager.all_The_Cells_Of_The_Locked_Line == nil {
+//            note_Writer.recursive_Set_Manager.all_The_Cells_Of_The_Locked_Line = cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array
+//        }
+//    
+//        if note_Writer.recursive_Set_Manager.currentViableDataCellArray.count == 0 {
+//            //let invCell = cell_Line_Array[current_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
+//            
+//            let invCell = cell_Line_Array[current_Cursor_Y_Int].in_Line_Cursor_Cell
+//            
+//            
+//            if let _ = note_Writer.recursive_Set_Manager.all_The_Cells_Of_The_Locked_Line {
+//            note_Writer.recursive_Set_Manager.define_Viable_Set(x_PlaceParam: invCell.xNumber)
+//            }
+//            
+//            if let lclStarterIndex = note_Writer.recursive_Set_Manager.starter_Cell_Index {
+//            note_Writer.consider_Cell_For_Addition(viable_Array_Index: lclStarterIndex)
+//            }
+//        }
+//    
+//        else if note_Writer.recursive_Set_Manager.currentViableDataCellArray.count != 0 {
+//            if let lclLower = note_Writer.recursive_Set_Manager.currentLowestViableCell_X_Index
+//            , let lclUpper = note_Writer.recursive_Set_Manager.currentHighestViableCell_X_Index {
+//                if let lclCurrData = currCellData {
+//                    if lclCurrData.xNumber >= lclLower, lclCurrData.xNumber <= lclUpper {
+//                        if let lclViable_Set_Index = lclCurrData.place_In_Viable_Set {
+//                            note_Writer.consider_Cell_For_Addition(viable_Array_Index: lclViable_Set_Index)
 //                        }
 //                    }
 //                }
-//                else {
-//                    print("sdfvlsduibfvoisdfubvsdf")
-//                }
-                
-                
-            }
-        }
-    }
-    
-    // TODO: parallell state changes
-    var currCellData : Cursor_Grid_Cell_Data_Store? {
-        willSet {
-            if let lclCurrCellData = currCellData {
-//                if lclCurrCellData.status_Before_I_Became_The_Cursor != nil{
-//                    lclCurrCellData.restoreToPreCursor()
-//                }
-                if lclCurrCellData.cursor_Status == .is_The_Current_Cursor {
-                    lclCurrCellData.cursor_Status = .not_The_Current_Cursor
-                }
-            }
-        }
-        
-    }
-    
-    func note_UpDate_Handler() {
-
-        
-            if note_Writer.recursive_Set_Manager.all_The_Cells_Of_The_Locked_Line == nil {
-                note_Writer.recursive_Set_Manager.all_The_Cells_Of_The_Locked_Line = cell_Line_Array[current_Cursor_Y_Int].cell_Data_Array
-            }
-        
-            if note_Writer.recursive_Set_Manager.currentViableDataCellArray.count == 0 {
-                if let _ = note_Writer.recursive_Set_Manager.all_The_Cells_Of_The_Locked_Line {
-                let invCell = cell_Line_Array[current_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
-                note_Writer.recursive_Set_Manager.define_Viable_Set(x_PlaceParam: invCell.xNumber)
-                }
-            }
-        
-            else if note_Writer.recursive_Set_Manager.currentViableDataCellArray.count != 0 {
-                print("bu'zuuuuh")
-                if let lclLower = note_Writer.recursive_Set_Manager.currentLowestViableCell_X_Index
-                , let lclUpper = note_Writer.recursive_Set_Manager.currentHighestViableCell_X_Index {
-                    print("bu'zuuuuh, tuuuuh")
-                    if let lclCurrData = currCellData {
-                        print("bu'zuuuuh, thruuuuh")
-                        if lclCurrData.xNumber >= lclLower, lclCurrData.xNumber <= lclUpper {
-                            print("bu'zuuuuh, fuuuuh, xnumbahhh: ",lclCurrData.xNumber)
-                            // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .selectable)
-                            // may 13th
-                            // write in here but only refer to the cells within the viable list and ...ok were already within the
-                            // viable upper and lower limits.....
-                            
-                            
-                            // TODO: parallell state changes
-                            // this has to now change because the cursor is being handled seperately
-                            // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Writable)
-                            
-                            
-                            lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-                            
-                            lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Writable)
-                            
-                            
-                            //print("we need a write in here")
-                        }
-                        else {
-                            // may 13th contd ...
-                            // figure oot why the out commented stuff in here only does prohib after the cursor leaves
-                            // and why it dosent get put back to normal after the cursor goes out
-                            
-                            // TODO: parallell state changes
-                            // this has to now change because the cursor is being handled seperately
-                            // lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Prohibited)
-                            
-                            lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-                            
-                            lclCurrData.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .cursor_Active_Prohibited)
-                            
-                            //print("either there needs to be a prohib, or a viable array re-definition")
-                        }
-                    }
-
-                }
-
-            }
-
-        
-            //2: choose from within the locked line viable list
-            // 2-1: ascertain the lowerX
-            // 2-2: ascertain the upperX
-            // construct the potentialArray from within the viableCellArray within the lockedLine and limited
-            // by these two element numbers - (index numbers from the viable array)
-            // currently the lowerX and upperX and viable array are in the line object
-            // they need to be in the note writer I think
-
+//            }
+//        }
     }
     
     var note_Writer : Note_Writer = Note_Writer()

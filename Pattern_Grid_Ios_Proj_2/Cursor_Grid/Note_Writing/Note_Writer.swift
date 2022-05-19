@@ -15,7 +15,11 @@ class Note_Writer {
     
     var recursive_Set_Manager : Recursive_Set_Manager   //= Recursive_Set_Manager()
     
-    var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []
+    var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []{
+        didSet{
+            setStatus_Of_Member_Cells()
+        }
+    }
     
     init(){
         recursive_Set_Manager = Recursive_Set_Manager()
@@ -26,50 +30,149 @@ class Note_Writer {
         recursive_Set_Manager.parent_Note_Writer = self
     }
     
-    func setStatus_Of_Member_Cells(){
+    func consider_Cell_For_Addition(viable_Array_Index: Int){
         
-        if current_potentialNoteCellArray.count == 1{
-            current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialSingle)
-        }
-        else if current_potentialNoteCellArray.count == 2{
+        if recursive_Set_Manager.viable_Set_Formed, let lclStartIndex = recursive_Set_Manager.starter_Cell_Index {
             
-            let xNumStart = current_potentialNoteCellArray[0].xNumber
-            let xNumEnd = current_potentialNoteCellArray[1].xNumber
+            current_potentialNoteCellArray.removeAll()
             
-            if xNumStart < xNumEnd {
-                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
-                current_potentialNoteCellArray[1].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
-            }
-            else if xNumStart > xNumEnd {
-                current_potentialNoteCellArray[1].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
-                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+            if lclStartIndex == viable_Array_Index {
+                current_potentialNoteCellArray.append(recursive_Set_Manager.currentViableDataCellArray[lclStartIndex])
+                setStatus_Of_Member_Cells()
             }
             
-            
-        }
-        
-        else if current_potentialNoteCellArray.count > 2 {
-            
-              let finalIndex = current_potentialNoteCellArray.count-1
-              let xNumStart = current_potentialNoteCellArray[0].xNumber
-              let xNumEnd = current_potentialNoteCellArray[finalIndex].xNumber
-              if xNumStart < xNumEnd{
-                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
-                for i in 1..<finalIndex{
-                    current_potentialNoteCellArray[i].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialMiddle)
+            else if lclStartIndex < viable_Array_Index {
+                for x in lclStartIndex...viable_Array_Index {
+                    current_potentialNoteCellArray.append(recursive_Set_Manager.currentViableDataCellArray[x])
                 }
-                current_potentialNoteCellArray[finalIndex].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+                setStatus_Of_Member_Cells()
             }
-            if xNumStart > xNumEnd{
-                current_potentialNoteCellArray[finalIndex].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialStart)
-                for i in 1..<finalIndex{
-                    current_potentialNoteCellArray[i].processStatusUpdate(isCurrentSelectedPosition: false, statusUpdateParam: .potentialMiddle)
+
+            else if lclStartIndex > viable_Array_Index {
+                for x in viable_Array_Index...lclStartIndex {
+                    current_potentialNoteCellArray.append(recursive_Set_Manager.currentViableDataCellArray[x])
                 }
-                current_potentialNoteCellArray[0].processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .potentialEnd)
+                setStatus_Of_Member_Cells()
             }
-              
+            
         }
     }
+    
+    func setStatus_Of_Member_Cells(){
+        
+        for cell in recursive_Set_Manager.currentViableDataCellArray {
+            cell.current_BackGround_Color = .orange
+        }
+        //===================================================================
+        //===================================================================
+        if current_potentialNoteCellArray.count == 1 {
+            //current_potentialNoteCellArray[0].current_BackGround_Color = .red
+            current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialSingle)
+        }
+        else if current_potentialNoteCellArray.count == 2 {
+            current_potentialNoteCellArray[0].current_BackGround_Color = .black
+            current_potentialNoteCellArray[1].current_BackGround_Color = .white
+        }
+        else if current_potentialNoteCellArray.count > 2 {
+            let finalIndex = current_potentialNoteCellArray.count - 1
+            let penultimateIndex = current_potentialNoteCellArray.count - 2
+            current_potentialNoteCellArray[0].current_BackGround_Color = .black
+            for x in 1...(penultimateIndex){
+                current_potentialNoteCellArray[x].current_BackGround_Color = .gray
+            }
+            current_potentialNoteCellArray[finalIndex].current_BackGround_Color = .white
+        }
+        
+    }
+    
+    func react_To_Write_Off(){
+        for cell in recursive_Set_Manager.currentViableDataCellArray {
+            cell.processSelectabilityUpdate(selectabilityUpdateParam: .not_In_A_Write_Viable_Group)
+        }
+        
+//        for cell in current_potentialNoteCellArray{
+//            if cell.note_Status
+//        }
+        
+    }
+    
+    
+//    for cell in current_potentialNoteCellArray {
+//        cell.current_BackGround_Color = .green
+//    }
+    
+//    for cell in recursive_Set_Manager.currentViableDataCellArray {
+//        cell.current_BackGround_Color = .orange
+//    }
+//
+//    for cell in current_potentialNoteCellArray {
+//        cell.current_BackGround_Color = .red
+//    }
+    
+    
+//    func setStatus_Of_Member_Cells(){
+//
+//        if current_potentialNoteCellArray.count == 1 {
+//            current_potentialNoteCellArray[0].processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//            current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialSingle)
+//        }
+//        else if current_potentialNoteCellArray.count == 2{
+//            let xNumStart = current_potentialNoteCellArray[0].xNumber
+//            let xNumEnd = current_potentialNoteCellArray[1].xNumber
+//
+//            if xNumStart < xNumEnd {
+//
+//                current_potentialNoteCellArray[0].processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//                current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialStart)
+//
+//                current_potentialNoteCellArray[1].processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                current_potentialNoteCellArray[1].processStatusUpdate(statusUpdateParam: .potentialEnd)
+//            }
+//            else if xNumStart > xNumEnd {
+//
+//                current_potentialNoteCellArray[1].processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//                current_potentialNoteCellArray[1].processStatusUpdate(statusUpdateParam: .potentialStart)
+//
+//                current_potentialNoteCellArray[0].processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialEnd)
+//            }
+//
+//
+//        }
+//
+//        else if current_potentialNoteCellArray.count > 2 {
+//              let finalIndex = current_potentialNoteCellArray.count-1
+//              let xNumStart = current_potentialNoteCellArray[0].xNumber
+//              let xNumEnd = current_potentialNoteCellArray[finalIndex].xNumber
+//              if xNumStart < xNumEnd{
+//
+//                current_potentialNoteCellArray[0].processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//                current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialStart)
+//                for i in 1..<finalIndex{
+//
+//                    current_potentialNoteCellArray[i].processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//                    current_potentialNoteCellArray[i].processStatusUpdate(statusUpdateParam: .potentialMiddle)
+//                }
+//
+//                  current_potentialNoteCellArray[finalIndex].processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                  current_potentialNoteCellArray[finalIndex].processStatusUpdate(statusUpdateParam: .potentialEnd)
+//            }
+//            if xNumStart > xNumEnd{
+//
+//                current_potentialNoteCellArray[finalIndex].processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//                current_potentialNoteCellArray[finalIndex].processStatusUpdate(statusUpdateParam: .potentialStart)
+//                for i in 1..<finalIndex{
+//
+//                    current_potentialNoteCellArray[i].processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//                    current_potentialNoteCellArray[i].processStatusUpdate(statusUpdateParam: .potentialMiddle)
+//                }
+//
+//                current_potentialNoteCellArray[0].processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//                current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialEnd)
+//            }
+//
+//        }
+//    }
     
 
     func commit_Note(currCell:Cursor_Grid_Cell_Data_Store){
@@ -114,152 +217,4 @@ class Note_Writer {
 
 }
 
-class Recursive_Set_Manager {
-    
-    let lclDimensions = ComponentDimensions.StaticComponentDimensions
-    
-    var parent_Note_Writer: Note_Writer?
-    
-    var all_The_Cells_Of_The_Locked_Line : [Cursor_Grid_Cell_Data_Store]?
 
-    var viable_Set_Formed : Bool = false
-    
-    var currentViableDataCellArray : [Cursor_Grid_Cell_Data_Store] = []
-    
-    var currentLowestViableCell_X_Index : Int?
-    
-    var currentHighestViableCell_X_Index : Int?
-    
-    // TODO: parallell state changes
-    func nil_Viable_Set(){
-        if let parentNoteWriter = parent_Note_Writer {
-            if let parentData = parentNoteWriter.parentGridData {
-                if let lclCurrCell = parentData.currCellData {
-
-                    
-                    if currentViableDataCellArray.count != 0 {
-                        for sell in currentViableDataCellArray {
-                            if sell == lclCurrCell {
-                                
-                            }
-                            else if sell != lclCurrCell {
-
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-        
-        currentLowestViableCell_X_Index = nil
-        currentHighestViableCell_X_Index = nil
-
-        currentViableDataCellArray.removeAll()
-        all_The_Cells_Of_The_Locked_Line = nil
-        if viable_Set_Formed == true { viable_Set_Formed = false }
-        
-    }
-    
-    func define_Viable_Set(x_PlaceParam:Int){
-
-        if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-            
-            if checkTheCellIsWriteable(x_PlaceParam: x_PlaceParam, line_Cell_Array_Param: lclLocked_Line_Cell_Array) == true {
-                drop_X_One_AndCheckAgain(int_To_Drop: x_PlaceParam)
-                raise_X_One_AndCheckAgain(int_To_Raise: x_PlaceParam)
-            }
-
-            if let lclLow = currentLowestViableCell_X_Index
-                , let lclHigh = currentHighestViableCell_X_Index {
-                for x in lclLow...lclHigh {
-                    currentViableDataCellArray.append(lclLocked_Line_Cell_Array[x])
-                }
-            }
-
-            if currentViableDataCellArray.count > 0 {
-                if viable_Set_Formed == false { viable_Set_Formed = true }
-                color_Viable_Set() 
-            }
-            
-        }
-    }
-    
-    func color_Viable_Set() {
-        if let lclParentNoteWriter = parent_Note_Writer {
-            if let lclParentGridData = lclParentNoteWriter.parentGridData {
-                if let lclCurrCell = lclParentGridData.currCellData {
-                    for cell in currentViableDataCellArray {
-                        if cell == lclCurrCell {
-                            cell.processSelectabilityUpdate(isCurrentSelectedPosition: true, selectabilityUpdateParam: .in_A_Write_Viable_Group)
-                        }
-                        else if cell != lclCurrCell {
-                            cell.processSelectabilityUpdate(isCurrentSelectedPosition: false, selectabilityUpdateParam: .in_A_Write_Viable_Group)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func checkTheCellIsWriteable(x_PlaceParam:Int,line_Cell_Array_Param : [Cursor_Grid_Cell_Data_Store])->Bool{
-        var retval = false
-        if line_Cell_Array_Param[x_PlaceParam].note_Status == .unassigned ||
-            line_Cell_Array_Param[x_PlaceParam].note_Status == .cursor_Passive ||
-            line_Cell_Array_Param[x_PlaceParam].note_Status == .cursor_Active_Writable {
-            retval = true
-        }
-        return retval
-    }
-    
-    func raise_X_One_AndCheckAgain(int_To_Raise:Int){
-        if int_To_Raise <= lclDimensions.gridCellsHorizontalFinalIndex-1 {
-            let newVal = int_To_Raise+1
-            check_Higher_Termination_Criteria(valueToCheck: newVal)
-        }
-        else if int_To_Raise == lclDimensions.gridCellsHorizontalFinalIndex {
-            if currentHighestViableCell_X_Index == nil {
-                currentHighestViableCell_X_Index = lclDimensions.gridCellsHorizontalFinalIndex
-            }
-        }
-    }
-    
-    func drop_X_One_AndCheckAgain(int_To_Drop:Int){
-        if int_To_Drop >= 1 {
-            let newVal = int_To_Drop-1
-            check_Lower_Termination_Criteria(valueToCheck: newVal)
-        }
-        else if int_To_Drop == 0 {
-            if currentLowestViableCell_X_Index == nil {
-            currentLowestViableCell_X_Index = 0
-            }
-        }
-    }
-    
-    func check_Higher_Termination_Criteria(valueToCheck: Int) {
-        if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-            if lclLocked_Line_Cell_Array[valueToCheck].note_Status != .unassigned {
-                if currentHighestViableCell_X_Index == nil {
-                    currentHighestViableCell_X_Index = valueToCheck-1
-                }
-            }
-            else if lclLocked_Line_Cell_Array[valueToCheck].note_Status == .unassigned {
-                raise_X_One_AndCheckAgain(int_To_Raise: (valueToCheck))
-            }
-        }
-    }
-    
-    func check_Lower_Termination_Criteria(valueToCheck: Int) {
-        if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-            if lclLocked_Line_Cell_Array[valueToCheck].note_Status != .unassigned {
-                if currentLowestViableCell_X_Index == nil {
-                    currentLowestViableCell_X_Index = valueToCheck+1
-                }
-            }
-            else if lclLocked_Line_Cell_Array[valueToCheck].note_Status == .unassigned {
-                drop_X_One_AndCheckAgain(int_To_Drop: (valueToCheck))
-            }
-        }
-    }
-    
-}

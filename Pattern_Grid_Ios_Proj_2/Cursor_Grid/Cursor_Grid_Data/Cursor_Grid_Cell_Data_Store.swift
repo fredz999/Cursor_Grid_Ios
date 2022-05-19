@@ -21,6 +21,8 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     var yNumber : Int
     var xNumber : Int
     
+    var place_In_Viable_Set : Int?
+    
     var parentDataLine : Cursor_Grid_Line_Data_Store?
 
     init(xParam:Int,yParam:Int){
@@ -41,58 +43,43 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         parentDataLine = parentDataLineParam
     }
     
-    
-    
-    
-    
-    //===============================================================================================
-    //===============================================================================================
-    // TODO: parallell state changes -- cursor
-    //var status_Before_I_Became_The_Cursor : Grid_Cell_Data_Note_Status? = nil
+    //=============================================
     var cursor_Status : Grid_Cell_Data_Cursor_Status = .not_The_Current_Cursor
     {
         didSet {
-            handleStatusChange()
+            handleCursorStatusChange()
         }
     }
     
     var selectability_Status : Grid_Cell_Data_Selectability_Status = .not_In_A_Write_Viable_Group
-    {
-        didSet {
-            handleStatusChange()
-        }
-    }
-    
-    var note_Status : Grid_Cell_Data_Note_Status = .unassigned
-    {
-        didSet {
-            handleStatusChange()
-        }
-    }
-    //===============================================================================================
-    //===============================================================================================
-    func handleStatusChange(){
-        lclColors.status_Cell_Painter.color_Processor.color_Evaluation_Cursor(cellDataParam: self)
-    }
-    //===============================================================================================
-//    func restoreToPreCursor(){
-//        if let previousStatus = status_Before_I_Became_The_Cursor {
-//            note_Status = previousStatus
-//            status_Before_I_Became_The_Cursor = nil
+//    {
+//        didSet {
+//            handleStatusChange()
 //        }
 //    }
     
+    var note_Status : Grid_Cell_Data_Note_Status = .unassigned
+//    {
+//        didSet {
+//            handleStatusChange()
+//        }
+//    }
+    
+    var note_Status_Before_I_Becamse_The_Cursor : Grid_Cell_Data_Note_Status?
+    
     func processCursorStatusUpdate(isCurrentSelectedPositionParam:Bool){
+        //print("processCursorStatusUpdate(isCurrentSelectedPositionParam:Bool){ ....... ")
         if isCurrentSelectedPositionParam == true {
             cursor_Status = .is_The_Current_Cursor
         }
         else if isCurrentSelectedPositionParam == false {
             cursor_Status = .not_The_Current_Cursor
         }
+        handleCursorStatusChange()
     }
     
-    // TODO: parallell state changes -- selectability
-    func processSelectabilityUpdate(isCurrentSelectedPosition:Bool,selectabilityUpdateParam:Grid_Cell_Data_Selectability_Status?){
+   
+    func processSelectabilityUpdate(selectabilityUpdateParam:Grid_Cell_Data_Selectability_Status?){
         
         if selectabilityUpdateParam == .in_A_Write_Viable_Group {
             selectability_Status = .in_A_Write_Viable_Group
@@ -101,65 +88,40 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         else if selectabilityUpdateParam == .not_In_A_Write_Viable_Group {
             selectability_Status = .not_In_A_Write_Viable_Group
         }
-        
-        handleStatusChange()
-        
+
     }
     
-    // TODO: parallell state changes -- status
-    
-    func processStatusUpdate(statusUpdateParam:Grid_Cell_Data_Note_Status?){
-    
+    func processStatusUpdate(statusUpdateParam:Grid_Cell_Data_Note_Status) {
+        note_Status = statusUpdateParam
     }
-    
-    func processStatusUpdate(isCurrentSelectedPosition:Bool,statusUpdateParam:Grid_Cell_Data_Note_Status?){
+
+    func handleCursorStatusChange(){
+        // this will be srt starting from the grid
+        // 0: the grid has an optional called cursor_Y_Num, when its set thats the line that the cursors in
+        // 1: each line has an optional called cursor_X_Num, when its set the previous(if there is one) gets changed
+        // process for the line setting the cursor_X
+        // 1: cursor_X_Num has a willset, if it is nil at willSet it is is simply updated
+        // 2: if cursor_X_Num is not nil at willSet then the previous cursor cell (with xNum previous) has to have its cursor status set to not the cursor
         
+        // the same is true of the line number
+        
+        // 1: if the grid line number is nil then the line num is set and the x num is set and the cell is set as the cursor
+        
+        // 2: if the grid line number is not set to nil the previous one has to have its cursor_X_Num set to nil before the remaining 2 steps
+        
+        // finally, at the leaf(cell) the color config is set by a combination of cursor_Status, in_viable_Set_Status and note_Status
+        // calls can be in_a_viable_set and not_in_a_note at the same time .... ok, I think I have to rethink the statuses
+//        if cursor_Status == .is_The_Current_Cursor {
+//            colors2.updateColor_From_Cursor_Status_Change(cell: self)
+//        }
+//        else if cursor_Status == .not_The_Current_Cursor {
+//            colors2.updateColor_From_Cursor_Status_Change(cell: self)
+//        }
+        colors2.updateColor_From_Cursor_Status_Change(cell: self)
     }
     
-//    func processStatusUpdate(isCurrentSelectedPosition:Bool,statusUpdateParam:Grid_Cell_Data_Note_Status?){
-//
-//
-////        if let lclParentLine = parentDataLine {
-////            if let lclParentGrid = lclParentLine.parentGridData {
-////
-////                if statusUpdateParam == nil {
-////                    if status_Before_I_Became_The_Cursor == nil {
-////                        status_Before_I_Became_The_Cursor = note_Status
-////                        note_Status = .cursor_Passive
-////                    }
-////                }
-////
-////                else if let lclStatusUpdate = statusUpdateParam {
-////
-////                    if isCurrentSelectedPosition == true {
-////
-////                        if lclStatusUpdate == .cursor_Active_Writable {
-////                            status_Before_I_Became_The_Cursor = note_Status
-////                            note_Status = .cursor_Active_Writable
-////                        }
-////
-////                        else if lclStatusUpdate == .cursor_Active_Prohibited {
-////                            status_Before_I_Became_The_Cursor = note_Status
-////                            note_Status = .cursor_Active_Prohibited
-////                        }
-////
-////                        else if lclStatusUpdate == .selectable {
-////                            status_Before_I_Became_The_Cursor = .selectable
-////                            grid_Cell_Data_Note_Status = .cursor_Active_Writable
-////                        }
-////
-////                    }
-////                    else if isCurrentSelectedPosition == false {
-////                        note_Status = lclStatusUpdate
-////                    }
-////
-////                }
-////            }
-////        }
-//
-//    }
-    
-    
+    let colors2 = Color_Processor_Mk_2.Static_Color_Processor_Mk_2
+    //var colorProcessor = Color_Processor_Mk_2
     
 }
 

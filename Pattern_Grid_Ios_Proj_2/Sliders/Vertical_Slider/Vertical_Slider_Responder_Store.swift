@@ -26,15 +26,14 @@ class Vertical_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
     var dimensions = ComponentDimensions.StaticComponentDimensions
 
     init(){
-        trackedInt = dimensions.returnGridVerticalStart()//.gridVertical_Start
-        currentLowVal = dimensions.returnGridVerticalStart()//.gridVertical_Start
-        currentHighVal = dimensions.returnGridVerticalStart()+dimensions.cursor_GridVerticalFinalIndex//.gridVertical_Start+dimensions.gridVerticalFinalIndex
+        trackedInt = dimensions.returnGridVerticalStart()
+        currentLowVal = dimensions.returnGridVerticalStart()
+        currentHighVal = dimensions.returnGridVerticalStart()+dimensions.cursor_GridVerticalFinalIndex
     }
 
     var trackedInt : Int
     {
         didSet {
-            
             
             if trackedInt >= dimensions.cursor_Grid_Movement_Lower_Limit
                 ,trackedInt <= dimensions.cursor_Grid_Movement_Upper_Limit {
@@ -85,8 +84,5 @@ class Vertical_Slider_Responder_Store : ObservableObject, P_VSlider_Responder {
             }
         }
     }
-    
-
-
 
 }

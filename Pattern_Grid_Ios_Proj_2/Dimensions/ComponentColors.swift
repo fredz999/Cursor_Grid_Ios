@@ -150,13 +150,13 @@ class Color_Config_Bank {
 }
 
 class Color_Processor {
-    
+
     var color_Config_Bank : Color_Config_Bank
-    
+
     init(color_Config_Bank_Param : Color_Config_Bank){
         color_Config_Bank = color_Config_Bank_Param
     }
-    
+
     func color_Evaluation_Cursor(cellDataParam : Cursor_Grid_Cell_Data_Store) {
         if cellDataParam.cursor_Status == .is_The_Current_Cursor {
             color_Evaluation_Cursor_In_Viable_Group(cellDataParam: cellDataParam)
@@ -165,7 +165,7 @@ class Color_Processor {
             color_Evaluation_Cursor_Not_In_Viable_Group(cellDataParam: cellDataParam)
         }
     }
-    
+
     func color_Evaluation_Cursor_In_Viable_Group(cellDataParam : Cursor_Grid_Cell_Data_Store) {
         if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
             color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
@@ -174,7 +174,7 @@ class Color_Processor {
             color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
         }
     }
-    
+
     func color_Evaluation_Cursor_Not_In_Viable_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
         if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
             color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
@@ -183,12 +183,12 @@ class Color_Processor {
             color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
         }
     }
-    
+
     //================ 4 LEAF FUNCS ====================================================================
     //================ 4 LEAF FUNCS ====================================================================
     //================ 4 LEAF FUNCS ====================================================================
     //================ 4 LEAF FUNCS ====================================================================
-    
+
     func color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
         if cellDataParam.note_Status == .confirmedSingle {
             paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
@@ -197,7 +197,7 @@ class Color_Processor {
             paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
         }
     }
-    
+
     func color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
         if cellDataParam.note_Status == .confirmedSingle {
             paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Prohibited_ColorConfig)
@@ -206,15 +206,14 @@ class Color_Processor {
             paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
         }
     }
-    
+
     func color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
         if cellDataParam.note_Status == .unassigned {
             paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection)
         }
     }
-    
+
     func color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
-        print("color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group")
         if cellDataParam.note_Status == .confirmedSingle {
             paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
         }
@@ -234,6 +233,34 @@ class Color_Processor {
     }
 }
 
+
+
+class Color_Processor_Mk_2 {
+    
+    private var color_Config_Bank : Color_Config_Bank
+
+    init(){
+        color_Config_Bank = Color_Config_Bank()
+    }
+    
+    func updateColor_From_Cursor_Status_Change(cell:Cursor_Grid_Cell_Data_Store){
+        if cell.cursor_Status == .not_The_Current_Cursor{
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig)
+        }
+        else if cell.cursor_Status == .is_The_Current_Cursor{
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
+        }
+    }
+    
+    private func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){
+        cell.current_Font_Color = colorConfig.fontColor
+        cell.current_Perimeter_Color = colorConfig.perimeterColor
+        cell.current_BackGround_Color = colorConfig.backgroundColor
+    }
+    
+    public static let Static_Color_Processor_Mk_2 = Color_Processor_Mk_2()
+    
+}
 
 class Status_Color_Config {
     var status : Grid_Cell_Data_Note_Status
@@ -304,3 +331,27 @@ class Status_Color_Config {
 //        }
 //
 //    }
+
+
+//class Color_Processor {
+//
+//    var color_Config_Bank : Color_Config_Bank
+//
+//    init(color_Config_Bank_Param : Color_Config_Bank){
+//        color_Config_Bank = color_Config_Bank_Param
+//    }
+//
+//    func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){
+//        cell.current_Font_Color = colorConfig.fontColor
+//        cell.current_Perimeter_Color = colorConfig.perimeterColor
+//        cell.current_BackGround_Color = colorConfig.backgroundColor
+//    }
+//
+//    func the_Cell_Got_Turned_Single(cell:Cursor_Grid_Cell_Data_Store){
+//
+//        // is it in viable group? yes: viable cell color
+//        // is its status single? yes: single cell color scheme
+//        // is it the currentcursor? yes: prohib - preCursorStatus = status
+//
+//    }
+//}
