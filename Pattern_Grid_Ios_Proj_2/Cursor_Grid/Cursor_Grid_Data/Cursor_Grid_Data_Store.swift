@@ -32,84 +32,49 @@ class Cursor_Grid_Data_Store : ObservableObject {
         cell_Line_Array.append(line_Data)
         }
         
-        currCellData = cell_Line_Array[0].cell_Data_Array[current_Cursor_X_Int]          //.return_Inverse_Cell(x_Param: 0)
-        //update_Data_Cursor_Y(new_Cursor_Y_Int: 0)
+        cursorUpdateManager.currCellData = cell_Line_Array[0].cell_Data_Array[cursorUpdateManager.current_Cursor_X_Int]
         
-//        cell_Line_Array[0].cell_Data_Array[2].note_Status = .confirmedSingle
-//        cell_Line_Array[0].cell_Data_Array[11].note_Status = .confirmedSingle
-        
-        current_Cursor_Line = cell_Line_Array[0]
+        cursorUpdateManager.current_Cursor_Line = cell_Line_Array[0]
         
         note_Writer.parentGridData = self
         
+        cursorUpdateManager.parent_Grid_Data_Store = self
         
+        // .return_Inverse_Cell(x_Param: 0)
+        // update_Data_Cursor_Y(new_Cursor_Y_Int: 0)
+        // cell_Line_Array[0].cell_Data_Array[2].note_Status = .confirmedSingle
+        // cell_Line_Array[0].cell_Data_Array[11].note_Status = .confirmedSingle
     }
     
-    var current_Cursor_Line : Cursor_Grid_Line_Data_Store?
-    {
-        willSet {
-            if let lcl_current_Cursor_Line = current_Cursor_Line {
-                lcl_current_Cursor_Line.nil_In_Line_Cursor_Cell()
-            }
-        }
+    var cursorUpdateManager = Cursor_Update_Manager()
+    
+    var noteWritingActivated : Bool = false {
         didSet {
-            if let lcl_current_Cursor_Line = current_Cursor_Line {
-                lcl_current_Cursor_Line.set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
+            if noteWritingActivated == true {
+                note_UpDate_Handler()
             }
-        }
-    }
-
-    var current_Cursor_Y_Int : Int = 0
-    
-    func update_Data_Cursor_Y(new_Cursor_Y_Int:Int){
-
-        if new_Cursor_Y_Int >= 0 , new_Cursor_Y_Int <= cell_Line_Array.count {
             
-            if new_Cursor_Y_Int != current_Cursor_Y_Int {
-                
-                current_Cursor_Y_Int = new_Cursor_Y_Int
-                
-                current_Cursor_Line = cell_Line_Array[new_Cursor_Y_Int]
-                
-                //currCellData = cell_Line_Array[new_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
-
-                //current_Cursor_Line = new_Cursor_Y_Int
-                
-//                if noteWritingActivated == true {
-//                    note_UpDate_Handler()
-//                }
-//                
-//                else if noteWritingActivated == false {
-                
-//                    if let lclCurrData = currCellData {
-//                        lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-//                    }
-                
-                
-//                }
-                
+            else if noteWritingActivated == false {
+                note_Writer.react_To_Write_Off()
+                note_Writer.recursive_Set_Manager.nil_Viable_Set()
             }
         }
     }
     
-    var current_Cursor_X_Int : Int = 0
+//    var current_Cursor_Line : Cursor_Grid_Line_Data_Store? {
+//        willSet {
+//            if let lcl_current_Cursor_Line = current_Cursor_Line {
+//                lcl_current_Cursor_Line.nil_In_Line_Cursor_Cell()
+//            }
+//        }
+//        didSet {
+//            if let lcl_current_Cursor_Line = current_Cursor_Line {
+//                lcl_current_Cursor_Line.set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
+//            }
+//        }
+//    }
+
     
-    func update_Data_Cursor_X(new_Cursor_X_Int:Int) {
-
-        if new_Cursor_X_Int >= 0, new_Cursor_X_Int < lclDimensions.numberCellsGridHorizontal {
-            
-            if new_Cursor_X_Int != current_Cursor_X_Int {
-                
-            cell_Line_Array[current_Cursor_Y_Int].nil_In_Line_Cursor_Cell()
-
-            current_Cursor_X_Int = new_Cursor_X_Int
-                
-            cell_Line_Array[current_Cursor_Y_Int].set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
-
-            }
-
-        }
-    }
     
 //    func update_Data_Cursor_X(new_Cursor_X_Int:Int) {
 //
@@ -135,24 +100,9 @@ class Cursor_Grid_Data_Store : ObservableObject {
 //        }
 //    }
     
-    var noteWritingActivated : Bool = false {
-        didSet {
-            
-            if noteWritingActivated == true {
-                note_UpDate_Handler()
-            }
-            
-            else if noteWritingActivated == false {
-                note_Writer.react_To_Write_Off()
-                note_Writer.recursive_Set_Manager.nil_Viable_Set()
-//                if let lclCurrData = currCellData {
-//                    lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-//                }
-            }
-        }
-    }
     
-    var currCellData : Cursor_Grid_Cell_Data_Store?
+    
+//    var currCellData : Cursor_Grid_Cell_Data_Store?
 //    {
 //        willSet {
 //            if let lclCurrCellData = currCellData {

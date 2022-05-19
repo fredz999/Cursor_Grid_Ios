@@ -17,7 +17,7 @@ class Horizontal_Slider_Responder_Store : ObservableObject, P_HSlider_Responder 
         didSet {
             if let lclCurrent_X_Bracket = current_X_Bracket {
                 if let lclGrid_Data = cursor_Grid_Data {
-                    lclGrid_Data.update_Data_Cursor_X(new_Cursor_X_Int: lclCurrent_X_Bracket)
+                    lclGrid_Data.cursorUpdateManager.update_Data_Cursor_X(new_Cursor_X_Int: lclCurrent_X_Bracket)
                 }
             }
         }
