@@ -13,7 +13,7 @@ class Note_Writer {
     
     var parentGridData : Cursor_Grid_Data_Store?
     
-    var recursive_Set_Manager : Viable_Set_Manager   //= Recursive_Set_Manager()
+    var viable_Set_Manager : Viable_Set_Manager   //= Recursive_Set_Manager()
     
     var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []{
         didSet{
@@ -22,35 +22,35 @@ class Note_Writer {
     }
     
     init(){
-        recursive_Set_Manager = Viable_Set_Manager()
+        viable_Set_Manager = Viable_Set_Manager()
         setupChildren()
     }
     
     func setupChildren(){
-        recursive_Set_Manager.parent_Note_Writer = self
+        viable_Set_Manager.parent_Note_Writer = self
     }
     
     func consider_Cell_For_Addition(viable_Array_Index: Int){
         
-        if recursive_Set_Manager.viable_Set_Formed, let lclStartIndex = recursive_Set_Manager.starter_Cell_Index {
+        if viable_Set_Manager.viable_Set_Formed, let lclStartIndex = viable_Set_Manager.starter_Cell_Index {
             
             current_potentialNoteCellArray.removeAll()
             
             if lclStartIndex == viable_Array_Index {
-                current_potentialNoteCellArray.append(recursive_Set_Manager.currentViableDataCellArray[lclStartIndex])
+                current_potentialNoteCellArray.append(viable_Set_Manager.currentViableDataCellArray[lclStartIndex])
                 setStatus_Of_Member_Cells()
             }
             
             else if lclStartIndex < viable_Array_Index {
                 for x in lclStartIndex...viable_Array_Index {
-                    current_potentialNoteCellArray.append(recursive_Set_Manager.currentViableDataCellArray[x])
+                    current_potentialNoteCellArray.append(viable_Set_Manager.currentViableDataCellArray[x])
                 }
                 setStatus_Of_Member_Cells()
             }
 
             else if lclStartIndex > viable_Array_Index {
                 for x in viable_Array_Index...lclStartIndex {
-                    current_potentialNoteCellArray.append(recursive_Set_Manager.currentViableDataCellArray[x])
+                    current_potentialNoteCellArray.append(viable_Set_Manager.currentViableDataCellArray[x])
                 }
                 setStatus_Of_Member_Cells()
             }
@@ -60,13 +60,12 @@ class Note_Writer {
     
     func setStatus_Of_Member_Cells(){
         
-        for cell in recursive_Set_Manager.currentViableDataCellArray {
+        for cell in viable_Set_Manager.currentViableDataCellArray {
             cell.current_BackGround_Color = .orange
         }
         //===================================================================
         //===================================================================
         if current_potentialNoteCellArray.count == 1 {
-            //current_potentialNoteCellArray[0].current_BackGround_Color = .red
             current_potentialNoteCellArray[0].processStatusUpdate(statusUpdateParam: .potentialSingle)
         }
         else if current_potentialNoteCellArray.count == 2 {

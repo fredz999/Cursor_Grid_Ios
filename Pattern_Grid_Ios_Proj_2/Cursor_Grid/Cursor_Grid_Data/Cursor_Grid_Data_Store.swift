@@ -40,9 +40,10 @@ class Cursor_Grid_Data_Store : ObservableObject {
     var noteWritingActivated : Bool = false {
         didSet {
             if noteWritingActivated == true {
-                if let lclCurrentCursor = cursorUpdateManager.current_Cursor_Cell {
+                if let lclCurrentCursor = cursorUpdateManager.current_Cursor_Cell,recursive_Set_Manager.viable_Set_Formed == false {
                     recursive_Set_Manager.define_Viable_Set(cellParam: lclCurrentCursor)
                 }
+                // start writing notes
             }
             else if noteWritingActivated == false {
                 recursive_Set_Manager.nil_Viable_Set()
