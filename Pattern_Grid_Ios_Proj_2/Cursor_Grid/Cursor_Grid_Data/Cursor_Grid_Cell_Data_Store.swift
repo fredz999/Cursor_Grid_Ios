@@ -22,6 +22,12 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     var xNumber : Int
     
     var place_In_Viable_Set : Int?
+//    {
+//        didSet{
+//            if place_In_Viable_Set != nil{ processSelectabilityUpdate(selectabilityUpdateParam: .in_A_Write_Viable_Group)}
+//            else if place_In_Viable_Set == nil{ processSelectabilityUpdate(selectabilityUpdateParam: .not_In_A_Write_Viable_Group)}
+//        }
+//    }
     
     var parentDataLine : Cursor_Grid_Line_Data_Store?
 
@@ -45,40 +51,28 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     
     //=============================================
     var cursor_Status : Grid_Cell_Data_Cursor_Status = .not_The_Current_Cursor
-    {
-        didSet {
-            handleCursorStatusChange()
-        }
-    }
     
     var selectability_Status : Grid_Cell_Data_Selectability_Status = .not_In_A_Write_Viable_Group
-//    {
-//        didSet {
-//            handleStatusChange()
-//        }
-//    }
     
     var note_Status : Grid_Cell_Data_Note_Status = .unassigned
-//    {
-//        didSet {
-//            handleStatusChange()
-//        }
-//    }
     
     var note_Status_Before_I_Becamse_The_Cursor : Grid_Cell_Data_Note_Status?
     
     func processCursorStatusUpdate(isCurrentSelectedPositionParam:Bool){
-        //print("processCursorStatusUpdate(isCurrentSelectedPositionParam:Bool){ ....... ")
+
         if isCurrentSelectedPositionParam == true {
             cursor_Status = .is_The_Current_Cursor
         }
         else if isCurrentSelectedPositionParam == false {
             cursor_Status = .not_The_Current_Cursor
         }
-        handleCursorStatusChange()
+        
+        handle_StatusChange()
+        
     }
     
    
+    //needs maybe its own class
     func processSelectabilityUpdate(selectabilityUpdateParam:Grid_Cell_Data_Selectability_Status?){
         
         if selectabilityUpdateParam == .in_A_Write_Viable_Group {
@@ -88,14 +82,15 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         else if selectabilityUpdateParam == .not_In_A_Write_Viable_Group {
             selectability_Status = .not_In_A_Write_Viable_Group
         }
-
+        handle_StatusChange()
     }
     
     func processStatusUpdate(statusUpdateParam:Grid_Cell_Data_Note_Status) {
         note_Status = statusUpdateParam
     }
 
-    func handleCursorStatusChange(){
+    func handle_StatusChange(){
+        
         // this will be srt starting from the grid
         // 0: the grid has an optional called cursor_Y_Num, when its set thats the line that the cursors in
         // 1: each line has an optional called cursor_X_Num, when its set the previous(if there is one) gets changed
@@ -117,7 +112,9 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
 //        else if cursor_Status == .not_The_Current_Cursor {
 //            colors2.updateColor_From_Cursor_Status_Change(cell: self)
 //        }
+        //print("xNum: ", xNumber, "selectability_Status: ",selectability_Status,", cursorStatus: ",cursor_Status)
         colors2.updateColor_From_Cursor_Status_Change(cell: self)
+        
     }
     
     let colors2 = Color_Processor_Mk_2.Static_Color_Processor_Mk_2

@@ -244,12 +244,26 @@ class Color_Processor_Mk_2 {
     }
     
     func updateColor_From_Cursor_Status_Change(cell:Cursor_Grid_Cell_Data_Store){
-        if cell.cursor_Status == .not_The_Current_Cursor{
-            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig)
+
+
+        if cell.selectability_Status == .not_In_A_Write_Viable_Group {
+            if cell.cursor_Status == .not_The_Current_Cursor {
+                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig   )
+            }
+            else if cell.cursor_Status == .is_The_Current_Cursor{
+                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig )
+            }
         }
-        else if cell.cursor_Status == .is_The_Current_Cursor{
-            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
+        //else
+        else if cell.selectability_Status == .in_A_Write_Viable_Group {
+            if cell.cursor_Status == .not_The_Current_Cursor {
+                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection )
+            }
+            else if cell.cursor_Status == .is_The_Current_Cursor{
+                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig )
+            }
         }
+        
     }
     
     private func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){

@@ -13,7 +13,7 @@ class Note_Writer {
     
     var parentGridData : Cursor_Grid_Data_Store?
     
-    var recursive_Set_Manager : Recursive_Set_Manager   //= Recursive_Set_Manager()
+    var recursive_Set_Manager : Viable_Set_Manager   //= Recursive_Set_Manager()
     
     var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []{
         didSet{
@@ -22,7 +22,7 @@ class Note_Writer {
     }
     
     init(){
-        recursive_Set_Manager = Recursive_Set_Manager()
+        recursive_Set_Manager = Viable_Set_Manager()
         setupChildren()
     }
     
@@ -86,14 +86,16 @@ class Note_Writer {
     }
     
     func react_To_Write_Off(){
-        for cell in recursive_Set_Manager.currentViableDataCellArray {
-            cell.processSelectabilityUpdate(selectabilityUpdateParam: .not_In_A_Write_Viable_Group)
-        }
-        
-//        for cell in current_potentialNoteCellArray{
-//            if cell.note_Status
+        //recursive_Set_Manager.nil_Viable_Set()
+    }
+    
+    func react_To_Write_On(){
+//        if let lclParentData = parentGridData {
+//            if let lclCurrCell = lclParentData.cursorUpdateManager.current_Cursor_Cell
+//            {
+//                recursive_Set_Manager.define_Viable_Set(cellParam: lclCurrCell)
+//            }
 //        }
-        
     }
     
     

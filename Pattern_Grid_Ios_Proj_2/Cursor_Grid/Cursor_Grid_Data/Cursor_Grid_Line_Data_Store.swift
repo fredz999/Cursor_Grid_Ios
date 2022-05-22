@@ -48,40 +48,39 @@ class Cursor_Grid_Line_Data_Store : ObservableObject, Identifiable {
 //        return invertedIndex
 //    }
     
-    func setParentGridData(parentGridParam:Cursor_Grid_Data_Store){
-        if parentGridData == nil{parentGridData = parentGridParam}
-    }
-    
 //    func return_Inverse_Cell(x_Param:Int)->Cursor_Grid_Cell_Data_Store {
 //        let invertedIndex = lclDimensions.numberCellsGridHorizontal - (x_Param+1)
 //        return cell_Data_Array[invertedIndex]
 //    }
     
-    //func handleCursorChange(){}
+//    func handleCursorChange(){}
+
     
-    var in_Line_Cursor_Cell : Cursor_Grid_Cell_Data_Store?
-    {
-        didSet {
-            if let lcl_In_Line_Cell = in_Line_Cursor_Cell {
-                lcl_In_Line_Cell.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-            }
-        }
+    func setParentGridData(parentGridParam:Cursor_Grid_Data_Store){
+        if parentGridData == nil{parentGridData = parentGridParam}
     }
     
-    //var current_Cursor_X_Int : Int = 0
+
     
-    func set_In_Line_Cursor_Cell(xParam:Int){
-        //print("set_In_Line_Cursor_Cell(), y: ", place_In_Parent_Line_Array,", currX: ",current_Cursor_X_Int)
-        //print("huh?, xParam: ",xParam.des)
-        in_Line_Cursor_Cell = cell_Data_Array[xParam]
-    }
-    
-    func nil_In_Line_Cursor_Cell(){
-        if let lclin_Line_Cursor_Cell = in_Line_Cursor_Cell{
-            lclin_Line_Cursor_Cell.processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
-            in_Line_Cursor_Cell = nil
-        }
-    }
+//    var in_Line_Cursor_Cell : Cursor_Grid_Cell_Data_Store?
+//    {
+//        didSet {
+//            if let lcl_In_Line_Cell = in_Line_Cursor_Cell {
+//                lcl_In_Line_Cell.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+//            }
+//        }
+//    }
+//    
+//    func set_In_Line_Cursor_Cell(xParam:Int){
+//        in_Line_Cursor_Cell = cell_Data_Array[xParam]
+//    }
+//    
+//    func nil_In_Line_Cursor_Cell(){
+//        if let lclin_Line_Cursor_Cell = in_Line_Cursor_Cell{
+//            lclin_Line_Cursor_Cell.processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+//            in_Line_Cursor_Cell = nil
+//        }
+//    }
     
     
     
