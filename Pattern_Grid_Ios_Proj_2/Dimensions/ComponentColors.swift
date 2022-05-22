@@ -149,92 +149,6 @@ class Color_Config_Bank {
     }
 }
 
-class Color_Processor {
-
-    var color_Config_Bank : Color_Config_Bank
-
-    init(color_Config_Bank_Param : Color_Config_Bank){
-        color_Config_Bank = color_Config_Bank_Param
-    }
-
-    func color_Evaluation_Cursor(cellDataParam : Cursor_Grid_Cell_Data_Store) {
-        if cellDataParam.cursor_Status == .is_The_Current_Cursor {
-            color_Evaluation_Cursor_In_Viable_Group(cellDataParam: cellDataParam)
-        }
-        else if cellDataParam.cursor_Status == .not_The_Current_Cursor {
-            color_Evaluation_Cursor_Not_In_Viable_Group(cellDataParam: cellDataParam)
-        }
-    }
-
-    func color_Evaluation_Cursor_In_Viable_Group(cellDataParam : Cursor_Grid_Cell_Data_Store) {
-        if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
-            color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
-        }
-        else if cellDataParam.selectability_Status == .in_A_Write_Viable_Group {
-            color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
-        }
-    }
-
-    func color_Evaluation_Cursor_Not_In_Viable_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
-        if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
-            color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
-        }
-        else if cellDataParam.selectability_Status == .in_A_Write_Viable_Group {
-            color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
-        }
-    }
-
-    //================ 4 LEAF FUNCS ====================================================================
-    //================ 4 LEAF FUNCS ====================================================================
-    //================ 4 LEAF FUNCS ====================================================================
-    //================ 4 LEAF FUNCS ====================================================================
-
-    func color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
-        if cellDataParam.note_Status == .confirmedSingle {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
-        }
-        else if cellDataParam.note_Status == .unassigned {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
-        }
-    }
-
-    func color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
-        if cellDataParam.note_Status == .confirmedSingle {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Prohibited_ColorConfig)
-        }
-        else if cellDataParam.note_Status == .unassigned {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
-        }
-    }
-
-    func color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
-        if cellDataParam.note_Status == .unassigned {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection)
-        }
-    }
-
-    func color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
-        if cellDataParam.note_Status == .confirmedSingle {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
-        }
-        else if cellDataParam.note_Status == .unassigned {
-            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig)
-        }
-    }
-    //================ 4 LEAF FUNCS ====================================================================
-    //================ 4 LEAF FUNCS ====================================================================
-    //================ 4 LEAF FUNCS ====================================================================
-    //================ 4 LEAF FUNCS ====================================================================
-
-    func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){
-        cell.current_Font_Color = colorConfig.fontColor
-        cell.current_Perimeter_Color = colorConfig.perimeterColor
-        cell.current_BackGround_Color = colorConfig.backgroundColor
-    }
-}
-
-
-
 class Color_Processor_Mk_2 {
     
     private var color_Config_Bank : Color_Config_Bank
@@ -248,22 +162,54 @@ class Color_Processor_Mk_2 {
 
         if cell.selectability_Status == .not_In_A_Write_Viable_Group {
             if cell.cursor_Status == .not_The_Current_Cursor {
-                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig   )
+                paint_Non_ViableGroup_Cell_Not_Cursor(cell: cell)
             }
-            else if cell.cursor_Status == .is_The_Current_Cursor{
-                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig )
+            else if cell.cursor_Status == .is_The_Current_Cursor {
+                paint_Non_ViableGroup_Cell_Is_Cursor(cell: cell)
             }
         }
-        //else
         else if cell.selectability_Status == .in_A_Write_Viable_Group {
             if cell.cursor_Status == .not_The_Current_Cursor {
-                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection )
+                paint_ViableGroup_Cell_Not_Cursor(cell: cell)
             }
-            else if cell.cursor_Status == .is_The_Current_Cursor{
-                paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig )
+            else if cell.cursor_Status == .is_The_Current_Cursor {
+                paint_ViableGroup_Cell_Is_Cursor(cell: cell)
             }
         }
         
+    }
+    
+    func paint_ViableGroup_Cell_Not_Cursor(cell:Cursor_Grid_Cell_Data_Store){
+        if cell.note_Status == .confirmedSingle {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
+        }
+        else {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection )
+        }
+    }
+    func paint_ViableGroup_Cell_Is_Cursor(cell:Cursor_Grid_Cell_Data_Store){
+        if cell.note_Status == .confirmedSingle {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
+        }
+        else {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
+        }
+    }
+    func paint_Non_ViableGroup_Cell_Is_Cursor(cell:Cursor_Grid_Cell_Data_Store){
+        if cell.note_Status == .confirmedSingle {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Prohibited_ColorConfig)
+        }
+        else {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
+        }
+    }
+    func paint_Non_ViableGroup_Cell_Not_Cursor(cell:Cursor_Grid_Cell_Data_Store){
+        if cell.note_Status == .confirmedSingle {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
+        }
+        else {
+            paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig)
+        }
     }
     
     private func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){
@@ -369,3 +315,88 @@ class Status_Color_Config {
 //
 //    }
 //}
+
+
+class Color_Processor {
+
+    var color_Config_Bank : Color_Config_Bank
+
+    init(color_Config_Bank_Param : Color_Config_Bank){
+        color_Config_Bank = color_Config_Bank_Param
+    }
+
+    func color_Evaluation_Cursor(cellDataParam : Cursor_Grid_Cell_Data_Store) {
+        if cellDataParam.cursor_Status == .is_The_Current_Cursor {
+            color_Evaluation_Cursor_In_Viable_Group(cellDataParam: cellDataParam)
+        }
+        else if cellDataParam.cursor_Status == .not_The_Current_Cursor {
+            color_Evaluation_Cursor_Not_In_Viable_Group(cellDataParam: cellDataParam)
+        }
+    }
+
+    func color_Evaluation_Cursor_In_Viable_Group(cellDataParam : Cursor_Grid_Cell_Data_Store) {
+        if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
+            color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+        else if cellDataParam.selectability_Status == .in_A_Write_Viable_Group {
+            color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+    }
+
+    func color_Evaluation_Cursor_Not_In_Viable_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.selectability_Status == .not_In_A_Write_Viable_Group {
+            color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+        else if cellDataParam.selectability_Status == .in_A_Write_Viable_Group {
+            color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam: cellDataParam)
+        }
+    }
+
+    //================ 4 LEAF FUNCS ====================================================================
+    //================ 4 LEAF FUNCS ====================================================================
+    //================ 4 LEAF FUNCS ====================================================================
+    //================ 4 LEAF FUNCS ====================================================================
+
+    func color_Cell_Thats_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .confirmedSingle {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
+        }
+        else if cellDataParam.note_Status == .unassigned {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
+        }
+    }
+
+    func color_Cell_Thats_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .confirmedSingle {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Prohibited_ColorConfig)
+        }
+        else if cellDataParam.note_Status == .unassigned {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
+        }
+    }
+
+    func color_Cell_Thats_Not_A_Cursor_And_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .unassigned {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection)
+        }
+    }
+
+    func color_Cell_Thats_Not_A_Cursor_And_Is_Not_In_A_Viable_Selection_Group(cellDataParam : Cursor_Grid_Cell_Data_Store){
+        if cellDataParam.note_Status == .confirmedSingle {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
+        }
+        else if cellDataParam.note_Status == .unassigned {
+            paintDataCell(cell: cellDataParam, colorConfig: color_Config_Bank.cell_Unassigned_ColorConfig)
+        }
+    }
+    //================ 4 LEAF FUNCS ====================================================================
+    //================ 4 LEAF FUNCS ====================================================================
+    //================ 4 LEAF FUNCS ====================================================================
+    //================ 4 LEAF FUNCS ====================================================================
+
+    func paintDataCell(cell:Cursor_Grid_Cell_Data_Store,colorConfig:Status_Color_Config){
+        cell.current_Font_Color = colorConfig.fontColor
+        cell.current_Perimeter_Color = colorConfig.perimeterColor
+        cell.current_BackGround_Color = colorConfig.backgroundColor
+    }
+}

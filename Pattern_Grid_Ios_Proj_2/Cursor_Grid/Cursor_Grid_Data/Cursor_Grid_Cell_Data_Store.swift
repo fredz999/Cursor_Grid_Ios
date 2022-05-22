@@ -87,6 +87,7 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     
     func processStatusUpdate(statusUpdateParam:Grid_Cell_Data_Note_Status) {
         note_Status = statusUpdateParam
+        handle_StatusChange()
     }
 
     func handle_StatusChange(){

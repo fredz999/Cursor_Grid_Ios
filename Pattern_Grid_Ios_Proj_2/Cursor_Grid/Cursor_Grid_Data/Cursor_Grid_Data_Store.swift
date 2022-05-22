@@ -31,6 +31,8 @@ class Cursor_Grid_Data_Store : ObservableObject {
 
         cursorUpdateManager.current_Cursor_Line = cell_Line_Array[0]
         
+        cell_Line_Array[0].cell_Data_Array[7].processStatusUpdate(statusUpdateParam: .confirmedSingle)
+        
         //note_Writer.parentGridData = self
         
         cursorUpdateManager.parent_Grid_Data_Store = self
@@ -44,6 +46,8 @@ class Cursor_Grid_Data_Store : ObservableObject {
                     recursive_Set_Manager.define_Viable_Set(cellParam: lclCurrentCursor)
                 }
                 // start writing notes
+                potential_Note_Manager.react_To_Write_On()
+                
             }
             else if noteWritingActivated == false {
                 recursive_Set_Manager.nil_Viable_Set()
@@ -54,6 +58,7 @@ class Cursor_Grid_Data_Store : ObservableObject {
     //var note_Writer : Note_Writer = Note_Writer()
     var recursive_Set_Manager = Viable_Set_Manager()
     var cursorUpdateManager = Cursor_Update_Manager()
+    var potential_Note_Manager = Potential_Note_Manager()
     
 }
 

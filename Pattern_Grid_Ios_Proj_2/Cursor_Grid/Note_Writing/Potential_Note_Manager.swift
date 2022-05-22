@@ -89,12 +89,23 @@ class Potential_Note_Manager{
     }
     
     func react_To_Write_On(){
-//        if let lclParentData = parentGridData {
-//            if let lclCurrCell = lclParentData.cursorUpdateManager.current_Cursor_Cell
-//            {
-//                recursive_Set_Manager.define_Viable_Set(cellParam: lclCurrCell)
-//            }
-//        }
+        if let lclParentData = parentGridData {
+            
+            // 1 get the viable set
+            // 2 get currentCursorNum
+            // 3 establish that currentCursorNum is within boundaries of viable set
+            // 4 from viable set get currLeftMost and currRightMost
+            
+            if lclParentData.recursive_Set_Manager.currentViableDataCellArray.count > 0 {
+                
+            }
+            
+            if let lclCurrCell = lclParentData.cursorUpdateManager.current_Cursor_Cell
+            {
+                
+            }
+            
+        }
     }
     
     
