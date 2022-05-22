@@ -14,7 +14,7 @@ class Viable_Set_Manager {
     
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
-    var parent_Note_Writer: Note_Writer?
+    //var parent_Note_Writer: Potential_Note_Manager? //Note_Writer?
     
     var all_The_Cells_Of_The_Locked_Line : [Cursor_Grid_Cell_Data_Store]?
 
