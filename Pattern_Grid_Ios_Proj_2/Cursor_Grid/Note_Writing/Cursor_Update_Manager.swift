@@ -62,13 +62,51 @@ class Cursor_Update_Manager {
     }
     
     func update_Data_Cursor_X(new_Cursor_X_Int:Int) {
-        //print("update_Data_Cursor_X")
         
         if new_Cursor_X_Int >= 0, new_Cursor_X_Int < lclDimensions.numberCellsGridHorizontal {
+            
             if new_Cursor_X_Int != current_Cursor_X_Int {
             nil_In_Line_Cursor_Cell()
             current_Cursor_X_Int = new_Cursor_X_Int
             set_Current_Cursor_Cell(xParam: current_Cursor_X_Int)
+                
+                
+      
+ 
+            if let lclParentGrid = parent_Grid_Data_Store {
+
+                if lclParentGrid.noteWritingActivated == true   {
+                    
+                    if lclParentGrid.viable_Set_Manager.viable_Set_Formed == true{
+                        if let lclHigher = lclParentGrid.viable_Set_Manager.currentHighestViableCell_X_Index
+                            , let lclLower = lclParentGrid.viable_Set_Manager.currentLowestViableCell_X_Index {
+                            if current_Cursor_X_Int > lclHigher || current_Cursor_X_Int < lclLower {
+                                lclParentGrid.viable_Set_Manager.nil_Viable_Set()
+                            }
+                            // TODO: note write
+                            else if current_Cursor_X_Int <= lclHigher , current_Cursor_X_Int >= lclLower{
+                                print("possible mid write event happenin in the cursor update manager")
+                            }
+                        }
+                    }
+                    else if lclParentGrid.viable_Set_Manager.viable_Set_Formed == false, let lclCurrCell = current_Cursor_Cell{
+                        if lclCurrCell.note_Status != .confirmedSingle || lclCurrCell.note_Status != .confirmedStart
+                            || lclCurrCell.note_Status != .confirmedMiddle || lclCurrCell.note_Status != .confirmedEnd{
+                            lclParentGrid.viable_Set_Manager.define_Viable_Set(cellParam: lclCurrCell)
+                            // TODO: note write
+                            print("possible start write event happenin in the cursor update manager")
+                        }
+                    }
+                    
+               
+                    
+                    
+                }
+            }
+             
+                
+                
+                
             }
         }
         

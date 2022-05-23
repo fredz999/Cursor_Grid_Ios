@@ -90,20 +90,21 @@ class Potential_Note_Manager{
     
     func react_To_Write_On(){
         if let lclParentData = parentGridData {
-            
+            // TODO: note write
+            print("possible start write event happenin in the Potential Note Manager")
             // 1 get the viable set
             // 2 get currentCursorNum
             // 3 establish that currentCursorNum is within boundaries of viable set
             // 4 from viable set get currLeftMost and currRightMost
             
-            if lclParentData.recursive_Set_Manager.currentViableDataCellArray.count > 0 {
-                
-            }
+//            if lclParentData.viable_Set_Manager.currentViableDataCellArray.count > 0 {
+//                
+//            }
             
-            if let lclCurrCell = lclParentData.cursorUpdateManager.current_Cursor_Cell
-            {
-                
-            }
+//            if let lclCurrCell = lclParentData.cursorUpdateManager.current_Cursor_Cell
+//            {
+//
+//            }
             
         }
     }
@@ -198,7 +199,7 @@ class Potential_Note_Manager{
 //                else if cell.note_Status == .potentialStart {
 //                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedStart)
 //                }
-//                // TODO: Check if this is in error
+
 //                else if cell.note_Status == .potentialMiddle {
 //                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedMiddle)
 //                }
@@ -409,7 +410,7 @@ class Potential_Note_Manager{
 ////                else if cell.note_Status == .potentialStart {
 ////                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedStart)
 ////                }
-////                // TODO: Check if this is in error
+
 ////                else if cell.note_Status == .potentialMiddle {
 ////                    cell.processStatusUpdate(isCurrentSelectedPosition: true, statusUpdateParam: .confirmedMiddle)
 ////                }

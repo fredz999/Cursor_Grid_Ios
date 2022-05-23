@@ -187,6 +187,7 @@ class Color_Processor_Mk_2 {
             paintDataCell(cell: cell, colorConfig: color_Config_Bank.cell_Unassigned_And_Viable_For_Selection )
         }
     }
+    
     func paint_ViableGroup_Cell_Is_Cursor(cell:Cursor_Grid_Cell_Data_Store){
         if cell.note_Status == .confirmedSingle {
             paintDataCell(cell: cell, colorConfig: color_Config_Bank.confirmedSingleColorConfig)
@@ -195,6 +196,7 @@ class Color_Processor_Mk_2 {
             paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Writable_ColorConfig)
         }
     }
+    
     func paint_Non_ViableGroup_Cell_Is_Cursor(cell:Cursor_Grid_Cell_Data_Store){
         if cell.note_Status == .confirmedSingle {
             paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Prohibited_ColorConfig)
@@ -203,6 +205,7 @@ class Color_Processor_Mk_2 {
             paintDataCell(cell: cell, colorConfig: color_Config_Bank.cursor_Passive_ColorConfig)
         }
     }
+    
     func paint_Non_ViableGroup_Cell_Not_Cursor(cell:Cursor_Grid_Cell_Data_Store){
         if cell.note_Status == .confirmedSingle {
             paintDataCell(cell: cell, colorConfig: color_Config_Bank.confirmedSingleColorConfig)

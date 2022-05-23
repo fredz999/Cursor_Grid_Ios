@@ -22,12 +22,6 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     var xNumber : Int
     
     var place_In_Viable_Set : Int?
-//    {
-//        didSet{
-//            if place_In_Viable_Set != nil{ processSelectabilityUpdate(selectabilityUpdateParam: .in_A_Write_Viable_Group)}
-//            else if place_In_Viable_Set == nil{ processSelectabilityUpdate(selectabilityUpdateParam: .not_In_A_Write_Viable_Group)}
-//        }
-//    }
     
     var parentDataLine : Cursor_Grid_Line_Data_Store?
 
@@ -63,16 +57,15 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         if isCurrentSelectedPositionParam == true {
             cursor_Status = .is_The_Current_Cursor
         }
+        
         else if isCurrentSelectedPositionParam == false {
             cursor_Status = .not_The_Current_Cursor
         }
-        
+
         handle_StatusChange()
         
     }
     
-   
-    //needs maybe its own class
     func processSelectabilityUpdate(selectabilityUpdateParam:Grid_Cell_Data_Selectability_Status?){
         
         if selectabilityUpdateParam == .in_A_Write_Viable_Group {
@@ -82,11 +75,14 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         else if selectabilityUpdateParam == .not_In_A_Write_Viable_Group {
             selectability_Status = .not_In_A_Write_Viable_Group
         }
+
         handle_StatusChange()
     }
     
     func processStatusUpdate(statusUpdateParam:Grid_Cell_Data_Note_Status) {
+        
         note_Status = statusUpdateParam
+        
         handle_StatusChange()
     }
 
@@ -114,12 +110,33 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
 //            colors2.updateColor_From_Cursor_Status_Change(cell: self)
 //        }
         //print("xNum: ", xNumber, "selectability_Status: ",selectability_Status,", cursorStatus: ",cursor_Status)
+        //print("cell cursor stat: ",cursor_Status.rawValue )
+        
+//        if cursor_Status == .is_The_Current_Cursor, selectability_Status == .not_In_A_Write_Viable_Group{
+//            print("strike...........")
+//        }
+        
+        //if parentDataLine?.parentGridData?.noteWritingActivated
+        
+        
+//        if let lclParentLine = parentDataLine {
+//            if let lclParentGrid = lclParentLine.parentGridData {
+//                if lclParentGrid.noteWritingActivated == true {
+//                    if cursor_Status == .is_The_Current_Cursor {
+//                        if note_Status == .confirmedSingle || note_Status == .confirmedStart
+//                            || note_Status == .confirmedMiddle || note_Status == .confirmedEnd{
+//                            print("strike2...........")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        
         colors2.updateColor_From_Cursor_Status_Change(cell: self)
         
     }
     
     let colors2 = Color_Processor_Mk_2.Static_Color_Processor_Mk_2
-    //var colorProcessor = Color_Processor_Mk_2
     
 }
 

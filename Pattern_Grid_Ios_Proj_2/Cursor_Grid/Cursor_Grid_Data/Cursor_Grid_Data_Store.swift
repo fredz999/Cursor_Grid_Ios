@@ -31,33 +31,34 @@ class Cursor_Grid_Data_Store : ObservableObject {
 
         cursorUpdateManager.current_Cursor_Line = cell_Line_Array[0]
         
-        cell_Line_Array[0].cell_Data_Array[7].processStatusUpdate(statusUpdateParam: .confirmedSingle)
-        
-        //note_Writer.parentGridData = self
+        cell_Line_Array[0].cell_Data_Array[8].processStatusUpdate(statusUpdateParam: .confirmedSingle)
+        cell_Line_Array[0].cell_Data_Array[3].processStatusUpdate(statusUpdateParam: .confirmedSingle)
         
         cursorUpdateManager.parent_Grid_Data_Store = self
+        potential_Note_Manager.parentGridData = self
 
     }
     
     var noteWritingActivated : Bool = false {
         didSet {
             if noteWritingActivated == true {
-                if let lclCurrentCursor = cursorUpdateManager.current_Cursor_Cell,recursive_Set_Manager.viable_Set_Formed == false {
-                    recursive_Set_Manager.define_Viable_Set(cellParam: lclCurrentCursor)
+                if let lclCurrentCursor = cursorUpdateManager.current_Cursor_Cell,viable_Set_Manager.viable_Set_Formed == false {
+                    viable_Set_Manager.define_Viable_Set(cellParam: lclCurrentCursor)
                 }
                 // start writing notes
                 potential_Note_Manager.react_To_Write_On()
-                
             }
+            // TODO: note write
             else if noteWritingActivated == false {
-                recursive_Set_Manager.nil_Viable_Set()
+                print("possible commit event happenin in the cursor update manager")
+                viable_Set_Manager.nil_Viable_Set()
             }
         }
     }
     
     //var note_Writer : Note_Writer = Note_Writer()
-    var recursive_Set_Manager = Viable_Set_Manager()
     var cursorUpdateManager = Cursor_Update_Manager()
+    var viable_Set_Manager = Viable_Set_Manager()
     var potential_Note_Manager = Potential_Note_Manager()
     
 }

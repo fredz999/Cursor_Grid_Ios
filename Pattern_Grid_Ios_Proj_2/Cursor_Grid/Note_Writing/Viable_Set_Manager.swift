@@ -14,8 +14,6 @@ class Viable_Set_Manager {
     
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
-    //var parent_Note_Writer: Potential_Note_Manager? //Note_Writer?
-    
     var all_The_Cells_Of_The_Locked_Line : [Cursor_Grid_Cell_Data_Store]?
 
     var viable_Set_Formed : Bool = false
@@ -30,8 +28,6 @@ class Viable_Set_Manager {
     var starter_Cell_Index : Int?
     var current_Cell_Index : Int?
     
-    
-    // TODO: parallell state changes
     func nil_Viable_Set(){
         
         lineCellsOptional = nil
@@ -51,10 +47,13 @@ class Viable_Set_Manager {
         if viable_Set_Formed == true { viable_Set_Formed = false }
         
     }
-    
-    // need an overload to take a cell arg
-    
+
     var lineCellsOptional : [Cursor_Grid_Cell_Data_Store]?
+    
+    func start_New_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store){
+        nil_Viable_Set()
+        define_Viable_Set(cellParam: cellParam)
+    }
     
     func define_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store){
         
@@ -131,19 +130,7 @@ class Viable_Set_Manager {
     }
     
     func check_Higher_Termination_Criteria(valueToCheck: Int) {
-        //print("check_Higher_Termination_Criteria(valueToCheck:",valueToCheck)
-        
-//        if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-//            if lclLocked_Line_Cell_Array[valueToCheck].note_Status != .unassigned {
-//                if currentHighestViableCell_X_Index == nil {
-//                    currentHighestViableCell_X_Index = valueToCheck-1
-//                }
-//            }
-//            else if lclLocked_Line_Cell_Array[valueToCheck].note_Status == .unassigned {
-//                raise_X_One_AndCheckAgain(int_To_Raise: (valueToCheck))
-//            }
-//        }
-        
+
         if let lclLine = lineCellsOptional{
             if lclLine[valueToCheck].note_Status != .unassigned {
                 if currentHighestViableCell_X_Index == nil {
@@ -154,24 +141,9 @@ class Viable_Set_Manager {
                 raise_X_One_AndCheckAgain(int_To_Raise: (valueToCheck))
             }
         }
-        
-        
-        
     }
     
     func check_Lower_Termination_Criteria(valueToCheck: Int) {
-        
-//        if let lclLocked_Line_Cell_Array = all_The_Cells_Of_The_Locked_Line {
-//            if lclLocked_Line_Cell_Array[valueToCheck].note_Status != .unassigned {
-//                if currentLowestViableCell_X_Index == nil {
-//                    currentLowestViableCell_X_Index = valueToCheck+1
-//                }
-//            }
-//            else if lclLocked_Line_Cell_Array[valueToCheck].note_Status == .unassigned {
-//                drop_X_One_AndCheckAgain(int_To_Drop: (valueToCheck))
-//            }
-//        }
-        
         if let lclLine = lineCellsOptional{
             if lclLine[valueToCheck].note_Status != .unassigned {
                 if currentLowestViableCell_X_Index == nil {
@@ -182,8 +154,6 @@ class Viable_Set_Manager {
                 drop_X_One_AndCheckAgain(int_To_Drop: (valueToCheck))
             }
         }
-        
-        
     }
     
     
