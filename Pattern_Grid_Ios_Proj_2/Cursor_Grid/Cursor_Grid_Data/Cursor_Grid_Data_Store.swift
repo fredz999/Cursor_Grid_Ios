@@ -15,10 +15,63 @@ class Cursor_Grid_Data_Store : ObservableObject {
     
     let lclColors = ComponentColors.StaticComponentColors
     
+    var cursor_Update_Manager = Cursor_Update_Manager()
+    var viable_Set_Manager = Viable_Set_Manager()
+    var potential_Note_Manager = Potential_Note_Manager()
+    
     var cell_Line_Array : [Cursor_Grid_Line_Data_Store] = []
+    
+    var noteWritingActivated : Bool = false {
+            didSet {
+                
+                if noteWritingActivated == true {
+                    // TODO: startNote
+                    // TODO: note write
+                    
+                    define_Viable_Set_Then_Start_Note()
+                }
+                // TODO: terminateNote
+                else if noteWritingActivated == false {
+                    // poss need to write here
+                    // if potential_Note_Manager
+                    clear_Note_And_Viable_Array()
+                }
+            }
+        }
     
     init(){
         setChildren()
+    }
+    
+    // TODO: terminateNote
+    func clear_Note_And_Viable_Array(){
+        viable_Set_Manager.nil_Viable_Set()
+        if potential_Note_Manager.potentialStartIndex != nil {
+            potential_Note_Manager.nilPotentialArray()
+        }
+    }
+    
+    // TODO: startNote
+    func define_Viable_Set_Then_Start_Note(){
+        
+        if let lclCurrCell = cursor_Update_Manager.current_Cursor_Cell {
+            if lclCurrCell.note_Status != .confirmedSingle || lclCurrCell.note_Status != .confirmedStart
+                || lclCurrCell.note_Status != .confirmedMiddle || lclCurrCell.note_Status != .confirmedEnd {
+    
+                viable_Set_Manager.define_Viable_Set(cellParam: lclCurrCell)
+            }
+        }
+        
+        if let lclCurrentCursor = cursor_Update_Manager.current_Cursor_Cell,viable_Set_Manager.viable_Set_Formed == true {
+            if let lclStartIndex = lclCurrentCursor.place_In_Viable_Set {
+                if potential_Note_Manager.potentialStartIndex == nil {
+                potential_Note_Manager.set_PotentialNote_StartIndex(indexParam: lclStartIndex)
+                    //set the end cell
+                    potential_Note_Manager.set_PotentialNote_EndIndex(indexParam: lclStartIndex)
+                }
+            }
+        }
+
     }
     
     func setChildren(){
@@ -29,37 +82,19 @@ class Cursor_Grid_Data_Store : ObservableObject {
         cell_Line_Array.append(line_Data)
         }
 
-        cursorUpdateManager.current_Cursor_Line = cell_Line_Array[0]
+        cursor_Update_Manager.current_Cursor_Line = cell_Line_Array[0]
         
-        cell_Line_Array[0].cell_Data_Array[8].processStatusUpdate(statusUpdateParam: .confirmedSingle)
-        cell_Line_Array[0].cell_Data_Array[3].processStatusUpdate(statusUpdateParam: .confirmedSingle)
+        cell_Line_Array[0].cell_Data_Array[5].processStatusUpdate(statusUpdateParam: .confirmedSingle)
+        cell_Line_Array[0].cell_Data_Array[9].processStatusUpdate(statusUpdateParam: .confirmedSingle)
         
-        cursorUpdateManager.parent_Grid_Data_Store = self
-        potential_Note_Manager.parentGridData = self
+        cursor_Update_Manager.parent_Grid_Data_Store = self
+        potential_Note_Manager.parent_Grid_Data = self
 
     }
     
-    var noteWritingActivated : Bool = false {
-        didSet {
-            if noteWritingActivated == true {
-                if let lclCurrentCursor = cursorUpdateManager.current_Cursor_Cell,viable_Set_Manager.viable_Set_Formed == false {
-                    viable_Set_Manager.define_Viable_Set(cellParam: lclCurrentCursor)
-                }
-                // start writing notes
-                potential_Note_Manager.react_To_Write_On()
-            }
-            // TODO: note write
-            else if noteWritingActivated == false {
-                print("possible commit event happenin in the cursor update manager")
-                viable_Set_Manager.nil_Viable_Set()
-            }
-        }
-    }
     
-    //var note_Writer : Note_Writer = Note_Writer()
-    var cursorUpdateManager = Cursor_Update_Manager()
-    var viable_Set_Manager = Viable_Set_Manager()
-    var potential_Note_Manager = Potential_Note_Manager()
+    
+    
     
 }
 

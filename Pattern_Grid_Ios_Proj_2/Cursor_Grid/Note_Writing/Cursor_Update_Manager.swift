@@ -70,37 +70,31 @@ class Cursor_Update_Manager {
             current_Cursor_X_Int = new_Cursor_X_Int
             set_Current_Cursor_Cell(xParam: current_Cursor_X_Int)
                 
-                
-      
- 
             if let lclParentGrid = parent_Grid_Data_Store {
 
-                if lclParentGrid.noteWritingActivated == true   {
+                if lclParentGrid.noteWritingActivated == true {
                     
-                    if lclParentGrid.viable_Set_Manager.viable_Set_Formed == true{
+                    if lclParentGrid.viable_Set_Manager.viable_Set_Formed == true {
                         if let lclHigher = lclParentGrid.viable_Set_Manager.currentHighestViableCell_X_Index
                             , let lclLower = lclParentGrid.viable_Set_Manager.currentLowestViableCell_X_Index {
                             if current_Cursor_X_Int > lclHigher || current_Cursor_X_Int < lclLower {
-                                lclParentGrid.viable_Set_Manager.nil_Viable_Set()
+                                // TODO: terminateNote
+                                lclParentGrid.clear_Note_And_Viable_Array()
                             }
-                            // TODO: note write
-                            else if current_Cursor_X_Int <= lclHigher , current_Cursor_X_Int >= lclLower{
-                                print("possible mid write event happenin in the cursor update manager")
+                            // TODO: append note write
+                            else if current_Cursor_X_Int <= lclHigher , current_Cursor_X_Int >= lclLower {
+                                if let lclCurrLine = current_Cursor_Line {
+                                    if let curr_Viable_Index = lclCurrLine.cell_Data_Array[current_Cursor_X_Int].place_In_Viable_Set {
+                                        lclParentGrid.potential_Note_Manager.set_PotentialNote_EndIndex(indexParam: curr_Viable_Index)
+                                    }
+                                }
                             }
                         }
                     }
-                    else if lclParentGrid.viable_Set_Manager.viable_Set_Formed == false, let lclCurrCell = current_Cursor_Cell{
-                        if lclCurrCell.note_Status != .confirmedSingle || lclCurrCell.note_Status != .confirmedStart
-                            || lclCurrCell.note_Status != .confirmedMiddle || lclCurrCell.note_Status != .confirmedEnd{
-                            lclParentGrid.viable_Set_Manager.define_Viable_Set(cellParam: lclCurrCell)
-                            // TODO: note write
-                            print("possible start write event happenin in the cursor update manager")
-                        }
+                    else if lclParentGrid.viable_Set_Manager.viable_Set_Formed == false {
+                        lclParentGrid.define_Viable_Set_Then_Start_Note()
                     }
-                    
-               
-                    
-                    
+
                 }
             }
              

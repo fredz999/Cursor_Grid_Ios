@@ -56,7 +56,6 @@ class Cursor_Grid_Cell_Line_Store : ObservableObject, Identifiable {
     
     func update_yPosition_Int(lowValParam:Int){
         let newLineVal = lowValParam+initial_Y_Place
-        //print("newLineVal: ",newLineVal)
         dataSwap(newLineParam:newLineVal)
     }
     

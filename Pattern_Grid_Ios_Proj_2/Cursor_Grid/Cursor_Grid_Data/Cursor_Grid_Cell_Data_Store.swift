@@ -87,53 +87,7 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     }
 
     func handle_StatusChange(){
-        
-        // this will be srt starting from the grid
-        // 0: the grid has an optional called cursor_Y_Num, when its set thats the line that the cursors in
-        // 1: each line has an optional called cursor_X_Num, when its set the previous(if there is one) gets changed
-        // process for the line setting the cursor_X
-        // 1: cursor_X_Num has a willset, if it is nil at willSet it is is simply updated
-        // 2: if cursor_X_Num is not nil at willSet then the previous cursor cell (with xNum previous) has to have its cursor status set to not the cursor
-        
-        // the same is true of the line number
-        
-        // 1: if the grid line number is nil then the line num is set and the x num is set and the cell is set as the cursor
-        
-        // 2: if the grid line number is not set to nil the previous one has to have its cursor_X_Num set to nil before the remaining 2 steps
-        
-        // finally, at the leaf(cell) the color config is set by a combination of cursor_Status, in_viable_Set_Status and note_Status
-        // calls can be in_a_viable_set and not_in_a_note at the same time .... ok, I think I have to rethink the statuses
-//        if cursor_Status == .is_The_Current_Cursor {
-//            colors2.updateColor_From_Cursor_Status_Change(cell: self)
-//        }
-//        else if cursor_Status == .not_The_Current_Cursor {
-//            colors2.updateColor_From_Cursor_Status_Change(cell: self)
-//        }
-        //print("xNum: ", xNumber, "selectability_Status: ",selectability_Status,", cursorStatus: ",cursor_Status)
-        //print("cell cursor stat: ",cursor_Status.rawValue )
-        
-//        if cursor_Status == .is_The_Current_Cursor, selectability_Status == .not_In_A_Write_Viable_Group{
-//            print("strike...........")
-//        }
-        
-        //if parentDataLine?.parentGridData?.noteWritingActivated
-        
-        
-//        if let lclParentLine = parentDataLine {
-//            if let lclParentGrid = lclParentLine.parentGridData {
-//                if lclParentGrid.noteWritingActivated == true {
-//                    if cursor_Status == .is_The_Current_Cursor {
-//                        if note_Status == .confirmedSingle || note_Status == .confirmedStart
-//                            || note_Status == .confirmedMiddle || note_Status == .confirmedEnd{
-//                            print("strike2...........")
-//                        }
-//                    }
-//                }
-//            }
-//        }
-        
         colors2.updateColor_From_Cursor_Status_Change(cell: self)
-        
     }
     
     let colors2 = Color_Processor_Mk_2.Static_Color_Processor_Mk_2

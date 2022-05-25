@@ -24,17 +24,11 @@ class Viable_Set_Manager {
     
     var currentHighestViableCell_X_Index : Int?
     
-    // touchdown cell
-    var starter_Cell_Index : Int?
-    var current_Cell_Index : Int?
-    
     func nil_Viable_Set(){
         
         lineCellsOptional = nil
         currentLowestViableCell_X_Index = nil
         currentHighestViableCell_X_Index = nil
-        starter_Cell_Index = nil
-        current_Cell_Index = nil
         
         if currentViableDataCellArray.count > 0 {
             for cell in currentViableDataCellArray {
@@ -56,7 +50,7 @@ class Viable_Set_Manager {
     }
     
     func define_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store){
-        
+        //print("START define called viable count: ",currentViableDataCellArray.count.description)
         if let cellsParentLine = cellParam.parentDataLine, viable_Set_Formed == false {
             
             lineCellsOptional = cellsParentLine.cell_Data_Array
@@ -65,18 +59,14 @@ class Viable_Set_Manager {
                 drop_X_One_AndCheckAgain(int_To_Drop: cellParam.xNumber)
                 raise_X_One_AndCheckAgain(int_To_Raise: cellParam.xNumber)
             }
+            
             if let lclLow = currentLowestViableCell_X_Index
                 , let lclHigh = currentHighestViableCell_X_Index {
-                
                 for x in lclLow...lclHigh {
                     
                 if cellsParentLine.cell_Data_Array[x].xNumber == cellParam.xNumber {
                     cellsParentLine.cell_Data_Array[x].processSelectabilityUpdate(selectabilityUpdateParam: .in_A_Write_Viable_Group)
                     cellsParentLine.cell_Data_Array[x].place_In_Viable_Set = currentViableDataCellArray.count
-                    if starter_Cell_Index == nil, current_Cell_Index == nil {
-                        starter_Cell_Index = currentViableDataCellArray.count
-                        current_Cell_Index = currentViableDataCellArray.count
-                    }
                 }
 
                 else if cellsParentLine.cell_Data_Array[x].xNumber != cellParam.xNumber {
@@ -88,9 +78,12 @@ class Viable_Set_Manager {
                     
                 }
             }
+            
             if currentViableDataCellArray.count > 0 {
                 viable_Set_Formed = true
+                //print("END define called viable count: ",currentViableDataCellArray.count.description)
             }
+            
         }
     }
     
@@ -114,7 +107,6 @@ class Viable_Set_Manager {
                 currentHighestViableCell_X_Index = lclDimensions.gridCellsHorizontalFinalIndex
             }
         }
-
     }
     
     func drop_X_One_AndCheckAgain(int_To_Drop:Int){
@@ -125,20 +117,6 @@ class Viable_Set_Manager {
         else if int_To_Drop == 0 {
             if currentLowestViableCell_X_Index == nil {
             currentLowestViableCell_X_Index = 0
-            }
-        }
-    }
-    
-    func check_Higher_Termination_Criteria(valueToCheck: Int) {
-
-        if let lclLine = lineCellsOptional{
-            if lclLine[valueToCheck].note_Status != .unassigned {
-                if currentHighestViableCell_X_Index == nil {
-                    currentHighestViableCell_X_Index = valueToCheck-1
-                }
-            }
-            else if lclLine[valueToCheck].note_Status == .unassigned {
-                raise_X_One_AndCheckAgain(int_To_Raise: (valueToCheck))
             }
         }
     }
@@ -155,6 +133,22 @@ class Viable_Set_Manager {
             }
         }
     }
+
+    func check_Higher_Termination_Criteria(valueToCheck: Int) {
+
+        if let lclLine = lineCellsOptional{
+            if lclLine[valueToCheck].note_Status != .unassigned {
+                if currentHighestViableCell_X_Index == nil {
+                    currentHighestViableCell_X_Index = valueToCheck-1
+                }
+            }
+            else if lclLine[valueToCheck].note_Status == .unassigned {
+                raise_X_One_AndCheckAgain(int_To_Raise: (valueToCheck))
+            }
+        }
+    }
+    
+    
     
     
     
