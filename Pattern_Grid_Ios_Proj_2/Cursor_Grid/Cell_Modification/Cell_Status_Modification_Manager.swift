@@ -24,8 +24,10 @@ class Cell_Status_Modification_Manager {
     var viable_Group_Cursor_X_Current : Int?
     var viable_Group_Cursor_X_Previous : Int?
     var starter_Cells_Index_In_ViableGroup : Int?
+    
     var rightwardNote_Expand_Functions : RightwardNote_Expand_Functions?
     var rightwardNote_Contract_Functions : RightwardNote_Contract_Functions?
+    var cell_Setting_Functions : Cell_Setting_Functions?
     
     init(startCursorX:Int,startCursorY:Int){
         currCursorX_Int = startCursorX
@@ -38,6 +40,7 @@ class Cell_Status_Modification_Manager {
                                                                         , parentParam: self)
         rightwardNote_Contract_Functions =  RightwardNote_Contract_Functions(viableSetManagerParam: viableSetManager
                                                                              , parentParam: self)
+        cell_Setting_Functions = Cell_Setting_Functions(parentParam: self)
     }
     
     func figure_Out_Whats_To_Be_Done_With_Each_Cell_After_A_Cursor_X_Move() {
@@ -302,7 +305,10 @@ class RightwardNote_Expand_Functions{
                 || viableSetManager.currentViableDataCellArray[lclStartX].note_Status != .potentialStart
                 || viableSetManager.currentViableDataCellArray[lclStartX].cursor_Status != .not_The_Current_Cursor
             {
-                setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                //setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                    lclCell_Setting_Functions.setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                }
             }
             
             
@@ -317,7 +323,10 @@ class RightwardNote_Expand_Functions{
                         || viableSetManager.currentViableDataCellArray[x].note_Status != .potentialMiddle
                         || viableSetManager.currentViableDataCellArray[x].cursor_Status != .not_The_Current_Cursor
                     {
-                        setCellsToMidNote(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                        //setCellsToMidNote(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.setCellsToMidNote(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                        }
                     }
                 }
             }
@@ -325,11 +334,14 @@ class RightwardNote_Expand_Functions{
             // it must not be already: 1: in the viable,2:potentialEnd,3: Is_The_Cursor -- if its already all three of those things
             // it does not require processing
             
-            if viableSetManager.currentViableDataCellArray[lclStartX].viable_Group_Status != .in_A_Write_Viable_Group
-                || viableSetManager.currentViableDataCellArray[lclStartX].note_Status != .potentialEnd
-                || viableSetManager.currentViableDataCellArray[lclStartX].cursor_Status != .is_The_Current_Cursor
+            if viableSetManager.currentViableDataCellArray[currX].viable_Group_Status != .in_A_Write_Viable_Group
+                || viableSetManager.currentViableDataCellArray[currX].note_Status != .potentialEnd
+                || viableSetManager.currentViableDataCellArray[currX].cursor_Status != .is_The_Current_Cursor
             {
-                setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                //setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                    lclCell_Setting_Functions.setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                }
             }
             
             
@@ -343,9 +355,12 @@ class RightwardNote_Expand_Functions{
                         || viableSetManager.currentViableDataCellArray[x].note_Status != .unassigned
                         || viableSetManager.currentViableDataCellArray[x].cursor_Status != .not_The_Current_Cursor
                     {
-                        set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        //set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                        }
                     }
-                    //viableSetManager.currentViableDataCellArray[x].current_BackGround_Color = Color(red: 0, green: 1, blue: 1)
+
                 }
             }
             for cell in paintLineArray{
@@ -354,86 +369,84 @@ class RightwardNote_Expand_Functions{
         }
     }
     
-    func setCellToStartNote(cell: Cursor_Grid_Cell_Data_Store,isToBeACursor:Bool,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
-        var modArray = [Cell_Modification]()
-        var markedForPainting : Bool = false
-        if cell.viable_Group_Status != .in_A_Write_Viable_Group{
-            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
-            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
-            modArray.append(viabilityMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
-        if cell.note_Status != .potentialStart{
-            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
-            potentialNoteMod.note_Status_Modification_Value = .potentialStart
-            modArray.append(potentialNoteMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
-        if cell.cursor_Status == .is_The_Current_Cursor{
-            if isToBeACursor == false {
-                let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
-                cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
-                modArray.append(cursorMod)
-                if markedForPainting == false{markedForPainting = true}
-            }
-        }
-        else if cell.cursor_Status == .not_The_Current_Cursor{
-            if isToBeACursor == true {
-                let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
-                cursorMod.cursor_Modification_Value = .is_The_Current_Cursor
-                modArray.append(cursorMod)
-                if markedForPainting == false{markedForPainting = true}
-            }
-        }
-        if modArray.count > 0{
-   
-                parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
-       
-        }
-        if markedForPainting == true {
-            paintLineArray.append(cell)
-        }
-    }
-    
-    func setCellsToMidNote(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
-        // viabilityStatus must be in viable group
-        // noteStatus must be .potentialMid
-        // cursorStatus must be .not_The_Current_Cursor
-        // think I'll run checks in the caller - if its all three things that its supposed to be then I'll leave it
-        
-        var modArray = [Cell_Modification]()
-        var markedForPainting : Bool = false
-        if cell.viable_Group_Status != .in_A_Write_Viable_Group{
-            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
-            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
-            modArray.append(viabilityMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
-        if cell.note_Status != .potentialMiddle{
-            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
-            potentialNoteMod.note_Status_Modification_Value = .potentialMiddle
-            modArray.append(potentialNoteMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
-        if cell.cursor_Status == .is_The_Current_Cursor {
-            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
-            cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
-            modArray.append(cursorMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
- 
-        if modArray.count > 0 {
-//            if let lclParent = parentCell_Status_Modification_Manager{
-//                lclParent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//    func setCellToStartNote(cell: Cursor_Grid_Cell_Data_Store,isToBeACursor:Bool,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group{
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .potentialStart{
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .potentialStart
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .is_The_Current_Cursor{
+//            if isToBeACursor == false {
+//                let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//                cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
+//                modArray.append(cursorMod)
+//                if markedForPainting == false{markedForPainting = true}
 //            }
-            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
-        }
-        if markedForPainting == true {
-            paintLineArray.append(cell)
-        }
-        
-        
-    }
+//        }
+//        else if cell.cursor_Status == .not_The_Current_Cursor{
+//            if isToBeACursor == true {
+//                let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//                cursorMod.cursor_Modification_Value = .is_The_Current_Cursor
+//                modArray.append(cursorMod)
+//                if markedForPainting == false{markedForPainting = true}
+//            }
+//        }
+//        if modArray.count > 0{
+//
+//                parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//    }
+    
+//    func setCellsToMidNote(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        // viabilityStatus must be in viable group
+//        // noteStatus must be .potentialMid
+//        // cursorStatus must be .not_The_Current_Cursor
+//        // think I'll run checks in the caller - if its all three things that its supposed to be then I'll leave it
+//
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group{
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .potentialMiddle{
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .potentialMiddle
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .is_The_Current_Cursor {
+//            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//            cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
+//            modArray.append(cursorMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//
+//        if modArray.count > 0 {
+////            if let lclParent = parentCell_Status_Modification_Manager{
+////                lclParent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+////            }
+//            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//    }
     
     func setCellToEndNote(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
         // viabilityStatus must be in viable group
@@ -460,47 +473,45 @@ class RightwardNote_Expand_Functions{
             modArray.append(cursorMod)
             if markedForPainting == false{markedForPainting = true}
         }
- 
+
         if modArray.count > 0{
             parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
         }
         if markedForPainting == true {
             paintLineArray.append(cell)
         }
-        
-        
     }
     
-    func set_Cell_To_Viable_Unassigned(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
-        var modArray = [Cell_Modification]()
-        var markedForPainting : Bool = false
-        
-        if cell.viable_Group_Status != .in_A_Write_Viable_Group {
-            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
-            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
-            modArray.append(viabilityMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
-        if cell.note_Status != .unassigned {
-            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
-            potentialNoteMod.note_Status_Modification_Value = .unassigned
-            modArray.append(potentialNoteMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
-        if cell.cursor_Status == .is_The_Current_Cursor {
-            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
-            cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
-            modArray.append(cursorMod)
-            if markedForPainting == false{markedForPainting = true}
-        }
- 
-        if modArray.count > 0 {
-            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
-        }
-        if markedForPainting == true {
-            paintLineArray.append(cell)
-        }
-    }
+//    func set_Cell_To_Viable_Unassigned(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group {
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .unassigned {
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .unassigned
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .is_The_Current_Cursor {
+//            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//            cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
+//            modArray.append(cursorMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//
+//        if modArray.count > 0 {
+//            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//    }
 }
 
 class RightwardNote_Contract_Functions{
@@ -523,7 +534,10 @@ class RightwardNote_Contract_Functions{
                         || viableSetManager.currentViableDataCellArray[lclStartX].note_Status != .potentialStart
                         || viableSetManager.currentViableDataCellArray[lclStartX].cursor_Status != .not_The_Current_Cursor
                     {
-                        setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                        //setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                        }
                     }
                     
                     for x in lclStartX+1..<currX {
@@ -531,7 +545,10 @@ class RightwardNote_Contract_Functions{
                             || viableSetManager.currentViableDataCellArray[x].note_Status != .potentialMiddle
                             || viableSetManager.currentViableDataCellArray[x].cursor_Status != .not_The_Current_Cursor
                         {
-                            setCellsToMidNote(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                            //setCellsToMidNote(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                            if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                                lclCell_Setting_Functions.setCellsToMidNote(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                            }
                         }
                     }
                     
@@ -539,7 +556,10 @@ class RightwardNote_Contract_Functions{
                         || viableSetManager.currentViableDataCellArray[currX].note_Status != .potentialEnd
                         || viableSetManager.currentViableDataCellArray[currX].cursor_Status != .is_The_Current_Cursor
                     {
-                        setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        //setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        }
                     }
                     
                 }
@@ -548,14 +568,20 @@ class RightwardNote_Contract_Functions{
                         || viableSetManager.currentViableDataCellArray[lclStartX].note_Status != .potentialStart
                         || viableSetManager.currentViableDataCellArray[lclStartX].cursor_Status != .not_The_Current_Cursor
                     {
-                        setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                        //setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: false, paintLineArray: &paintLineArray)
+                        }
                     }
 
                     if viableSetManager.currentViableDataCellArray[currX].viable_Group_Status != .in_A_Write_Viable_Group
                         || viableSetManager.currentViableDataCellArray[currX].note_Status != .potentialEnd
                         || viableSetManager.currentViableDataCellArray[currX].cursor_Status != .is_The_Current_Cursor
                     {
-                        setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        //setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.setCellToEndNote(cell: viableSetManager.currentViableDataCellArray[currX], paintLineArray: &paintLineArray)
+                        }
                     }
                 }
             
@@ -564,7 +590,10 @@ class RightwardNote_Contract_Functions{
                         || viableSetManager.currentViableDataCellArray[lclStartX].note_Status != .potentialStart
                         || viableSetManager.currentViableDataCellArray[lclStartX].cursor_Status == .not_The_Current_Cursor
                     {
-                        setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: true, paintLineArray: &paintLineArray)
+                        //setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: true, paintLineArray: &paintLineArray)
+                        if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                            lclCell_Setting_Functions.setCellToStartNote(cell: viableSetManager.currentViableDataCellArray[lclStartX], isToBeACursor: true, paintLineArray: &paintLineArray)
+                        }
                     }
                 }
                 
@@ -574,7 +603,10 @@ class RightwardNote_Contract_Functions{
                             || viableSetManager.currentViableDataCellArray[x].note_Status != .unassigned
                             || viableSetManager.currentViableDataCellArray[x].cursor_Status == .is_The_Current_Cursor
                         {
-                            set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                            //set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                            if let lclCell_Setting_Functions = parent.cell_Setting_Functions{
+                                lclCell_Setting_Functions.set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                            }
                         }
                     }
                 }
@@ -588,7 +620,157 @@ class RightwardNote_Contract_Functions{
             }
         }
     
+//    func setCellToStartNote(cell: Cursor_Grid_Cell_Data_Store,isToBeACursor: Bool,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group{
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .potentialStart{
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .potentialStart
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .not_The_Current_Cursor{
+//            if isToBeACursor == true {
+//                let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//                cursorMod.cursor_Modification_Value = .is_The_Current_Cursor
+//                modArray.append(cursorMod)
+//                if markedForPainting == false{markedForPainting = true}
+//            }
+//        }
+//        else if cell.cursor_Status == .is_The_Current_Cursor {
+//            if isToBeACursor == false {
+//                let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//                cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
+//                modArray.append(cursorMod)
+//                if markedForPainting == false{markedForPainting = true}
+//            }
+//        }
+//        if modArray.count > 0{
+//            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//    }
+//
+//    func setCellsToMidNote(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        // viabilityStatus must be in viable group
+//        // noteStatus must be .potentialMid
+//        // cursorStatus must be .not_The_Current_Cursor
+//        // think I'll run checks in the caller - if its all three things that its supposed to be then I'll leave it
+//
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group{
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .potentialMiddle{
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .potentialMiddle
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .is_The_Current_Cursor {
+//            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//            cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
+//            modArray.append(cursorMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//
+//        if modArray.count > 0 {
+//            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//
+//
+//    }
+//
+//    func setCellToEndNote(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        // viabilityStatus must be in viable group
+//        // noteStatus must be .potentialEnd
+//        // cursorStatus must be .is_Current_Cursor
+//        // think I'll run checks in the caller - if its all three things that its supposed to be then I'll leave it
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group {
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .potentialEnd {
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .potentialEnd
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .not_The_Current_Cursor {
+//            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//            cursorMod.cursor_Modification_Value = .is_The_Current_Cursor
+//            modArray.append(cursorMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//
+//        if modArray.count > 0{
+//            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//
+//
+//    }
+
+//    func set_Cell_To_Viable_Unassigned(cell: Cursor_Grid_Cell_Data_Store,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
+//        var modArray = [Cell_Modification]()
+//        var markedForPainting : Bool = false
+//        if cell.viable_Group_Status != .in_A_Write_Viable_Group {
+//            let viabilityMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
+//            viabilityMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
+//            modArray.append(viabilityMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.note_Status != .unassigned {
+//            let potentialNoteMod = Cell_Modification(typeParam: .note_Modification)
+//            potentialNoteMod.note_Status_Modification_Value = .unassigned
+//            modArray.append(potentialNoteMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if cell.cursor_Status == .is_The_Current_Cursor {
+//            let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
+//            cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
+//            modArray.append(cursorMod)
+//            if markedForPainting == false{markedForPainting = true}
+//        }
+//        if modArray.count > 0 {
+//            parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
+//        }
+//        if markedForPainting == true {
+//            paintLineArray.append(cell)
+//        }
+//    }
     
+    
+    
+}
+
+class Cell_Setting_Functions {
+    var parent : Cell_Status_Modification_Manager
+    init(parentParam:Cell_Status_Modification_Manager){
+        parent = parentParam
+    }
+ 
     func setCellToStartNote(cell: Cursor_Grid_Cell_Data_Store,isToBeACursor: Bool,paintLineArray : inout [Cursor_Grid_Cell_Data_Store]){
         var modArray = [Cell_Modification]()
         var markedForPainting : Bool = false
@@ -610,7 +792,6 @@ class RightwardNote_Contract_Functions{
                 cursorMod.cursor_Modification_Value = .is_The_Current_Cursor
                 modArray.append(cursorMod)
                 if markedForPainting == false{markedForPainting = true}
-                print("set start to cursor?")
             }
         }
         else if cell.cursor_Status == .is_The_Current_Cursor {
@@ -619,7 +800,6 @@ class RightwardNote_Contract_Functions{
                 cursorMod.cursor_Modification_Value = .not_The_Current_Cursor
                 modArray.append(cursorMod)
                 if markedForPainting == false{markedForPainting = true}
-                print("set start to cursor?")
             }
         }
         if modArray.count > 0{
@@ -692,6 +872,9 @@ class RightwardNote_Contract_Functions{
             modArray.append(cursorMod)
             if markedForPainting == false{markedForPainting = true}
         }
+//        else if cell.cursor_Status == .is_The_Current_Cursor {
+//            if markedForPainting == false{markedForPainting = true}
+//        }
  
         if modArray.count > 0{
             parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)
@@ -731,7 +914,4 @@ class RightwardNote_Contract_Functions{
             paintLineArray.append(cell)
         }
     }
-    
-    
-    
 }
