@@ -14,11 +14,7 @@ class Potential_Note_Manager {
     // poss protocol here? (the parent data is in other managers)
     var parent_Grid_Data : Cursor_Grid_Data_Store?
     
-    var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []{
-        didSet {
-            set_Status_Of_Member_Cells()
-        }
-    }
+    var current_potentialNoteCellArray : [Cursor_Grid_Cell_Data_Store] = []
     
     var potentialStartIndex : Int?
     
@@ -29,20 +25,28 @@ class Potential_Note_Manager {
     func set_Status_Of_Member_Cells(){
         
         if current_potentialNoteCellArray.count == 1 {
-            current_potentialNoteCellArray[0].current_BackGround_Color = .black
+            //current_potentialNoteCellArray[0].current_BackGround_Color = .black
+            // TODO: tis potentialSingle
+            current_potentialNoteCellArray[0].note_Status = .potentialSingle
+            //current_potentialNoteCellArray[0].handle_StatusChange()
         }
         else if current_potentialNoteCellArray.count == 2 {
-            current_potentialNoteCellArray[0].current_BackGround_Color = .black
-            current_potentialNoteCellArray[1].current_BackGround_Color = .white
+            current_potentialNoteCellArray[0].note_Status = .potentialStart
+            //current_potentialNoteCellArray[0].handle_StatusChange()
+            current_potentialNoteCellArray[1].note_Status = .potentialEnd
+            //current_potentialNoteCellArray[1].handle_StatusChange()
         }
         else if current_potentialNoteCellArray.count > 2 {
             let finalIndex = current_potentialNoteCellArray.count - 1
             let penultimateIndex = current_potentialNoteCellArray.count - 2
-            current_potentialNoteCellArray[0].current_BackGround_Color = .black
+            current_potentialNoteCellArray[0].note_Status = .potentialStart
+            //current_potentialNoteCellArray[0].handle_StatusChange()
             for x in 1...(penultimateIndex){
-                current_potentialNoteCellArray[x].current_BackGround_Color = .gray
+                current_potentialNoteCellArray[x].note_Status = .potentialMiddle
+                //current_potentialNoteCellArray[x].handle_StatusChange()
             }
-            current_potentialNoteCellArray[finalIndex].current_BackGround_Color = .white
+            current_potentialNoteCellArray[finalIndex].note_Status = .potentialEnd
+            //current_potentialNoteCellArray[finalIndex].handle_StatusChange()
         }
     }
 
@@ -87,19 +91,30 @@ class Potential_Note_Manager {
     func nilPotentialArray(){
     potentialStartIndex = nil
     currentEndIndex = nil
-    // TODO: note commit
-    for cell in current_potentialNoteCellArray {
-        if cell.note_Status != .unassigned {
-            cell.note_Status = .unassigned
-        }
-    }
-        
     current_potentialNoteCellArray.removeAll()
     currently_Has_Potential_Note = false
     }
     
-    func commit_Note(currCell:Cursor_Grid_Cell_Data_Store){
-        print("commit_Note( called")
+    func commit_Note(){
+        // TODO: note commit
+        for cell in current_potentialNoteCellArray {
+            if cell.note_Status == .potentialSingle {
+                cell.note_Status = .confirmedSingle
+            }
+            else if cell.note_Status == .potentialStart {
+                cell.note_Status = .confirmedStart
+            }
+            else if cell.note_Status == .potentialMiddle {
+                cell.note_Status = .confirmedMiddle
+            }
+            else if cell.note_Status == .potentialEnd {
+                cell.note_Status = .confirmedEnd
+            }
+            else{
+                print("something else happened")
+            }
+        }
+        
     }
 
 }

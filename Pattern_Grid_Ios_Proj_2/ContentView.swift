@@ -62,10 +62,8 @@ struct Thing_With_All_The_Things_On_It : View {
     var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
     
     init(){
-        
     vertical_Slider_Coordinator_Store = Vertical_Slider_Coordinator_Store(vSliderResponderArrayParam: [v_Slider_Responder_Store])
     horizontal_Slider_Coordinator_Store = Horizontal_Slider_Coordinator_Store(hSliderResponderArrayParam: [h_Slider_Responder_Store])
-        
     v_Slider_Responder_Store.cursor_Grid_Store = cursor_Grid_Store
     v_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data
     h_Slider_Responder_Store.cursor_Grid_Data = cursor_Grid_Store.cursor_Grid_Data

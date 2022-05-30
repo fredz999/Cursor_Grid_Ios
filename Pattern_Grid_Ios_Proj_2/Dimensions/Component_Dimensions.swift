@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 class ComponentDimensions {
-    var colors : ComponentColors = ComponentColors.StaticComponentColors
+    //var colors : ComponentColors = ComponentColors.StaticComponentColors
     var gridUnitSize : CGFloat = 20
     var cellPerimeterSize : CGFloat = 2
     var bgRecWidth : CGFloat = 0

@@ -35,6 +35,7 @@
 		FCF4848B28116D3600CB1FDE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCF4848A28116D3600CB1FDE /* Preview Assets.xcassets */; };
 		FCF4849328116D6500CB1FDE /* Cursor_Grid_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF4849228116D6500CB1FDE /* Cursor_Grid_View.swift */; };
 		FCF4849628116D9900CB1FDE /* Component_Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF4849528116D9900CB1FDE /* Component_Dimensions.swift */; };
+		FCF7445E283FAE4300CEBC63 /* Cell_Status_Modification_Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF7445D283FAE4300CEBC63 /* Cell_Status_Modification_Manager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		FCF4848A28116D3600CB1FDE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FCF4849228116D6500CB1FDE /* Cursor_Grid_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cursor_Grid_View.swift; sourceTree = "<group>"; };
 		FCF4849528116D9900CB1FDE /* Component_Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component_Dimensions.swift; sourceTree = "<group>"; };
+		FCF7445D283FAE4300CEBC63 /* Cell_Status_Modification_Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell_Status_Modification_Manager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,14 +131,15 @@
 			path = Slider_Cell;
 			sourceTree = "<group>";
 		};
-		FCB43DEC28291C050008D243 /* Note_Writing */ = {
+		FCB43DEC28291C050008D243 /* Cell_Modification */ = {
 			isa = PBXGroup;
 			children = (
 				FC8DD147283673DC000A2F1A /* Cursor_Update_Manager.swift */,
 				FCB43DED28291C1E0008D243 /* Potential_Note_Manager.swift */,
 				FC888578282FCB4A0089D058 /* Viable_Set_Manager.swift */,
+				FCF7445D283FAE4300CEBC63 /* Cell_Status_Modification_Manager.swift */,
 			);
-			path = Note_Writing;
+			path = Cell_Modification;
 			sourceTree = "<group>";
 		};
 		FCC805F32816C9F800EC28EE /* Vertical_Slider */ = {
@@ -210,7 +213,7 @@
 		FCF4849128116D4D00CB1FDE /* Cursor_Grid */ = {
 			isa = PBXGroup;
 			children = (
-				FCB43DEC28291C050008D243 /* Note_Writing */,
+				FCB43DEC28291C050008D243 /* Cell_Modification */,
 				FCDB74072821406D00BED596 /* Cursor_Grid */,
 				FCDB74062821402400BED596 /* Notes */,
 				FC0020E5281A8EEF00287D6B /* Cursor_Grid_Data */,
@@ -299,6 +302,7 @@
 			files = (
 				FC836D102823F235004B131E /* Grid_Cell_Data_Note_Status.swift in Sources */,
 				FC0EC30928200DD70066200B /* Horizontal_Slider_Responder_Store.swift in Sources */,
+				FCF7445E283FAE4300CEBC63 /* Cell_Status_Modification_Manager.swift in Sources */,
 				FC0EC307281FD6580066200B /* Note_Drawing_Button_Store.swift in Sources */,
 				FC0020E028196D1900287D6B /* Cursor_Grid_Line_View.swift in Sources */,
 				FCA1220F281C13A000E99BD4 /* Cursor_Grid_Cell_Data_Store.swift in Sources */,

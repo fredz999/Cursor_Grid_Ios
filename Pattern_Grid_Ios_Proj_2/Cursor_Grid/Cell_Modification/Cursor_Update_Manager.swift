@@ -28,7 +28,8 @@ class Cursor_Update_Manager {
     {
         didSet {
             if let lcl_In_Line_Cell = current_Cursor_Cell {
-                lcl_In_Line_Cell.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
+                lcl_In_Line_Cell.process_Cursor_Status_Update(isCurrentSelectedPositionParam: true)
+                lcl_In_Line_Cell.repaint_Cell()
             }
         }
     }
@@ -40,8 +41,9 @@ class Cursor_Update_Manager {
     }
     
     func nil_In_Line_Cursor_Cell(){
-        if let lclin_Line_Cursor_Cell = current_Cursor_Cell{
-            lclin_Line_Cursor_Cell.processCursorStatusUpdate(isCurrentSelectedPositionParam: false)
+        if let lclin_Line_Cursor_Cell = current_Cursor_Cell {
+            lclin_Line_Cursor_Cell.process_Cursor_Status_Update(isCurrentSelectedPositionParam: false)
+            lclin_Line_Cursor_Cell.repaint_Cell()
             current_Cursor_Cell = nil
         }
     }
@@ -92,94 +94,12 @@ class Cursor_Update_Manager {
                         }
                     }
                     else if lclParentGrid.viable_Set_Manager.viable_Set_Formed == false {
-                        lclParentGrid.define_Viable_Set_Then_Start_Note()
+                        lclParentGrid.execute_Viable_Array_State_Changes()
+                        lclParentGrid.execute_Viable_Array_Visual_Updates()
                     }
-
                 }
             }
-             
-                
-                
-                
             }
         }
-        
     }
-    
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ========================================historic stuff==================================
-
-//func update_Data_Cursor_Y(new_Cursor_Y_Int:Int){
-//    if let lclParent = parent_Grid_Data_Store {
-//
-//        if new_Cursor_Y_Int >= 0 , new_Cursor_Y_Int <= lclParent.cell_Line_Array.count {
-//
-//            if new_Cursor_Y_Int != current_Cursor_Y_Int {
-//
-//                current_Cursor_Y_Int = new_Cursor_Y_Int
-//
-//                current_Cursor_Line = lclParent.cell_Line_Array[new_Cursor_Y_Int]
-//
-//                //currCellData = cell_Line_Array[new_Cursor_Y_Int].return_Inverse_Cell(x_Param: current_Cursor_X_Int)
-//
-//                //current_Cursor_Line = new_Cursor_Y_Int
-//
-////                if noteWritingActivated == true {
-////                    note_UpDate_Handler()
-////                }
-////
-////                else if noteWritingActivated == false {
-//
-////                    if let lclCurrData = currCellData {
-////                        lclCurrData.processCursorStatusUpdate(isCurrentSelectedPositionParam: true)
-////                    }
-//
-//
-////                }
-//    }
-//
-//
-//        }
-//    }
-//}
-
-
-
-
-//func update_Data_Cursor_X(new_Cursor_X_Int:Int) {
-//    if let lclParent = parent_Grid_Data_Store {
-//        if new_Cursor_X_Int >= 0, new_Cursor_X_Int < lclDimensions.numberCellsGridHorizontal {
-//
-//            if new_Cursor_X_Int != current_Cursor_X_Int {
-//
-//            lclParent.cell_Line_Array[current_Cursor_Y_Int].nil_In_Line_Cursor_Cell()
-//
-//            current_Cursor_X_Int = new_Cursor_X_Int
-//
-//            if let lclCurr_Line = current_Cursor_Line {
-//                lclCurr_Line.set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
-//            }
-//
-//            //current_Cursor_Line.set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
-//
-//            //lclParent.cell_Line_Array[current_Cursor_Y_Int].set_In_Line_Cursor_Cell(xParam: current_Cursor_X_Int)
-//
-//            }
-//
-//        }
-//    }
-//}

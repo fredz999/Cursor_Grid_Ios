@@ -24,35 +24,30 @@ class Viable_Set_Manager {
     
     var currentHighestViableCell_X_Index : Int?
     
+    var intial_In_Line_Cursor_X : Int?
+    var starterCells_Position_In_Viable_Array : Int?
+    
+    var lineCellsOptional : [Cursor_Grid_Cell_Data_Store]?
+    
+    //var initial_Lowest_Viable_Cell_X_Index : Int?
+    var lowestViableMembers_XNum : Int?
+    
     func nil_Viable_Set(){
-        
+        //if initial_Lowest_Viable_Cell_X_Index != nil{initial_Lowest_Viable_Cell_X_Index=nil}
+        if intial_In_Line_Cursor_X != nil{intial_In_Line_Cursor_X = nil}
         lineCellsOptional = nil
         currentLowestViableCell_X_Index = nil
         currentHighestViableCell_X_Index = nil
-        
-        if currentViableDataCellArray.count > 0 {
-            for cell in currentViableDataCellArray {
-                cell.processSelectabilityUpdate(selectabilityUpdateParam: .not_In_A_Write_Viable_Group)
-                cell.place_In_Viable_Set = nil
-            }
-        }
         currentViableDataCellArray.removeAll()
         all_The_Cells_Of_The_Locked_Line = nil
         if viable_Set_Formed == true { viable_Set_Formed = false }
-        
     }
 
-    var lineCellsOptional : [Cursor_Grid_Cell_Data_Store]?
     
-    func start_New_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store){
-        nil_Viable_Set()
-        define_Viable_Set(cellParam: cellParam)
-    }
     
-    func define_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store){
-        //print("START define called viable count: ",currentViableDataCellArray.count.description)
+    func define_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store,callback : ()->()) {
+        if intial_In_Line_Cursor_X == nil{intial_In_Line_Cursor_X=cellParam.xNumber}
         if let cellsParentLine = cellParam.parentDataLine, viable_Set_Formed == false {
-            
             lineCellsOptional = cellsParentLine.cell_Data_Array
             
             if checkTheCellIsWriteable(x_PlaceParam: cellParam.xNumber, line_Cell_Array_Param: cellsParentLine.cell_Data_Array) == true {
@@ -62,36 +57,29 @@ class Viable_Set_Manager {
             
             if let lclLow = currentLowestViableCell_X_Index
                 , let lclHigh = currentHighestViableCell_X_Index {
+                
                 for x in lclLow...lclHigh {
-                    
-                if cellsParentLine.cell_Data_Array[x].xNumber == cellParam.xNumber {
-                    cellsParentLine.cell_Data_Array[x].processSelectabilityUpdate(selectabilityUpdateParam: .in_A_Write_Viable_Group)
-                    cellsParentLine.cell_Data_Array[x].place_In_Viable_Set = currentViableDataCellArray.count
-                }
-
-                else if cellsParentLine.cell_Data_Array[x].xNumber != cellParam.xNumber {
-                    cellsParentLine.cell_Data_Array[x].place_In_Viable_Set = currentViableDataCellArray.count
-                    cellsParentLine.cell_Data_Array[x].processSelectabilityUpdate(selectabilityUpdateParam: .in_A_Write_Viable_Group)
-                }
-
-                currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
-                    
+                    if x < lclHigh{
+                        currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
+                        //print("count: ",currentViableDataCellArray[currentViableDataCellArray.count-1].xNumber)
+                        if x == cellParam.xNumber {starterCells_Position_In_Viable_Array = currentViableDataCellArray.count-1}
+                    }
+                    else if x == lclHigh{
+                        currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
+                        if lowestViableMembers_XNum == nil{lowestViableMembers_XNum=lclLow}
+                        viable_Set_Formed = true
+                        //print("count: ",currentViableDataCellArray[currentViableDataCellArray.count-1].xNumber)
+                        if x == cellParam.xNumber {starterCells_Position_In_Viable_Array = currentViableDataCellArray.count-1}
+                        callback()
+                    }
                 }
             }
-            
-            if currentViableDataCellArray.count > 0 {
-                viable_Set_Formed = true
-                //print("END define called viable count: ",currentViableDataCellArray.count.description)
-            }
-            
         }
     }
     
     func checkTheCellIsWriteable(x_PlaceParam:Int,line_Cell_Array_Param : [Cursor_Grid_Cell_Data_Store])->Bool{
         var retval = false
-        if line_Cell_Array_Param[x_PlaceParam].note_Status == .unassigned ||
-            line_Cell_Array_Param[x_PlaceParam].note_Status == .cursor_Passive ||
-            line_Cell_Array_Param[x_PlaceParam].note_Status == .cursor_Active_Writable {
+        if line_Cell_Array_Param[x_PlaceParam].note_Status == .unassigned{
             retval = true
         }
         return retval
@@ -135,7 +123,6 @@ class Viable_Set_Manager {
     }
 
     func check_Higher_Termination_Criteria(valueToCheck: Int) {
-
         if let lclLine = lineCellsOptional{
             if lclLine[valueToCheck].note_Status != .unassigned {
                 if currentHighestViableCell_X_Index == nil {
