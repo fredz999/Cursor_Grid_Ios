@@ -57,7 +57,6 @@ struct Thing_With_All_The_Things_On_It : View {
     var cursor_Grid_Store = Cursor_Grid_Store()
     let dimensions = ComponentDimensions.StaticComponentDimensions
     
-    //var vertical_Slider_Coordinator_Store = Vertical_Slider_Coordinator_Store()
     var vertical_Slider_Coordinator_Store : Vertical_Slider_Coordinator_Store
     var horizontal_Slider_Coordinator_Store : Horizontal_Slider_Coordinator_Store
     
