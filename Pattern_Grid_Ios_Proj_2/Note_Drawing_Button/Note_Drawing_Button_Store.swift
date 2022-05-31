@@ -27,8 +27,9 @@ class Note_Drawing_Button_Store : ObservableObject {
               lclDataClass.noteWritingActivated = true
               
 //            if let lclVSliderRef = vertical_Slider_Coordinator_Store_Ref {
-//                lclVSliderRef.toggleFreeze(toFreeze: true)
+//            lclVSliderRef.toggleFreeze(toFreeze: true)
 //            }
+              
               bgCol = Color(red: 0, green: 0.6, blue: 0)
               txt = "On"
 
@@ -38,18 +39,20 @@ class Note_Drawing_Button_Store : ObservableObject {
               lclDataClass.noteWritingActivated = false
               
 //              if let lclCurrData = lclDataClass.currCellData{
-//                  lclDataClass.note_Writer.commit_Note(currCell: lclCurrData)
+//              lclDataClass.note_Writer.commit_Note(currCell: lclCurrData)
 //              }
               
 //              if let lclVSliderRef = vertical_Slider_Coordinator_Store_Ref {
-//                  lclVSliderRef.toggleFreeze(toFreeze: false)
+//              lclVSliderRef.toggleFreeze(toFreeze: false)
 //              }
               
               bgCol = Color(red: 0.6, green: 0, blue: 0)
               txt = "Off"
+              
 //              if let lclVSliderRef = vertical_Slider_Coordinator_Store_Ref {
 //                  lclVSliderRef.toggleFreeze(toFreeze: false)
 //              }
+              
           }
         }
 
