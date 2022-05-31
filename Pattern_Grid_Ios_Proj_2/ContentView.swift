@@ -87,9 +87,6 @@ struct Thing_With_All_The_Things_On_It : View {
         Note_Drawing_Button_View(note_Drawing_Button_Store: noteDrawingButtonStore)
         .offset(x: dimensions.return_Note_Drawing_Button_X_Pos(), y:dimensions.return_Note_Drawing_Button_Y_Pos())
             
-        // button to take the vertical to the end(have to reverse the direction of the slide...might make the sliders independant)
-        // entities that just yield single Integers
-            
         Button(action:{
             vertical_Slider_Coordinator_Store.vertical_GoToEnd()
         }){
