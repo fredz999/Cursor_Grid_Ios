@@ -76,7 +76,7 @@ struct Thing_With_All_The_Things_On_It : View {
         return ZStack(alignment: .topLeading){
             
         Vertical_Slider_Container_View(vertical_Slider_Coordinator_Store: vertical_Slider_Coordinator_Store)
-        .offset(x: 300, y: 10)
+        .offset(x: 300, y: 200)
 
         Cursor_Grid_View(cursor_Grid_Store: cursor_Grid_Store)
         .offset(x: 10, y: 10)

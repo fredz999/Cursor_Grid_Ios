@@ -165,7 +165,6 @@ class LeftwardNote_Contract_Leftward_Functions {
                 }
             }
             
-            //if viableSetManager.currentViableDataCellArray.count > currX+1 {
             if currX > 0 {
                 for x in 0..<currX {
                     if viableSetManager.currentViableDataCellArray[x].viable_Group_Status != .in_A_Write_Viable_Group
@@ -186,6 +185,24 @@ class LeftwardNote_Contract_Leftward_Functions {
         }
         }
     
+    func eliminateLeftSide(){
+        var paintLineArray = [Cursor_Grid_Cell_Data_Store]()
+        if let lclStartX = parent.starter_Cells_Index_In_ViableGroup {
+            for x in 0..<lclStartX{
+                if viableSetManager.currentViableDataCellArray[x].viable_Group_Status != .in_A_Write_Viable_Group
+                    || viableSetManager.currentViableDataCellArray[x].note_Status != .unassigned
+                    || viableSetManager.currentViableDataCellArray[x].cursor_Status == .is_The_Current_Cursor
+                {
+                    if let lclCell_Setting_Functions = parent.cell_Leftward_Setting_Functions {
+                        lclCell_Setting_Functions.set_Cell_To_Viable_Unassigned(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                    }
+                }
+            }
+        }
+        for cell in paintLineArray{
+            cell.repaint_Cell()
+        }
+    }
 }
 
 class Cell_Leftward_Setting_Functions {

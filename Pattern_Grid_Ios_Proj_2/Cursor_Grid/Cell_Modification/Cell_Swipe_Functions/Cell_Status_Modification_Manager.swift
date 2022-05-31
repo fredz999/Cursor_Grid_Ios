@@ -25,15 +25,39 @@ class Cell_Status_Modification_Manager {
     var viable_Group_Cursor_X_Previous : Int?
     var starter_Cells_Index_In_ViableGroup : Int?
     
-    var rightwardNote_Expand_Functions : RightwardNote_Expand_Rightward_Functions?
-    var rightwardNote_Contract_Functions : RightwardNote_Contract_Leftward_Functions?
+    var rightwardNote_Expand_Rightward_Functions : RightwardNote_Expand_Rightward_Functions?
+    var rightwardNote_Contract_Leftward_Functions : RightwardNote_Contract_Leftward_Functions?
     var cell_Rightward_Setting_Functions : Cell_Rightward_Setting_Functions?
     
     
     var leftwardNote_Expand_Leftward_Functions : LeftwardNote_Expand_Leftward_Functions?
-    var leftwardNote_Contract_Leftward_Functions : LeftwardNote_Contract_Leftward_Functions?
+    var leftwardNote_Contract_Rightward_Functions : LeftwardNote_Contract_Leftward_Functions?
     var cell_Leftward_Setting_Functions : Cell_Leftward_Setting_Functions?
     
+    // TODO: pendulum
+    var swipe_Direction_From_Start : Swipe_Direction_From_StartCell = .inCentre {
+        didSet{
+            if swipe_Direction_From_Start == .leftFromCentre {
+                if swipe_Direction_From_Start != .inCentre {
+                    swipe_Direction_From_Start = .inCentre
+                    if let lclRightContractFuncs = rightwardNote_Contract_Leftward_Functions {
+                        lclRightContractFuncs.eliminateRightSide()
+                        print("eliminateRightSide()")
+                    }
+                }
+            }
+            else if swipe_Direction_From_Start == .rightFromCentre {
+
+                if swipe_Direction_From_Start != .inCentre {
+                    if let lclLeftContractFuncs = leftwardNote_Contract_Rightward_Functions {
+                        lclLeftContractFuncs.eliminateLeftSide()
+                        print("eliminateLeftSide()")
+                    }
+                }
+
+            }
+        }
+    }
     
     init(startCursorX:Int,startCursorY:Int){
     currCursorX_Int = startCursorX
@@ -42,12 +66,12 @@ class Cell_Status_Modification_Manager {
     }
     
     func setChildren(){
-        rightwardNote_Expand_Functions = RightwardNote_Expand_Rightward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        rightwardNote_Contract_Functions =  RightwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
+        rightwardNote_Expand_Rightward_Functions = RightwardNote_Expand_Rightward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
+        rightwardNote_Contract_Leftward_Functions =  RightwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
         cell_Rightward_Setting_Functions = Cell_Rightward_Setting_Functions(parentParam: self)
         
         leftwardNote_Expand_Leftward_Functions = LeftwardNote_Expand_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        leftwardNote_Contract_Leftward_Functions = LeftwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
+        leftwardNote_Contract_Rightward_Functions = LeftwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
         cell_Leftward_Setting_Functions = Cell_Leftward_Setting_Functions(parentParam: self)
     }
     
@@ -79,6 +103,7 @@ class Cell_Status_Modification_Manager {
         {
             if currX > startX{
                 if currX > prevX{
+                    swipe_Direction_From_Start = .rightFromCentre
                     rightwardNote_Expanding_Rightward()
                 }
                 else if currX < prevX{
@@ -91,16 +116,21 @@ class Cell_Status_Modification_Manager {
                     leftWardNote_Contracting_Rightward()
                 }
                 else if currX < prevX {
+                    swipe_Direction_From_Start = .leftFromCentre
                     leftWardNote_Expanding_Leftward()
                 }
             }
-            
+            // TODO: pendulum
             else if currX == startX {
                 if currX > prevX {
-                    print("currX = startX, it contracted back into a single cell pick from the left")
+                    // print("currX = startX, it contracted back into a single cell pick from the left")
+                    // eliminateRightSide()
+                    swipe_Direction_From_Start = .inCentre
                     leftWardNote_Contracting_Rightward()
                 }
                 else if currX < prevX {
+                    //eliminateRightSide()
+                    swipe_Direction_From_Start = .inCentre
                     rightwardNote_Contracting_Leftward()
                 }
             }
@@ -161,7 +191,7 @@ class Cell_Status_Modification_Manager {
     func leftWardNote_Contracting_Rightward(){
         if let currX = viable_Group_Cursor_X_Current
         {
-            if let lclLeft_ExpandFuncs = leftwardNote_Contract_Leftward_Functions {
+            if let lclLeft_ExpandFuncs = leftwardNote_Contract_Rightward_Functions {
                 lclLeft_ExpandFuncs.leftwardNote_Contracting_Right_Swipe(currX: currX)
             }
         }
@@ -171,7 +201,7 @@ class Cell_Status_Modification_Manager {
         if let currX = viable_Group_Cursor_X_Current
         {
             if currX < viableSetManager.currentViableDataCellArray.count,currX>0 {
-                if let lclRight_ExpandFuncs = rightwardNote_Expand_Functions{
+                if let lclRight_ExpandFuncs = rightwardNote_Expand_Rightward_Functions{
                     lclRight_ExpandFuncs.process_Rightward_Expansion(currX:currX)
                 }
                 
@@ -185,7 +215,7 @@ class Cell_Status_Modification_Manager {
            let lclStartX = starter_Cells_Index_In_ViableGroup
         {
             if currX >= lclStartX,currX < viableSetManager.currentViableDataCellArray.count {
-                if let lclRightwardNote_Contract_Functions = rightwardNote_Contract_Functions{
+                if let lclRightwardNote_Contract_Functions = rightwardNote_Contract_Leftward_Functions{
                     lclRightwardNote_Contract_Functions.tempArrayPaint_Contracting_Right_Swipe(currX:currX)
                 }
             }
@@ -284,3 +314,8 @@ class Cell_Modification {
 }
 
 
+enum Swipe_Direction_From_StartCell {
+    case inCentre
+    case rightFromCentre
+    case leftFromCentre
+}

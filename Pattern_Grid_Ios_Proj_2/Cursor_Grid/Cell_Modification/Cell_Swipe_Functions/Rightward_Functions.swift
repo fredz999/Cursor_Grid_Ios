@@ -206,11 +206,31 @@ class RightwardNote_Contract_Leftward_Functions {
                         }
                     }
                 }
+
             for cell in paintLineArray{
                 cell.repaint_Cell()
             }
             }
         }
+    
+    func eliminateRightSide(){
+        var paintLineArray = [Cursor_Grid_Cell_Data_Store]()
+        if let lclStartX = parent.starter_Cells_Index_In_ViableGroup {
+            for x in lclStartX..<viableSetManager.currentViableDataCellArray.count{
+                if viableSetManager.currentViableDataCellArray[x].viable_Group_Status != .in_A_Write_Viable_Group
+                    || viableSetManager.currentViableDataCellArray[x].note_Status != .unassigned
+                    || viableSetManager.currentViableDataCellArray[x].cursor_Status == .is_The_Current_Cursor
+                {
+                    if let lclCell_Setting_Functions = parent.cell_Rightward_Setting_Functions {
+                        lclCell_Setting_Functions.set_Cell_To_Viable_Unassigned_Right_Controct(cell: viableSetManager.currentViableDataCellArray[x], paintLineArray: &paintLineArray)
+                    }
+                }
+            }
+        }
+        for cell in paintLineArray{
+            cell.repaint_Cell()
+        }
+    }
     
 }
 

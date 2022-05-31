@@ -90,14 +90,6 @@ class Cursor_Grid_Data_Store : ObservableObject {
         line_Data.setParentGridData(parentGridParam: self)
         cell_Line_Array.append(line_Data)
         }
-        //cursor_Update_Manager.current_Cursor_Line = cell_Line_Array[0]
-        
-//        cell_Line_Array[0].cell_Data_Array[5].process_Note_Status_Update(statusUpdateParam: .confirmedSingle)
-//        cell_Line_Array[0].cell_Data_Array[5].handle_StatusChange()
-        //cell_Line_Array[0].cell_Data_Array[9].process_Note_Status_Update(statusUpdateParam: .confirmedSingle)
-        //cell_Line_Array[0].cell_Data_Array[9].handle_StatusChange()
-        
-        //cursor_Update_Manager.parent_Grid_Data_Store = self
         potential_Note_Manager.parent_Grid_Data = self
         cell_Modification_Manager.parentDataGrid = self
     }
