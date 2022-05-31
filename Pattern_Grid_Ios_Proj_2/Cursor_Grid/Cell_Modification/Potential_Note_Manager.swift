@@ -110,9 +110,6 @@ class Potential_Note_Manager {
             else if cell.note_Status == .potentialEnd {
                 cell.note_Status = .confirmedEnd
             }
-            else{
-                print("something else happened")
-            }
         }
         
     }

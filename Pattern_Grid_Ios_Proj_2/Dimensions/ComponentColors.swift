@@ -20,14 +20,6 @@ class Color_Processor_Mk_2 {
     }
     
     func appearance_Update(cell:Cursor_Grid_Cell_Data_Store){
-//        print("appearance_Update")
-        
-//        if cell.xNumber == 0 {
-//            print("x was zero processed, noteStatus: ",cell.note_Status.rawValue
-//                  ,", is cursor: ",cell.cursor_Status.rawValue
-//                  ,", in a viable group: ",cell.viable_Group_Status.rawValue)
-//
-//        }
         
         if cell.viable_Group_Status == .not_In_A_Write_Viable_Group {
             if cell.cursor_Status == .not_The_Current_Cursor {

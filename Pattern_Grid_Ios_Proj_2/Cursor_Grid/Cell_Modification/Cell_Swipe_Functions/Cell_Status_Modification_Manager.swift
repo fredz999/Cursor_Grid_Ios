@@ -31,23 +31,23 @@ class Cell_Status_Modification_Manager {
     
     
     var leftwardNote_Expand_Leftward_Functions : LeftwardNote_Expand_Leftward_Functions?
+    var leftwardNote_Contract_Leftward_Functions : LeftwardNote_Contract_Leftward_Functions?
     var cell_Leftward_Setting_Functions : Cell_Leftward_Setting_Functions?
     
     
     init(startCursorX:Int,startCursorY:Int){
-        currCursorX_Int = startCursorX
-        currCursorY_Int = startCursorY
-        setChildren()
+    currCursorX_Int = startCursorX
+    currCursorY_Int = startCursorY
+    setChildren()
     }
     
     func setChildren(){
         rightwardNote_Expand_Functions = RightwardNote_Expand_Rightward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
         rightwardNote_Contract_Functions =  RightwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        
         cell_Rightward_Setting_Functions = Cell_Rightward_Setting_Functions(parentParam: self)
         
-        
         leftwardNote_Expand_Leftward_Functions = LeftwardNote_Expand_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
+        leftwardNote_Contract_Leftward_Functions = LeftwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
         cell_Leftward_Setting_Functions = Cell_Leftward_Setting_Functions(parentParam: self)
     }
     
@@ -69,21 +69,9 @@ class Cell_Status_Modification_Manager {
     }
 
     func print_State_Updates(){
-        
-        // 1: startX laft of endX, cursor moves right from previous position
-        // 2: startX laft of endX, cursor moves left from previous position
-        // 1: startX right of endX, cursor moves right from previous position
-        // 2: startX right of endX, cursor moves left from previous position
         if viable_Group_Cursor_X_Previous == nil
         ,let startX = starter_Cells_Index_In_ViableGroup {
-            //print("startX(in viable group) : ",startX, ", start and end x are the same")
-            
-//            print("startX(in viable group) : ",startX, ", start and end x are the same"
-//                  ,", viableGroup Line LeftMost Index: ",viableSetManager.currentLowestViableCell_X_Index
-//                  ,", viableGroup Line RightMost Index: ",viableSetManager.currentHighestViableCell_X_Index)
-            
             initial_Viable_Set_State_Update()
-            
         }
         else if let currX = viable_Group_Cursor_X_Current,
                 let prevX = viable_Group_Cursor_X_Previous,
@@ -91,23 +79,16 @@ class Cell_Status_Modification_Manager {
         {
             if currX > startX{
                 if currX > prevX{
-                    //print("currX > startX, currX moved right from prevX")
-                    // this means the note is expanding rightward..... will change the func name now
                     rightwardNote_Expanding_Rightward()
                 }
                 else if currX < prevX{
-                    //print("currX > startX, currX moved left from prevX")
-                    
-//                    if let lclRightWardNoteContractFuncs = rightwardNote_Contract_Functions{
-//                        lclRightWardNoteContractFuncs.rightwardNote_Contracting_Leftward()
-//                    }
                     rightwardNote_Contracting_Leftward()
                 }
             }
             
             else if currX < startX {
-                if currX > prevX{
-                    print("currX < startX, leftward note contracting rightward")
+                if currX > prevX {
+                    leftWardNote_Contracting_Rightward()
                 }
                 else if currX < prevX {
                     leftWardNote_Expanding_Leftward()
@@ -116,15 +97,10 @@ class Cell_Status_Modification_Manager {
             
             else if currX == startX {
                 if currX > prevX {
-                    print("currX = startX, currX moved right from prevX")
+                    print("currX = startX, it contracted back into a single cell pick from the left")
+                    leftWardNote_Contracting_Rightward()
                 }
-                //went all the way inward from the right
                 else if currX < prevX {
-                    //print("currX = startX, currX moved left from prevX")
-                    // because it came from a leftward contraction
-//                    if let lclRightWardNoteContractFuncs = rightwardNote_Contract_Functions{
-//                        lclRightWardNoteContractFuncs.rightwardNote_Contracting_Leftward()
-//                    }
                     rightwardNote_Contracting_Leftward()
                 }
             }
@@ -179,6 +155,15 @@ class Cell_Status_Modification_Manager {
                     lclLeft_ExpandFuncs.leftwardNote_Expanding_Left_Swipe(currX: currX)
                 }
             //}
+        }
+    }
+    
+    func leftWardNote_Contracting_Rightward(){
+        if let currX = viable_Group_Cursor_X_Current
+        {
+            if let lclLeft_ExpandFuncs = leftwardNote_Contract_Leftward_Functions {
+                lclLeft_ExpandFuncs.leftwardNote_Contracting_Right_Swipe(currX: currX)
+            }
         }
     }
     

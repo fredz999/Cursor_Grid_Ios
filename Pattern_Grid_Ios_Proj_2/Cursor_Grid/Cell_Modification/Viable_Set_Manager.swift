@@ -61,14 +61,12 @@ class Viable_Set_Manager {
                 for x in lclLow...lclHigh {
                     if x < lclHigh{
                         currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
-                        //print("count: ",currentViableDataCellArray[currentViableDataCellArray.count-1].xNumber)
                         if x == cellParam.xNumber {starterCells_Position_In_Viable_Array = currentViableDataCellArray.count-1}
                     }
                     else if x == lclHigh{
                         currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
                         if lowestViableMembers_XNum == nil{lowestViableMembers_XNum=lclLow}
                         viable_Set_Formed = true
-                        //print("count: ",currentViableDataCellArray[currentViableDataCellArray.count-1].xNumber)
                         if x == cellParam.xNumber {starterCells_Position_In_Viable_Array = currentViableDataCellArray.count-1}
                         callback()
                     }
