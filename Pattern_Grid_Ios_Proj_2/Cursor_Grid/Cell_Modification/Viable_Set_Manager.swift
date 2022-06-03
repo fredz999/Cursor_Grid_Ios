@@ -24,30 +24,41 @@ class Viable_Set_Manager {
     
     var currentHighestViableCell_X_Index : Int?
     
-    var intial_In_Line_Cursor_X : Int?
+    //var intial_In_Line_Cursor_X : Int?
+    
     var starterCells_Position_In_Viable_Array : Int?
     
     var lineCellsOptional : [Cursor_Grid_Cell_Data_Store]?
-    
-    //var initial_Lowest_Viable_Cell_X_Index : Int?
+
     var lowestViableMembers_XNum : Int?
     
     func nil_Viable_Set(){
-        //if initial_Lowest_Viable_Cell_X_Index != nil{initial_Lowest_Viable_Cell_X_Index=nil}
-        if intial_In_Line_Cursor_X != nil{intial_In_Line_Cursor_X = nil}
+        if lowestViableMembers_XNum != nil{lowestViableMembers_XNum=nil}
+        //if intial_In_Line_Cursor_X != nil{intial_In_Line_Cursor_X = nil}
+        for cell in currentViableDataCellArray{
+            cell.place_In_Viable_Set = nil
+        }
         lineCellsOptional = nil
         currentLowestViableCell_X_Index = nil
         currentHighestViableCell_X_Index = nil
+        if currentViableDataCellArray.count > 0 {
+            for cell in currentViableDataCellArray {
+                cell.viable_Group_Status = .not_In_A_Write_Viable_Group
+                cell.repaint_Cell()
+            }
+        }
         currentViableDataCellArray.removeAll()
         all_The_Cells_Of_The_Locked_Line = nil
         if viable_Set_Formed == true { viable_Set_Formed = false }
     }
 
-    
-    
     func define_Viable_Set(cellParam:Cursor_Grid_Cell_Data_Store,callback : ()->()) {
-        if intial_In_Line_Cursor_X == nil{intial_In_Line_Cursor_X=cellParam.xNumber}
+//        if intial_In_Line_Cursor_X == nil{
+//            intial_In_Line_Cursor_X=cellParam.xNumber
+//        }
+
         if let cellsParentLine = cellParam.parentDataLine, viable_Set_Formed == false {
+            
             lineCellsOptional = cellsParentLine.cell_Data_Array
             
             if checkTheCellIsWriteable(x_PlaceParam: cellParam.xNumber, line_Cell_Array_Param: cellsParentLine.cell_Data_Array) == true {
@@ -57,20 +68,22 @@ class Viable_Set_Manager {
             
             if let lclLow = currentLowestViableCell_X_Index
                 , let lclHigh = currentHighestViableCell_X_Index {
+
+                lowestViableMembers_XNum = lclLow
                 
                 for x in lclLow...lclHigh {
-                    if x < lclHigh{
+                    if x < lclHigh {
                         currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
                         if x == cellParam.xNumber {starterCells_Position_In_Viable_Array = currentViableDataCellArray.count-1}
                     }
-                    else if x == lclHigh{
+                    else if x == lclHigh {
                         currentViableDataCellArray.append(cellsParentLine.cell_Data_Array[x])
-                        if lowestViableMembers_XNum == nil{lowestViableMembers_XNum=lclLow}
-                        viable_Set_Formed = true
                         if x == cellParam.xNumber {starterCells_Position_In_Viable_Array = currentViableDataCellArray.count-1}
+                        viable_Set_Formed = true
                         callback()
                     }
                 }
+                
             }
         }
     }
@@ -108,6 +121,7 @@ class Viable_Set_Manager {
     }
     
     func check_Lower_Termination_Criteria(valueToCheck: Int) {
+        
         if let lclLine = lineCellsOptional{
             if lclLine[valueToCheck].note_Status != .unassigned {
                 if currentLowestViableCell_X_Index == nil {

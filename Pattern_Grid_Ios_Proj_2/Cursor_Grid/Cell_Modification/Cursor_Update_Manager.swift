@@ -93,10 +93,10 @@ class Cursor_Update_Manager {
                             }
                         }
                     }
-                    else if lclParentGrid.viable_Set_Manager.viable_Set_Formed == false {
-                        lclParentGrid.execute_Viable_Array_State_Changes()
-                        lclParentGrid.execute_Viable_Array_Visual_Updates()
-                    }
+//                    else if lclParentGrid.viable_Set_Manager.viable_Set_Formed == false {
+//                        lclParentGrid.execute_Viable_Array_State_Changes()
+//                        lclParentGrid.execute_Viable_Array_Visual_Updates()
+//                    }
                 }
             }
             }

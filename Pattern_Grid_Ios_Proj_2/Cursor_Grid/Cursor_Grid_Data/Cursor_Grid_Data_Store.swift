@@ -14,8 +14,7 @@ class Cursor_Grid_Data_Store : ObservableObject {
     let lclDimensions = ComponentDimensions.StaticComponentDimensions
     
     let lclColor_Processor_2 = Color_Processor_Mk_2.Static_Color_Processor_Mk_2 
-    
-    //var cursor_Update_Manager = Cursor_Update_Manager()
+
     var viable_Set_Manager = Viable_Set_Manager()
     
     var potential_Note_Manager = Potential_Note_Manager()
@@ -24,23 +23,13 @@ class Cursor_Grid_Data_Store : ObservableObject {
     
     var cell_Line_Array : [Cursor_Grid_Line_Data_Store] = []
     
-    
     var noteWritingActivated : Bool = false {
-        // TODO: startNote
-        // TODO: note write
         didSet {
             if noteWritingActivated == true {
                 cell_Modification_Manager.getCurrentViableSet_Then_Go_Thru_It()
-//                execute_Viable_Array_State_Changes()
-//                execute_Viable_Array_Visual_Updates()
             }
-            // TODO: terminateNote
             else if noteWritingActivated == false {
                 cell_Modification_Manager.finishWithViableSetForNow()
-//                if potential_Note_Manager.currently_Has_Potential_Note == true {
-//                    potential_Note_Manager.commit_Note()
-//                    clear_Note_And_Viable_Array()
-//                }
             }
         }
     }
@@ -49,7 +38,26 @@ class Cursor_Grid_Data_Store : ObservableObject {
         setChildren()
     }
     
-    // TODO: terminateNote
+    func setChildren(){
+        for y in 0..<lclDimensions.returnGridVerticalEnd(){
+        let line_Data = Cursor_Grid_Line_Data_Store(lineNumberParam: y)
+        line_Data.setParentGridData(parentGridParam: self)
+        cell_Line_Array.append(line_Data)
+        }
+        
+        load_Pattern()
+        
+        potential_Note_Manager.parent_Grid_Data = self
+        cell_Modification_Manager.parentDataGrid = self
+    }
+    
+    func load_Pattern(){
+        // later this will connect with a core data component and load other patterns
+        // but for now I will use it to add temp cell data to test other functions
+        cell_Line_Array[0].cell_Data_Array[8].note_Status = .confirmedSingle
+        cell_Line_Array[0].cell_Data_Array[8].repaint_Cell()
+    }
+    
     func clear_Note_And_Viable_Array(){
         viable_Set_Manager.nil_Viable_Set()
         if potential_Note_Manager.potentialStartIndex != nil {
@@ -57,41 +65,10 @@ class Cursor_Grid_Data_Store : ObservableObject {
         }
     }
     
-    // TODO: startNote
-    func execute_Viable_Array_State_Changes(){
-        
-//        if let lclCurrCell = cursor_Update_Manager.current_Cursor_Cell {
-//            if lclCurrCell.note_Status != .confirmedSingle || lclCurrCell.note_Status != .confirmedStart
-//                || lclCurrCell.note_Status != .confirmedMiddle || lclCurrCell.note_Status != .confirmedEnd {
-//                viable_Set_Manager.define_Viable_Set(cellParam: lclCurrCell)
-//            }
-//        }
-//        
-//        if let lclCurrentCursor = cursor_Update_Manager.current_Cursor_Cell,viable_Set_Manager.viable_Set_Formed == true {
-//            if let lclStartIndex = lclCurrentCursor.place_In_Viable_Set {
-//                if potential_Note_Manager.potentialStartIndex == nil {
-//                potential_Note_Manager.set_PotentialNote_StartIndex(indexParam: lclStartIndex)
-//                potential_Note_Manager.set_PotentialNote_EndIndex(indexParam: lclStartIndex)
-//                }
-//            }
-//        }
-        
-    }
-    
     func execute_Viable_Array_Visual_Updates(){
         for cell in viable_Set_Manager.currentViableDataCellArray{
             cell.repaint_Cell()
         }
-    }
-    
-    func setChildren(){
-        for y in 0..<lclDimensions.returnGridVerticalEnd(){
-        let line_Data = Cursor_Grid_Line_Data_Store(lineNumberParam: y)
-        line_Data.setParentGridData(parentGridParam: self)
-        cell_Line_Array.append(line_Data)
-        }
-        potential_Note_Manager.parent_Grid_Data = self
-        cell_Modification_Manager.parentDataGrid = self
     }
     
     func returnSpecificCell(xVal:Int,yVal:Int)->Cursor_Grid_Cell_Data_Store{

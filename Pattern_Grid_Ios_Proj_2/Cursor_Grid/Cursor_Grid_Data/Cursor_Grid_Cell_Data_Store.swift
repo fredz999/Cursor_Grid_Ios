@@ -52,30 +52,6 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
     var note_Status : Grid_Cell_Data_Note_Status = .unassigned
     
     var modifier_Stack : [Cell_Modification] = []
-    
-    func executeModifierStack(){
-        if modifier_Stack.count > 0 {
-            for modification in modifier_Stack {
-                if modification.type == .cursor_Modification {
-                    if let lclNewCursorStatusValue = modification.cursor_Modification_Value {
-                        cursor_Status = lclNewCursorStatusValue
-                    }
-                }
-                else if modification.type == .note_Modification {
-                    if let lclNewNoteStatusValue = modification.note_Status_Modification_Value {
-                        note_Status = lclNewNoteStatusValue
-                    }
-                }
-                else if modification.type == .viable_Group_Memberhip_Modification {
-                    if let lclNewViableGroupStatusValue = modification.viable_Group_Membership_Modification_Value {
-                        viable_Group_Status = lclNewViableGroupStatusValue
-                    }
-                }
-            }
-        }
-        modifier_Stack.removeAll()
-        repaint_Cell()
-    }
 
     func process_Cursor_Status_Update(isCurrentSelectedPositionParam:Bool){
         
@@ -88,18 +64,6 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
         }
 
     }
-    
-//    func process_Viable_Group_Status_Update(selectabilityUpdateParam:Grid_Cell_Data_In_Viable_Group_Status?){
-//        
-//        if selectabilityUpdateParam == .in_A_Write_Viable_Group {
-//            viable_Group_Status = .in_A_Write_Viable_Group
-//        }
-//        
-//        else if selectabilityUpdateParam == .not_In_A_Write_Viable_Group {
-//            viable_Group_Status = .not_In_A_Write_Viable_Group
-//        }
-//
-//    }
     
     func process_Note_Status_Update(statusUpdateParam:Grid_Cell_Data_Note_Status) {
         note_Status = statusUpdateParam

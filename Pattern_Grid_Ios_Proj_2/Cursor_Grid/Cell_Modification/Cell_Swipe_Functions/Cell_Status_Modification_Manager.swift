@@ -9,18 +9,13 @@ import Foundation
 import SwiftUI
 import Combine
 class Cell_Status_Modification_Manager {
-    
-    // the idea here is to make it so that modifications can be carried out against cells
-    // possibly numerous modifications to numerous cells and only after they have
-    // been fully modified do they then undergo visual updates
-    // 1: cursor modificstion
+
+    var parentDataGrid : Cursor_Grid_Data_Store?
+    var viableSetManager : Viable_Set_Manager?
     
     var currCursorX_Int : Int
     var currCursorY_Int : Int
     
-    var parentDataGrid : Cursor_Grid_Data_Store?
-    
-    var viableSetManager = Viable_Set_Manager()
     var viable_Group_Cursor_X_Current : Int?
     var viable_Group_Cursor_X_Previous : Int?
     var starter_Cells_Index_In_ViableGroup : Int?
@@ -34,7 +29,6 @@ class Cell_Status_Modification_Manager {
     var leftwardNote_Contract_Rightward_Functions : LeftwardNote_Contract_Leftward_Functions?
     var cell_Leftward_Setting_Functions : Cell_Leftward_Setting_Functions?
     
-    // TODO: pendulum
     var swipe_Direction_From_Start : Swipe_Direction_From_StartCell = .inCentre {
         didSet{
             if swipe_Direction_From_Start == .leftFromCentre {
@@ -42,7 +36,6 @@ class Cell_Status_Modification_Manager {
                     swipe_Direction_From_Start = .inCentre
                     if let lclRightContractFuncs = rightwardNote_Contract_Leftward_Functions {
                         lclRightContractFuncs.eliminateRightSide()
-                        print("eliminateRightSide()")
                     }
                 }
             }
@@ -51,7 +44,6 @@ class Cell_Status_Modification_Manager {
                 if swipe_Direction_From_Start != .inCentre {
                     if let lclLeftContractFuncs = leftwardNote_Contract_Rightward_Functions {
                         lclLeftContractFuncs.eliminateLeftSide()
-                        print("eliminateLeftSide()")
                     }
                 }
 
@@ -66,35 +58,38 @@ class Cell_Status_Modification_Manager {
     }
     
     func setChildren(){
-        rightwardNote_Expand_Rightward_Functions = RightwardNote_Expand_Rightward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        rightwardNote_Contract_Leftward_Functions =  RightwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        cell_Rightward_Setting_Functions = Cell_Rightward_Setting_Functions(parentParam: self)
-        
-        leftwardNote_Expand_Leftward_Functions = LeftwardNote_Expand_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        leftwardNote_Contract_Rightward_Functions = LeftwardNote_Contract_Leftward_Functions(viableSetManagerParam: viableSetManager, parentParam: self)
-        cell_Leftward_Setting_Functions = Cell_Leftward_Setting_Functions(parentParam: self)
+        if let lclParent = parentDataGrid {
+            viableSetManager = lclParent.viable_Set_Manager
+            rightwardNote_Expand_Rightward_Functions = RightwardNote_Expand_Rightward_Functions(viableSetManagerParam: lclParent.viable_Set_Manager, parentParam: self)
+            rightwardNote_Contract_Leftward_Functions =  RightwardNote_Contract_Leftward_Functions(viableSetManagerParam: lclParent.viable_Set_Manager, parentParam: self)
+            cell_Rightward_Setting_Functions = Cell_Rightward_Setting_Functions(parentParam: self)
+            
+            leftwardNote_Expand_Leftward_Functions = LeftwardNote_Expand_Leftward_Functions(viableSetManagerParam: lclParent.viable_Set_Manager, parentParam: self)
+            leftwardNote_Contract_Rightward_Functions = LeftwardNote_Contract_Leftward_Functions(viableSetManagerParam: lclParent.viable_Set_Manager, parentParam: self)
+            cell_Leftward_Setting_Functions = Cell_Leftward_Setting_Functions(parentParam: self)
+        }
     }
     
     func figure_Out_Whats_To_Be_Done_With_Each_Cell_After_A_Cursor_X_Move() {
-        if viableSetManager.viable_Set_Formed == true {
-            starter_Cells_Index_In_ViableGroup = viableSetManager.starterCells_Position_In_Viable_Array
-            if let lcl_ViableSets_LowX = viableSetManager.lowestViableMembers_XNum {
+        if let lclParent = parentDataGrid {
+            if lclParent.viable_Set_Manager.viable_Set_Formed == true {
+            starter_Cells_Index_In_ViableGroup = lclParent.viable_Set_Manager.starterCells_Position_In_Viable_Array
+            
+            if let lcl_ViableSets_LowX = lclParent.viable_Set_Manager.lowestViableMembers_XNum {
                 if viable_Group_Cursor_X_Current == nil {
                     viable_Group_Cursor_X_Current = currCursorX_Int - lcl_ViableSets_LowX
                 }
                 else if viable_Group_Cursor_X_Current != nil {
-                    viable_Group_Cursor_X_Previous = viable_Group_Cursor_X_Current
                     viable_Group_Cursor_X_Current = currCursorX_Int - lcl_ViableSets_LowX
                 }
-                
             }
-            print_State_Updates()
+            determine_Swipe_Direction()
+            }
         }
     }
 
-    func print_State_Updates(){
-        if viable_Group_Cursor_X_Previous == nil
-        ,let startX = starter_Cells_Index_In_ViableGroup {
+    func determine_Swipe_Direction(){
+        if viable_Group_Cursor_X_Previous == nil, starter_Cells_Index_In_ViableGroup != nil {
             initial_Viable_Set_State_Update()
         }
         else if let currX = viable_Group_Cursor_X_Current,
@@ -102,15 +97,14 @@ class Cell_Status_Modification_Manager {
             let startX = starter_Cells_Index_In_ViableGroup
         {
             if currX > startX{
-                if currX > prevX{
+                if currX > prevX {
                     swipe_Direction_From_Start = .rightFromCentre
                     rightwardNote_Expanding_Rightward()
                 }
-                else if currX < prevX{
+                else if currX < prevX {
                     rightwardNote_Contracting_Leftward()
                 }
             }
-            
             else if currX < startX {
                 if currX > prevX {
                     leftWardNote_Contracting_Rightward()
@@ -120,30 +114,24 @@ class Cell_Status_Modification_Manager {
                     leftWardNote_Expanding_Leftward()
                 }
             }
-            // TODO: pendulum
             else if currX == startX {
                 if currX > prevX {
-                    // print("currX = startX, it contracted back into a single cell pick from the left")
-                    // eliminateRightSide()
                     swipe_Direction_From_Start = .inCentre
                     leftWardNote_Contracting_Rightward()
                 }
                 else if currX < prevX {
-                    //eliminateRightSide()
                     swipe_Direction_From_Start = .inCentre
                     rightwardNote_Contracting_Leftward()
                 }
             }
-            
-
         }
         
     }
     
     func initial_Viable_Set_State_Update(){
-        // just started
-            if let lclCurrent = viable_Group_Cursor_X_Current {
-                for x in 0..<viableSetManager.currentViableDataCellArray.count {
+ 
+            if let lclCurrent = viable_Group_Cursor_X_Current, let lclParent = parentDataGrid  {
+                for x in 0..<lclParent.viable_Set_Manager.currentViableDataCellArray.count {
                     if x == viable_Group_Cursor_X_Current {
                         var modArray = [Cell_Modification]()
 
@@ -157,22 +145,23 @@ class Cell_Status_Modification_Manager {
                         
                         let cursorMod = Cell_Modification(typeParam: .cursor_Modification)
                         cursorMod.cursor_Modification_Value = .is_The_Current_Cursor
+
                         modArray.append(cursorMod)
-                        
-                        apply_A_Bunch_Of_Modifications(cell: viableSetManager.currentViableDataCellArray[lclCurrent] , modificationArray: modArray)
+                        apply_A_Bunch_Of_Modifications(cell: lclParent.viable_Set_Manager.currentViableDataCellArray[x] , modificationArray: modArray)
                     }
                     else if x != viable_Group_Cursor_X_Current {
                         var modArray = [Cell_Modification]()
                         let viabilityMembershipMod = Cell_Modification(typeParam: .viable_Group_Memberhip_Modification)
                         viabilityMembershipMod.viable_Group_Membership_Modification_Value = .in_A_Write_Viable_Group
                         modArray.append(viabilityMembershipMod)
-                        apply_A_Bunch_Of_Modifications(cell: viableSetManager.currentViableDataCellArray[x] , modificationArray: modArray)
+                        apply_A_Bunch_Of_Modifications(cell: lclParent.viable_Set_Manager.currentViableDataCellArray[x] , modificationArray: modArray)
                     }
                 }
+                for cell in lclParent.viable_Set_Manager.currentViableDataCellArray {
+                    cell.repaint_Cell()
+                }
             }
-            for cell in viableSetManager.currentViableDataCellArray {
-                cell.repaint_Cell()
-            }
+            
     }
     
     
@@ -198,9 +187,8 @@ class Cell_Status_Modification_Manager {
     }
     
     func rightwardNote_Expanding_Rightward(){
-        if let currX = viable_Group_Cursor_X_Current
-        {
-            if currX < viableSetManager.currentViableDataCellArray.count,currX>0 {
+        if let currX = viable_Group_Cursor_X_Current, let lclParent = parentDataGrid  {
+            if currX < lclParent.viable_Set_Manager.currentViableDataCellArray.count,currX>0 {
                 if let lclRight_ExpandFuncs = rightwardNote_Expand_Rightward_Functions{
                     lclRight_ExpandFuncs.process_Rightward_Expansion(currX:currX)
                 }
@@ -211,10 +199,10 @@ class Cell_Status_Modification_Manager {
     
     func rightwardNote_Contracting_Leftward(){
         if let currX = viable_Group_Cursor_X_Current,
-           //let prevX = viable_Group_Cursor_X_Previous,
            let lclStartX = starter_Cells_Index_In_ViableGroup
+            ,let lclParent = parentDataGrid
         {
-            if currX >= lclStartX,currX < viableSetManager.currentViableDataCellArray.count {
+            if currX >= lclStartX,currX < lclParent.viable_Set_Manager.currentViableDataCellArray.count {
                 if let lclRightwardNote_Contract_Functions = rightwardNote_Contract_Leftward_Functions{
                     lclRightwardNote_Contract_Functions.tempArrayPaint_Contracting_Right_Swipe(currX:currX)
                 }
@@ -223,7 +211,6 @@ class Cell_Status_Modification_Manager {
     }
 
     func update_Cursor_X(new_Cursor_X_Int:Int) {
- 
         if let lclGridData = parentDataGrid {
             if lclGridData.noteWritingActivated == false {
                 let modifier_1 = Cell_Modification(typeParam: .cursor_Modification)
@@ -248,13 +235,11 @@ class Cell_Status_Modification_Manager {
     
     func update_Cursor_Y(new_Cursor_Y_Int:Int) {
         if let lclGridData = parentDataGrid {
-            if lclGridData.noteWritingActivated == false {
-                lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].cursor_Status = .not_The_Current_Cursor
-                lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].repaint_Cell()
-                currCursorY_Int = new_Cursor_Y_Int
-                lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].cursor_Status = .is_The_Current_Cursor
-                lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].repaint_Cell()
-            }
+            lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].cursor_Status = .not_The_Current_Cursor
+            lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].repaint_Cell()
+            currCursorY_Int = new_Cursor_Y_Int
+            lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].cursor_Status = .is_The_Current_Cursor
+            lclGridData.cell_Line_Array[currCursorY_Int].cell_Data_Array[currCursorX_Int].repaint_Cell()
         }
     }
     
@@ -286,19 +271,24 @@ class Cell_Status_Modification_Manager {
     
     func getCurrentViableSet_Then_Go_Thru_It() {
         if let lclParentDataGrid = parentDataGrid {
-            if viableSetManager.viable_Set_Formed == false {
+            if lclParentDataGrid.viable_Set_Manager.viable_Set_Formed == false {
                 let currCell = lclParentDataGrid.returnSpecificCell(xVal: currCursorX_Int, yVal: currCursorY_Int)
-                viableSetManager.define_Viable_Set(cellParam: currCell, callback: figure_Out_Whats_To_Be_Done_With_Each_Cell_After_A_Cursor_X_Move)
+                lclParentDataGrid.viable_Set_Manager.define_Viable_Set(cellParam: currCell, callback: figure_Out_Whats_To_Be_Done_With_Each_Cell_After_A_Cursor_X_Move)
             }
         }
     }
 
     func finishWithViableSetForNow(){
-        if viable_Group_Cursor_X_Previous != nil{viable_Group_Cursor_X_Previous=nil}
-        if viable_Group_Cursor_X_Current != nil{viable_Group_Cursor_X_Current=nil}
-        if viableSetManager.currentViableDataCellArray.count > 0 {
-            viableSetManager.nil_Viable_Set()
+        if let lclParent = parentDataGrid {
+            for cell in lclParent.viable_Set_Manager.currentViableDataCellArray {
+                if cell.note_Status == .potentialSingle {
+                    cell.note_Status = .confirmedSingle
+                    cell.repaint_Cell()
+                }
+            }
+            lclParent.viable_Set_Manager.nil_Viable_Set()
         }
+        
     }
     
 }

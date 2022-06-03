@@ -19,7 +19,8 @@ class Cursor_Grid_Line_Data_Store : ObservableObject, Identifiable {
     var cell_Data_Array : [Cursor_Grid_Cell_Data_Store] = []
     var parentGridData : Cursor_Grid_Data_Store?
     
-    var currentCursor_X_Num : Int?
+    //var currentCursor_X_Num : Int?
+
     
     init(lineNumberParam:Int){
         place_In_Parent_Line_Array = lineNumberParam

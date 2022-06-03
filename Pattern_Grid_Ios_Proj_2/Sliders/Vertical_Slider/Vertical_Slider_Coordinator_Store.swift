@@ -79,7 +79,7 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     func vertical_GoToEnd(){
         
         let last = lclDimensions.useable_Data_Range_Upper_Limit-1
-        let indexToScrollTo = IndexPath(item: 33, section: 0)
+        let indexToScrollTo = IndexPath(item: last, section: 0)
         
         if let lclCollection_View = v_Collection_View {
             lclCollection_View.scrollToItem(at: indexToScrollTo, at: .bottom, animated: false)

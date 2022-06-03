@@ -341,9 +341,6 @@ class Cell_Rightward_Setting_Functions {
             modArray.append(cursorMod)
             if markedForPainting == false{markedForPainting = true}
         }
-//        else if cell.cursor_Status == .is_The_Current_Cursor {
-//            if markedForPainting == false{markedForPainting = true}
-//        }
  
         if modArray.count > 0{
             parent.apply_A_Bunch_Of_Modifications(cell: cell, modificationArray: modArray)

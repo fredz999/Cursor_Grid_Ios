@@ -22,6 +22,7 @@ class Color_Processor_Mk_2 {
     func appearance_Update(cell:Cursor_Grid_Cell_Data_Store){
         
         if cell.viable_Group_Status == .not_In_A_Write_Viable_Group {
+            
             if cell.cursor_Status == .not_The_Current_Cursor {
                 paint_Cell_Not_Cursor_Cell_Not_In_Viable_Group(cell: cell)
             }
@@ -30,6 +31,7 @@ class Color_Processor_Mk_2 {
             }
         }
         else if cell.viable_Group_Status == .in_A_Write_Viable_Group {
+            
             if cell.cursor_Status == .not_The_Current_Cursor {
                 paint_Cell_Not_Cursor_Cell_In_Viable_Group(cell: cell)
             }
@@ -38,6 +40,7 @@ class Color_Processor_Mk_2 {
             }
         }
     }
+    
     //==================================================================
     //==================================================================
     
