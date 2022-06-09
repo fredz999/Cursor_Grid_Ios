@@ -9,27 +9,16 @@ struct Vertical_Slider_View: UIViewRepresentable {
     var dimensions = ComponentDimensions.StaticComponentDimensions
     
     var v_Slider_Data : [Int] = []
-    
-    //var vSliderResponderArray : [P_VSlider_Responder] = []
-    
+
     init(vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
-    //init(vSliderResponderArrayParam : [P_VSlider_Responder],vertical_Slider_Coordinator_Param : Vertical_Slider_Coordinator_Store){
 
         vertical_Slider_Coordinator_Store = vertical_Slider_Coordinator_Param
-        
-        //vSliderResponderArray = vSliderResponderArrayParam
-
         let vSliderStart : Int = dimensions.returnGridVerticalStart()
         let vSliderEnd : Int = dimensions.returnGridVerticalEnd()
 
         for i in vSliderStart..<vSliderEnd {
             v_Slider_Data.append(i)
         }
-        
-//        for vResponder in vSliderResponderArrayParam {
-//            vertical_Slider_Coordinator_Param.vertical_Slider_Responders.append(vResponder)
-//        }
-
     }
     
     func makeUIView(context: Context) -> UICollectionView {

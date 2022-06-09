@@ -21,7 +21,6 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
         }
     }
 
-    // MARK: UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         lcldimensions.returnGridVerticalEnd()
     }
@@ -43,7 +42,6 @@ class Vertical_Slider_Coordinator_Store: NSObject, UICollectionViewDataSource, U
     }
     
     let dimz = ComponentDimensions.StaticComponentDimensions
-    // MARK: UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = dimz.v_SliderCellWidth

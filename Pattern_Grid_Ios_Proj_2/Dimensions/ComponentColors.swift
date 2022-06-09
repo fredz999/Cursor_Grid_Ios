@@ -20,7 +20,7 @@ class Color_Processor_Mk_2 {
     }
     
     func appearance_Update(cell:Cursor_Grid_Cell_Data_Store){
-        
+
         if cell.viable_Group_Status == .not_In_A_Write_Viable_Group {
             
             if cell.cursor_Status == .not_The_Current_Cursor {
@@ -38,6 +38,7 @@ class Color_Processor_Mk_2 {
             else if cell.cursor_Status == .is_The_Current_Cursor {
                 paint_Cell_Is_Cursor_Cell_In_Viable_Group(cell: cell)
             }
+            
         }
     }
     
@@ -215,9 +216,7 @@ class Color_Config_Bank {
     var confirmedEndColorConfig : Status_Color_Config
     
     init(){
-//        cell_Unassigned_And_Viable_For_Selection = Status_Color_Config(statusParam: .unassigned, fontColParam: viable_Cell_Font_Color
-//                                                    , perimeterColParam: viable_Cell_Perimeter_Color, backgroundColParam: viable_Cell_Background_Color)
-        
+
         cell_Unassigned_And_Viable_For_Selection = Status_Color_Config(fontColParam: viable_Cell_Font_Color
                                                     , perimeterColParam: viable_Cell_Perimeter_Color, backgroundColParam: viable_Cell_Background_Color)
         

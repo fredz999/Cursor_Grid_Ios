@@ -52,10 +52,8 @@ class Cursor_Grid_Data_Store : ObservableObject {
     }
     
     func load_Pattern(){
-        // later this will connect with a core data component and load other patterns
-        // but for now I will use it to add temp cell data to test other functions
-        cell_Line_Array[0].cell_Data_Array[8].note_Status = .confirmedSingle
-        cell_Line_Array[0].cell_Data_Array[8].repaint_Cell()
+        cell_Line_Array[0].cell_Data_Array[3].note_Status = .confirmedSingle
+        cell_Line_Array[0].cell_Data_Array[3].repaint_Cell()
     }
     
     func clear_Note_And_Viable_Array(){

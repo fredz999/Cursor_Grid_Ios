@@ -79,12 +79,13 @@ class Cursor_Update_Manager {
                     if lclParentGrid.viable_Set_Manager.viable_Set_Formed == true {
                         if let lclHigher = lclParentGrid.viable_Set_Manager.currentHighestViableCell_X_Index
                             , let lclLower = lclParentGrid.viable_Set_Manager.currentLowestViableCell_X_Index {
-                            if current_Cursor_X_Int > lclHigher || current_Cursor_X_Int < lclLower {
-                                // TODO: terminateNote
-                                lclParentGrid.clear_Note_And_Viable_Array()
-                            }
+//                            if current_Cursor_X_Int > lclHigher || current_Cursor_X_Int < lclLower {
+//                                // TODO: terminateNote
+//                                lclParentGrid.clear_Note_And_Viable_Array()
+//                            }
                             // TODO: append note write
-                            else if current_Cursor_X_Int <= lclHigher , current_Cursor_X_Int >= lclLower {
+                            // else
+                                if current_Cursor_X_Int <= lclHigher , current_Cursor_X_Int >= lclLower {
                                 if let lclCurrLine = current_Cursor_Line {
                                     if let curr_Viable_Index = lclCurrLine.cell_Data_Array[current_Cursor_X_Int].place_In_Viable_Set {
                                         lclParentGrid.potential_Note_Manager.set_PotentialNote_EndIndex(indexParam: curr_Viable_Index)

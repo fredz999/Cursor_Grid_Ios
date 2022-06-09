@@ -71,6 +71,7 @@ class Cursor_Grid_Cell_Data_Store : ObservableObject,Identifiable, Equatable {
 
     func repaint_Cell(){
         colors2.appearance_Update(cell: self)
+        //print("cell vgs: ",viable_Group_Status.rawValue,", cursorSt: ",cursor_Status.rawValue,",noteStatus: ",note_Status.rawValue)
     }
     
     let colors2 = Color_Processor_Mk_2.Static_Color_Processor_Mk_2
